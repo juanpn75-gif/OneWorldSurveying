@@ -1,24 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1.0" />
-<meta name="theme-color" content="#0b1f33" />
-<meta name="description" content="One World Surveying — surveying and geospatial web tools by Juan A. Pichardo." />
-<title>One World Surveying | Apps</title>
-<style>
-:root{--navy:#0b1f33;--navy2:#163a5f;--gold:#d9a441;--paper:#f4f7fa;--white:#fff;--text:#17212b;--muted:#667789;--line:#dfe7ee;--shadow:0 12px 30px rgba(11,31,51,.10);--radius:18px}
-*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--paper);color:var(--text);min-height:100vh}
-header{background:linear-gradient(135deg,var(--navy),var(--navy2));color:var(--white);padding:20px 22px 72px;position:relative;overflow:hidden}header:after{content:"";position:absolute;width:330px;height:330px;border:1px solid rgba(255,255,255,.10);border-radius:50%;right:-105px;top:-145px;box-shadow:0 0 0 46px rgba(255,255,255,.035),0 0 0 92px rgba(255,255,255,.025)}
-.nav,.hero,main,footer{width:min(1120px,calc(100% - 40px));margin:0 auto}.nav{display:flex;align-items:center;justify-content:space-between;gap:18px;position:relative;z-index:1}.brand{display:flex;align-items:center;text-decoration:none;color:#fff}.brand-logo{display:block;width:210px;height:118px;object-fit:contain;border-radius:14px;border:1px solid rgba(217,164,65,.55);box-shadow:0 8px 24px rgba(0,0,0,.32);background:#081725}.nav-right{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:flex-end}.domain{font-size:14px;color:rgba(255,255,255,.72)}.instagram{display:inline-flex;align-items:center;gap:8px;padding:9px 13px;border:1px solid rgba(255,255,255,.22);border-radius:999px;text-decoration:none;color:#fff;font-size:13px;font-weight:750;background:rgba(255,255,255,.06)}.instagram svg{width:17px;height:17px;fill:currentColor}
-.hero{padding-top:48px;position:relative;z-index:1}.eyebrow{color:var(--gold);font-weight:800;font-size:13px;letter-spacing:1.8px;text-transform:uppercase;margin-bottom:14px}h1{margin:0;max-width:800px;font-size:clamp(38px,6vw,70px);line-height:.98;letter-spacing:-2.2px}.hero p{margin:22px 0 0;max-width:720px;font-size:clamp(17px,2vw,20px);line-height:1.6;color:rgba(255,255,255,.78)}
-main{margin-top:-34px;padding-bottom:64px;position:relative;z-index:2}.panel{background:#fff;border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);padding:30px}.section-head{display:flex;justify-content:space-between;align-items:end;gap:18px;margin-bottom:22px}.section-head h2{margin:0;font-size:26px}.section-head p{margin:4px 0 0;color:var(--muted)}.badge{white-space:nowrap;border:1px solid var(--line);color:var(--muted);border-radius:999px;padding:7px 11px;font-size:12px;font-weight:700;background:#f8fafc}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.card{border:1px solid var(--line);border-radius:var(--radius);padding:24px;text-decoration:none;color:inherit;background:linear-gradient(180deg,#fff,#fbfcfd);min-height:210px;display:flex;flex-direction:column;transition:.18s}.card:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(11,31,51,.10)}.icon{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;background:#edf3f8;color:var(--navy2);font-size:22px;margin-bottom:20px}.card h3{margin:0 0 9px;font-size:21px}.card p{margin:0;color:var(--muted);line-height:1.55;font-size:15px}.open{margin-top:auto;padding-top:24px;display:flex;align-items:center;justify-content:space-between;font-size:14px;font-weight:800;color:var(--navy2)}.arrow{width:31px;height:31px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;background:#fff}
-footer{padding:0 0 38px;color:var(--muted);font-size:13px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}.footer-right{display:flex;align-items:center;gap:15px;flex-wrap:wrap}.footer-instagram{color:var(--navy2);text-decoration:none;font-weight:750}
-@media(max-width:760px){header{padding-bottom:62px}.nav{align-items:flex-start}.domain{display:none}.brand-logo{width:150px;height:84px}.instagram span{display:none}.hero{padding-top:40px}.panel{padding:20px}.section-head{align-items:flex-start;flex-direction:column}.grid{grid-template-columns:1fr}}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0b1f33" />
+  <meta name="description" content="One World Surveying — surveying and geospatial web tools by Juan A. Pichardo." />
+  <title>One World Surveying | Apps</title>
+  <style>
+    :root{--navy:#0b1f33;--navy2:#163a5f;--gold:#d9a441;--paper:#f4f7fa;--white:#fff;--text:#17212b;--muted:#667789;--line:#dfe7ee;--shadow:0 12px 30px rgba(11,31,51,.10);--radius:18px}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--paper);color:var(--text);min-height:100vh}
+    header{background:linear-gradient(135deg,var(--navy),var(--navy2));color:var(--white);padding:20px 22px 72px;position:relative;overflow:hidden}
+    header::after{content:"";position:absolute;width:330px;height:330px;border:1px solid rgba(255,255,255,.10);border-radius:50%;right:-105px;top:-145px;box-shadow:0 0 0 46px rgba(255,255,255,.035),0 0 0 92px rgba(255,255,255,.025)}
+    .nav,.hero,main,footer{width:min(1120px,calc(100% - 40px));margin:0 auto}
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:18px;position:relative;z-index:1}
+    .brand{display:flex;align-items:center;text-decoration:none;color:#fff;font-weight:800}
+    .brand-logo{width:260px;height:auto;display:block;filter:drop-shadow(0 8px 18px rgba(0,0,0,.28))}
+    .nav-right{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:flex-end}
+    .domain{font-size:14px;color:rgba(255,255,255,.72)}
+    .instagram{display:inline-flex;align-items:center;gap:8px;padding:9px 13px;border:1px solid rgba(255,255,255,.22);border-radius:999px;text-decoration:none;color:#fff;font-size:13px;font-weight:750;background:rgba(255,255,255,.06);backdrop-filter:blur(6px);transition:.18s ease}
+    .instagram:hover{background:rgba(255,255,255,.13);transform:translateY(-1px)}
+    .instagram svg{width:17px;height:17px;fill:currentColor}
+    .hero{padding-top:42px;position:relative;z-index:1}.eyebrow{color:var(--gold);font-weight:800;font-size:13px;letter-spacing:1.8px;text-transform:uppercase;margin-bottom:14px}
+    h1{margin:0;max-width:800px;font-size:clamp(38px,6vw,70px);line-height:.98;letter-spacing:-2.2px}.hero p{margin:22px 0 0;max-width:720px;font-size:clamp(17px,2vw,20px);line-height:1.6;color:rgba(255,255,255,.78)}
+    main{margin-top:-34px;padding-bottom:64px;position:relative;z-index:2}.panel{background:var(--white);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);padding:30px}.section-head{display:flex;justify-content:space-between;align-items:end;gap:18px;margin-bottom:22px}.section-head h2{margin:0;font-size:26px;letter-spacing:-.5px}.section-head p{margin:4px 0 0;color:var(--muted)}
+    .badge{white-space:nowrap;border:1px solid var(--line);color:var(--muted);border-radius:999px;padding:7px 11px;font-size:12px;font-weight:700;background:#f8fafc}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+    .card{border:1px solid var(--line);border-radius:var(--radius);padding:24px;text-decoration:none;color:inherit;background:linear-gradient(180deg,#fff,#fbfcfd);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;min-height:210px;display:flex;flex-direction:column}.card:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(11,31,51,.10);border-color:#c8d5e1}.icon{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;background:#edf3f8;color:var(--navy2);font-size:22px;margin-bottom:20px}.card h3{margin:0 0 9px;font-size:21px;letter-spacing:-.35px}.card p{margin:0;color:var(--muted);line-height:1.55;font-size:15px}.open{margin-top:auto;padding-top:24px;display:flex;align-items:center;justify-content:space-between;font-size:14px;font-weight:800;color:var(--navy2)}.arrow{width:31px;height:31px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;background:#fff}
+    footer{padding:0 0 38px;color:var(--muted);font-size:13px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}.footer-right{display:flex;align-items:center;gap:15px;flex-wrap:wrap}.footer-instagram{color:var(--navy2);text-decoration:none;font-weight:750}.footer-instagram:hover{text-decoration:underline}
+    @media(max-width:760px){header{padding-bottom:62px}.nav{align-items:flex-start}.domain{display:none}.brand-logo{width:190px}.instagram span{display:none}.hero{padding-top:34px}.panel{padding:20px}.section-head{align-items:flex-start;flex-direction:column}.grid{grid-template-columns:1fr}}
+  </style>
 </head>
 <body>
-<header>
-<div class="nav">
-<a class="brand" href="/" aria-label="One World Surveying home">
-<img class="brand-logo" alt="One World Surveying logo" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRs
+  <header>
+    <div class="nav">
+      <a class="brand" href="/" aria-label="One World Surveying home">
+        <svg class="brand-logo" viewBox="0 0 520 220" role="img" aria-label="One World Surveying logo">
+          <defs>
+            <linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f1cf79"/><stop offset="1" stop-color="#b8862e"/></linearGradient>
+          </defs>
+          <rect x="1" y="1" width="518" height="218" rx="24" fill="#081725" stroke="#d9a441" stroke-width="2"/>
+          <g transform="translate(28 20)">
+            <circle cx="82" cy="72" r="54" fill="#0e2b46" stroke="url(#g)" stroke-width="5"/>
+            <ellipse cx="82" cy="72" rx="36" ry="54" fill="none" stroke="#d8e3ec" stroke-width="2" opacity=".85"/>
+            <ellipse cx="82" cy="72" rx="54" ry="22" fill="none" stroke="#d8e3ec" stroke-width="2" opacity=".85"/>
+            <path d="M28 72h108M82 18v108" stroke="#d8e3ec" stroke-width="2" opacity=".8"/>
+            <path d="M82 5l9 21-9-5-9 5zM82 139l9-21-9 5-9-5zM15 72l21-9-5 9 5 9zM149 72l-21-9 5 9-5 9z" fill="url(#g)"/>
+            <path d="M56 55c10-8 16-10 29-9l10 8 16 4-4 8-13 2-6 10-12-2-6-9-12-2zM92 87l18-4 9 8-8 7-4 11-10 2-7-12z" fill="#d9a441" opacity=".9"/>
+            <g transform="translate(150 34)" stroke="#d9a441" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+              <path d="M22 18v70M5 88h34M22 40h18M40 40v25"/>
+              <circle cx="22" cy="15" r="11" fill="#d9a441" stroke="#f2d58d"/>
+              <path d="M77 21h36v34H77z" fill="#d9a441" stroke="#f2d58d"/><circle cx="95" cy="38" r="7" fill="#081725"/><path d="M95 55v44M95 61L69 105M95 61l26 44"/>
+            </g>
+          </g>
+          <text x="250" y="72" fill="url(#g)" font-size="42" font-family="Georgia,serif" font-weight="700" letter-spacing="2">ONE WORLD</text>
+          <text x="252" y="110" fill="#ffffff" font-size="25" font-family="Arial,sans-serif" font-weight="700" letter-spacing="9">SURVEYING</text>
+          <line x1="249" y1="126" x2="487" y2="126" stroke="#d9a441" stroke-width="2"/>
+          <text x="251" y="151" fill="#d8e3ec" font-size="12" font-family="Arial,sans-serif" letter-spacing="2">LAND • GEOSPATIAL • MAPPING</text>
+          <text x="251" y="177" fill="#d9a441" font-size="11" font-family="Arial,sans-serif" letter-spacing="1.3">ACCURACY TODAY • A STRONGER TOMORROW</text>
+        </svg>
+      </a>
+      <div class="nav-right">
+        <div class="domain">oneworldsurveying.com</div>
+        <a class="instagram" href="https://www.instagram.com/oneworldsurveying/" target="_blank" rel="noopener noreferrer" aria-label="Follow One World Surveying on Instagram">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7zm10 2c1.65 0 3 1.35 3 3v10c0 1.65-1.35 3-3 3H7c-1.65 0-3-1.35-3-3V7c0-1.65 1.35-3 3-3h10zm.5 1.5a1.25 1.25 0 1 0 0 2.5 1.25 1.25 0 0 0 0-2.5zM12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6z"/></svg>
+          <span>@oneworldsurveying</span>
+        </a>
+      </div>
+    </div>
+    <div class="hero">
+      <div class="eyebrow">Surveying · Mapping · Geospatial</div>
+      <h1>Survey tools built for real field and office work.</h1>
+      <p>Quick-access web applications for coordinate conversion, mapping, survey utilities, and geospatial workflows.</p>
+    </div>
+  </header>
+
+  <main>
+    <section class="panel">
+      <div class="section-head">
+        <div><h2>Available Apps</h2><p>Select a tool to launch it in your browser.</p></div>
+        <div class="badge">One World Surveying Apps</div>
+      </div>
+      <div class="grid">
+        <a class="card" href="OneWorld_KMZ_to_State_Plane.html">
+          <div class="icon">◎</div><h3>KMZ → State Plane</h3>
+          <p>Convert KMZ/KML geographic data into State Plane coordinate workflows for surveying and CAD use.</p>
+          <div class="open"><span>Open app</span><span class="arrow">→</span></div>
+        </a>
+        <a class="card" href="Survey_Utility_app.html">
+          <div class="icon">⌖</div><h3>Survey Utility App</h3>
+          <p>Launch the One World Surveying utility collection for common survey and geospatial tasks.</p>
+          <div class="open"><span>Open app</span><span class="arrow">→</span></div>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>© <span id="year"></span> One World Surveying</span>
+    <div class="footer-right">
+      <a class="footer-instagram" href="https://www.instagram.com/oneworldsurveying/" target="_blank" rel="noopener noreferrer">Instagram @oneworldsurveying</a>
+      <span>Created by Juan A. Pichardo</span>
+    </div>
+  </footer>
+  <script>document.getElementById('year').textContent=new Date().getFullYear();</script>
+</body>
+</html>
