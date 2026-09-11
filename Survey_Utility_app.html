@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Survey Utility App v9.0 - Created by Juan Pichardo</title>
+<style>
+:root{--bg:#eef3f6;--card:#fff;--primary:#0f3d56;--secondary:#176b87;--line:#d6e0e6;--text:#17212b;--muted:#667085;--danger:#b42318}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
+header{background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;padding:20px}
+main{max-width:1050px;margin:auto;padding:14px}
+.card{background:var(--card);border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 6px 20px rgba(0,0,0,.08)}
+h1,h2,h3{margin-top:0}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.full{grid-column:1/-1}
+label{display:block;font-weight:700;font-size:14px;margin-bottom:5px}
+input,select,textarea{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;font-size:16px;background:#fff}
+textarea{min-height:80px}
+button{border:0;border-radius:10px;padding:12px 14px;font-size:15px;font-weight:700;cursor:pointer;touch-action:manipulation}
+.primary{background:var(--primary);color:#fff}.secondary{background:#dce8ee;color:var(--primary)}.danger{background:#fee4e2;color:var(--danger)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.invert-row{border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:12px;background:#f9fbfc}
+.invert-row.active{outline:3px solid rgba(23,107,135,.25);border-color:var(--secondary)}
+.invert-row.locked input,.invert-row.locked select{background:#eef3f6;color:#667085}
+.invert-row.locked .place{opacity:.55;pointer-events:none}
+.editing-badge{display:inline-block;margin-left:8px;padding:3px 7px;border-radius:999px;background:#fff3cd;color:#7a5b00;font-size:11px;font-weight:700}
+.invert-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr auto;gap:9px;align-items:end}
+.invert-title{font-weight:800;color:var(--primary);margin-bottom:10px}
+.status{margin-top:6px;color:#18794e;font-size:13px;font-weight:700}
+.diagram-wrap{display:block}
+.diagram-card{border:1px solid var(--line);border-radius:12px;padding:12px;background:#f9fbfc}
+#mhCanvas{display:block;width:100%;max-width:620px;height:auto;margin:auto;border:1px solid var(--line);border-radius:12px;background:#fff;touch-action:none}
+.diagram-help{font-size:13px;color:var(--muted);line-height:1.45}
+.legend{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.legend div{padding:8px;border:1px solid var(--line);border-radius:8px;background:#fff;font-size:13px}
+.toggle-row{display:flex;align-items:center;gap:8px}
+.toggle-row input{width:auto}
+.table-wrap{overflow:auto;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;min-width:1000px}
+th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;font-size:14px}
+th{background:#e8f0f4;color:var(--primary)}
+.small{font-size:12px;color:var(--muted)}
+.diagram-save{background:#0f3d56;color:#fff;border:3px solid #0f3d56;box-shadow:0 5px 14px rgba(15,61,86,.35);font-size:17px;padding:14px 18px}
+.diagram-save:hover{background:#176b87}
+.diagram-meta{font-size:13px;color:#17212b;text-align:center;margin-bottom:8px;font-weight:700}
+@media(max-width:900px){.diagram-wrap{grid-template-columns:1fr}}
+@media(max-width:760px){
+  .grid,.invert-grid{grid-template-columns:1fr}
+  .actions button{flex:1 1 45%}
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>Survey Utility App v9.0</h1>
+  <div>Record utility structures, pipe inverts, and interactive pipe-direction diagrams.</div>
+</header>
+<div style="background:#0f3d56;color:white;text-align:center;padding:8px;font-size:14px;font-weight:600">Created by Juan Pichardo</div>
+
+<main>
+<section class="card">
+<h2>Utility Structure</h2>
+<form id="form">
+<div class="grid">
+  <div>
+    <label>Structure / Manhole Number *</label>
+    <input id="number" required placeholder="MH-101">
+  </div>
+  <div>
+    <label>Project Number</label>
+    <input id="projectNumber" placeholder="Project number">
+  </div>
+  <div>
+    <label>Date</label>
+    <input id="recordDate" type="date">
+  </div>
+  <div>
+    <label>Utility Type *</label>
+    <select id="utilityType" required>
+      <option value="">Select type</option>
+      <option>Storm</option>
+      <option>Sanitary</option>
+      <option>Combined Sewer</option>
+      <option>Manhole</option>
+      <option>Drainage Inlet</option>
+      <option>Catch Basin</option>
+      <option>Headwall</option>
+      <option>Headwall (No Wing)</option>
+      <option>Yard Drain</option>
+      <option>Flared End Section</option>
+      <option>End Section</option>
+      <option>Handhole / Pull Box</option>
+      <option>Other</option>
+    </select>
+  </div>
+  <div>
+    <label>Rim Elevation *</label>
+    <input id="rim" type="number" step="0.001" inputmode="decimal" required placeholder="102.345">
+  </div>
+  <div>
+    <label>Units</label>
+    <select id="units"><option value="ft">Feet</option><option value="m">Meters</option></select>
+  </div>
+  <div>
+    <label>Northing</label>
+    <input id="northing" inputmode="decimal" placeholder="Optional">
+  </div>
+  <div>
+    <label>Easting</label>
+    <input id="easting" inputmode="decimal" placeholder="Optional">
+  </div>
+  <div>
+    <label>Field Crew</label>
+    <input id="surveyor" placeholder="Field crew">
+  </div>
+  <div>
+    <label>Photo Number</label>
+    <input id="photoNumber" placeholder="Optional">
+  </div>
+  <div>
+    <label>Diagram Style</label>
+    <select id="diagramStyle">
+      <option value="color">Color Flow Arrows</option>
+      <option value="bw">Black and White</option>
+    </select>
+  </div>
+
+  <div class="full">
+    <div class="actions" style="justify-content:space-between;align-items:center">
+      <h2 style="margin:0">Pipe Inverts</h2>
+      <button type="button" id="addInvert" class="secondary">+ Add Invert</button>
+    </div>
+    <div id="invertList" style="margin-top:12px"></div>
+    <div id="status" class="status"></div>
+  </div>
+
+  <div class="full">
+    <h2>Interactive Structure and Pipe Diagram</h2>
+    <div class="diagram-wrap">
+      <div class="diagram-card">
+        <div id="diagramMeta" class="diagram-meta">Project: — · Date: — · Structure: —</div>
+        <canvas id="mhCanvas" width="1200" height="1200" aria-label="Interactive manhole pipe direction diagram"></canvas>
+        <div class="actions">
+          <button type="button" id="saveDiagram" class="diagram-save">Save Report-Ready JPEG</button>
+          <button type="button" id="clearDirections" class="secondary">Clear Directions</button><button type="button" id="resetLabels" class="secondary">Reset Label Positions</button>
+        </div>
+      </div>
+      </div></div>
+
+  <div class="full">
+    <label>Notes</label>
+    <textarea id="notes" placeholder="Condition, material, accessibility, photos, etc."></textarea>
+  </div>
+</div>
+
+<div class="actions">
+  <button type="submit" class="primary">Save Structure</button>
+  <button type="button" id="clearForm" class="secondary">Clear Form</button>
+</div>
+</form>
+</section>
+
+<section class="card">
+<div class="actions">
+  <button id="exportCurrentPdf" class="primary">Current Structure PDF</button>
+  <button id="exportAllPdf" class="primary">All Structures PDF</button>
+  <button id="exportCsv" class="secondary">Export CSV</button>
+  <button id="backupJson" class="secondary">Backup JSON</button>
+  <button id="clearAll" class="danger">Delete All</button>
+</div>
+<div class="table-wrap" style="margin-top:12px">
+<table>
+<thead>
+<tr><th>Project</th><th>Date</th><th>Structure</th><th>Type</th><th>Rim</th><th>Pipe Inverts</th><th>Coordinates</th><th>Diagram</th><th>Notes</th><th>Action</th></tr>
+</thead>
+<tbody id="recordsBody"></tbody>
+</table>
+</div>
+</section>
+</main>
+
+<script>
+(function(){
+"use strict";
+var KEY="surveyUtilityApp_v9_0";
+var OLD_KEYS=["surveyUtilityApp_v8_9","surveyUtilityApp_v8_8","surveyUtilityApp_v8_7","surveyUtilityApp_v8_6","surveyUtilityApp_v8_4","surveyUtilityApp_v8_3","surveyUtilityApp_v8_2","surveyUtilityApp_v8_1","surveyUtilityApp_v8","surveyUtilityApp_v7_4","surveyUtilityApp_v7_3","surveyUtilityApp_v7_2","surveyUtilityApp_v7_1","surveyUtilityApp_v7","surveyUtilityApp_v3","surveyUtilityApp_v5","surveyUtilityApp_v6"];
+var records=[]; var editingId=null; var activeInvertIndex=0; var dragLabelIndex=-1; var dragOffsetX=0; var dragOffsetY=0; var labelHitBoxes=[];
+
+function loadRecords(){
+  try{
+    records=JSON.parse(localStorage.getItem(KEY)||"[]");
+    if(!Array.isArray(records)||!records.length){
+      for(var i=0;i<OLD_KEYS.length;i++){
+        var old=JSON.parse(localStorage.getItem(OLD_KEYS[i])||"[]");
+        if(Array.isArray(old)&&old.length){records=old;break}
+      }
+    }
+    if(!Array.isArray(records))records=[];
+  }catch(e){records=[]}
+}
+loadRecords();
+
+var invertList=document.getElementById("invertList");
+var status=document.getElementById("status");
+var canvas=document.getElementById("mhCanvas");
+var ctx=canvas.getContext("2d");
+
+function esc(v){
+  return String(v==null?"":v).replace(/[&<>"']/g,function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c];
+  });
+}
+function pipeOptions(selected){
+  var types=["","RCP","HDPE","Corrugated Plastic","Corrugated Metal","PVC","Clay","Ductile Iron","CMP","Other"];
+  return types.map(function(t){
+    return '<option value="'+esc(t)+'"'+(t===selected?' selected':'')+'>'+(t||"Select pipe type")+'</option>';
+  }).join("");
+}
+
+function directionOptions(selected){
+  var dirs=["","N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"];
+  return dirs.map(function(d){
+    return '<option value="'+d+'"'+(d===selected?' selected':'')+'>'+(d||"Select direction")+'</option>';
+  }).join("");
+}
+
+function flowOptions(selected){
+  return '<option value="">Select flow</option>'+
+    '<option value="IN"'+(selected==="IN"?' selected':'')+'>Incoming</option>'+
+    '<option value="OUT"'+(selected==="OUT"?' selected':'')+'>Outgoing</option>'+
+    '<option value="UNKNOWN"'+(selected==="UNKNOWN"?' selected':'')+'>Unknown</option>';
+}
+
+function setInvertLocked(row,locked){
+  row.classList.toggle("locked",locked);
+  row.dataset.locked=locked?"1":"0";
+  row.querySelectorAll("input:not([type=hidden]),select").forEach(function(el){
+    el.disabled=locked;
+  });
+  var editBtn=row.querySelector(".editInvert");
+  var saveBtn=row.querySelector(".saveInvert");
+  var placeBtn=row.querySelector(".place");
+  if(editBtn)editBtn.style.display=locked?"inline-block":"none";
+  if(saveBtn)saveBtn.style.display=locked?"none":"inline-block";
+  if(placeBtn)placeBtn.disabled=locked;
+  var badge=row.querySelector(".editing-badge");
+  if(badge)badge.style.display=locked?"none":"inline-block";
+}
+
+function addInvert(data){
+  data=data||{};
+  var row=document.createElement("div");
+  row.className="invert-row";
+  row.innerHTML=
+    '<div class="invert-title">Invert <span class="editing-badge">Editing</span></div>'+
+    '<div class="invert-grid">'+
+      '<div><label>Flow</label><select class="flow">'+flowOptions(data.flow||"")+'</select></div>'+
+      '<div><label>Direction</label><select class="direction">'+directionOptions(data.direction||"")+'</select></div>'+
+      '<div><label>Pipe Type</label><select class="pipeType">'+pipeOptions(data.pipeType||"")+'</select></div>'+
+      '<div><label>Pipe Size</label><input class="pipeSize" placeholder="12 in" value="'+esc(data.pipeSize||"")+'"></div>'+
+      '<div><label>Measure Down</label><input class="measureDown" type="number" step="0.001" inputmode="decimal" placeholder="Rim to invert" value="'+esc(data.measureDown||"")+'"></div>'+
+      '<div><label>Invert Elevation</label><input class="invertElevation" type="number" step="0.001" inputmode="decimal" placeholder="Auto" value="'+esc(data.invertElevation||"")+'"></div>'+
+      '<input type="hidden" class="labelX" value="'+esc(data.labelX==null?"":data.labelX)+'">'+
+      '<input type="hidden" class="labelY" value="'+esc(data.labelY==null?"":data.labelY)+'">'+
+      '<div class="actions" style="margin:0">'+
+        '<button type="button" class="secondary place">Place on Diagram</button>'+
+        '<button type="button" class="primary saveInvert">Save Invert</button>'+
+        '<button type="button" class="secondary editInvert" style="display:none">Edit</button>'+
+        '<button type="button" class="danger remove">Remove</button>'+
+      '</div>'+
+    '</div>';
+  invertList.appendChild(row);
+  renumber();
+  calculateRow(row);
+
+  // Existing saved inverts load locked; a newly added blank invert starts editable.
+  var hasExisting=!!(data.flow||data.direction||data.pipeType||data.pipeSize||data.measureDown||data.invertElevation);
+  setInvertLocked(row,hasExisting);
+  setActiveRow(Math.max(0,invertList.children.length-1));
+  drawDiagram();
+}
+
+function renumber(){
+  var rows=invertList.querySelectorAll(".invert-row");
+  rows.forEach(function(row,i){row.querySelector(".invert-title").textContent="Invert "+(i+1)});
+}
+function setActiveRow(index){
+  var rows=Array.from(invertList.querySelectorAll(".invert-row"));
+  if(!rows.length){activeInvertIndex=0;return}
+  activeInvertIndex=Math.max(0,Math.min(index,rows.length-1));
+  rows.forEach(function(r,i){r.classList.toggle("active",i===activeInvertIndex)});
+  status.textContent="Invert "+(activeInvertIndex+1)+" selected. Tap the diagram to set its direction.";
+}
+function calculateRow(row){
+  var rim=parseFloat(document.getElementById("rim").value);
+  var down=parseFloat(row.querySelector(".measureDown").value);
+  if(Number.isFinite(rim)&&Number.isFinite(down)){
+    row.querySelector(".invertElevation").value=(rim-down).toFixed(3);
+  }
+}
+function getRows(){return Array.from(invertList.querySelectorAll(".invert-row"))}
+function normalizeDirection(value){
+  var v=String(value||"").toUpperCase().trim();
+  var valid=["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"];
+  return valid.indexOf(v)>=0?v:"";
+}
+function arrow(ctx,x1,y1,x2,y2,headAtEnd){
+  ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
+  var ax=headAtEnd?x2:x1, ay=headAtEnd?y2:y1;
+  var bx=headAtEnd?x1:x2, by=headAtEnd?y1:y2;
+  var ang=Math.atan2(ay-by,ax-bx);
+  var headLength=28;
+  var headSpread=.58;
+  ctx.beginPath();
+  ctx.moveTo(ax,ay);
+  ctx.lineTo(ax-headLength*Math.cos(ang-headSpread),ay-headLength*Math.sin(ang-headSpread));
+  ctx.moveTo(ax,ay);
+  ctx.lineTo(ax-headLength*Math.cos(ang+headSpread),ay-headLength*Math.sin(ang+headSpread));
+  ctx.stroke();
+}
+function drawDiagram(){
+  var w=canvas.width,h=canvas.height;
+  ctx.clearRect(0,0,w,h);
+  ctx.fillStyle="#ffffff";ctx.fillRect(0,0,w,h);
+
+  var project=document.getElementById("projectNumber").value.trim()||"—";
+  var date=document.getElementById("recordDate").value||"—";
+  var structure=document.getElementById("number").value.trim()||"—";
+  var utility=document.getElementById("utilityType").value||"Structure";
+  var surveyor=document.getElementById("surveyor").value.trim();
+  var photo=document.getElementById("photoNumber").value.trim();
+  var rim=document.getElementById("rim").value.trim();
+  var units=document.getElementById("units").value;
+  var northing=document.getElementById("northing").value.trim();
+  var easting=document.getElementById("easting").value.trim();
+  var style=document.getElementById("diagramStyle").value;
+
+  document.getElementById("diagramMeta").textContent="Project: "+project+" · Date: "+date+" · Structure: "+structure;
+
+  var rows=getRows().filter(function(r){return normalizeDirection(r.querySelector(".direction").value)});
+  var pipeCount=rows.length;
+  var cx=w/2, cy=650;
+  var ring=pipeCount<=2?140:pipeCount<=4?125:110;
+  var outer=pipeCount<=2?315:pipeCount<=4?285:255;
+
+  ctx.strokeStyle="#17212b";ctx.fillStyle="#17212b";ctx.lineWidth=3;
+
+  // Compact title block
+  var titleTop=30,titleH=135;
+  ctx.strokeRect(40,titleTop,w-80,titleH);
+  ctx.textAlign="center";
+  ctx.font="bold 31px Arial";
+  ctx.fillText("UTILITY STRUCTURE SKETCH",w/2,70);
+
+  // Use the selected utility/structure wording directly.
+  var structureTypeText=utility.toUpperCase();
+
+  ctx.font="18px Arial";
+  ctx.textAlign="left";
+  ctx.fillText("PROJECT NO.",65,108);
+  ctx.fillText("STRUCTURE NO.",300,108);
+  ctx.fillText("TYPE",545,108);
+  ctx.fillText("DATE",785,108);
+  ctx.fillText("RIM",970,108);
+
+  ctx.font="bold 22px Arial";
+  ctx.fillText(project,65,140);
+  ctx.fillText(structure,300,140);
+  ctx.fillText(structureTypeText,545,140);
+  ctx.fillText(date,785,140);
+  ctx.fillText(rim?(rim+" "+units):"—",970,140);
+
+  // Optional metadata line only when populated.
+  var extras=[];
+  if(surveyor)extras.push("FIELD CREW "+surveyor);
+  if(photo)extras.push("PHOTO "+photo);
+  if(northing)extras.push("N "+northing);
+  if(easting)extras.push("E "+easting);
+  if(extras.length){
+    ctx.font="17px Arial";
+    ctx.textAlign="center";
+    ctx.fillText(extras.join("     "),w/2,195);
+  }
+
+  // North arrow
+  ctx.fillStyle="#17212b";ctx.strokeStyle="#17212b";ctx.lineWidth=5;
+  ctx.beginPath();ctx.moveTo(110,375);ctx.lineTo(110,275);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(110,275);ctx.lineTo(92,315);ctx.lineTo(128,315);ctx.closePath();ctx.fill();
+  ctx.font="bold 30px Arial";ctx.textAlign="center";ctx.fillText("N",110,258);
+
+  function drawStructureSymbol(){
+    ctx.save();
+    ctx.strokeStyle="#17212b";ctx.fillStyle="#17212b";
+    ctx.lineWidth=8;
+    if(utility==="Headwall"){
+      ctx.beginPath();ctx.moveTo(cx-170,cy-65);ctx.lineTo(cx+170,cy-65);ctx.stroke();
+      ctx.lineWidth=6;
+      ctx.beginPath();ctx.moveTo(cx-170,cy-65);ctx.lineTo(cx-250,cy+90);
+      ctx.moveTo(cx+170,cy-65);ctx.lineTo(cx+250,cy+90);ctx.stroke();
+      ctx.strokeRect(cx-65,cy-112,130,47);
+      ctx.font="bold 30px Arial";ctx.textAlign="center";ctx.fillText("HEADWALL",cx,cy+22);
+      ring=100;
+    }else if(utility==="Headwall (No Wing)"){
+      ctx.beginPath();ctx.moveTo(cx-190,cy-65);ctx.lineTo(cx+190,cy-65);ctx.stroke();
+      ctx.strokeRect(cx-65,cy-112,130,47);
+      ctx.font="bold 28px Arial";ctx.textAlign="center";ctx.fillText("HEADWALL",cx,cy+18);
+      ctx.font="18px Arial";ctx.fillText("NO WINGS",cx,cy+48);
+      ring=96;
+    }else if(utility==="Catch Basin"||utility==="Drainage Inlet"){
+      ctx.strokeRect(cx-135,cy-105,270,210);
+      ctx.lineWidth=3;
+      for(var i=-105;i<=105;i+=30){ctx.beginPath();ctx.moveTo(cx+i,cy-90);ctx.lineTo(cx+i,cy+90);ctx.stroke()}
+      ctx.font="bold 28px Arial";ctx.textAlign="center";
+      ctx.fillText(utility==="Catch Basin"?"CATCH BASIN":"INLET",cx,cy+9);
+      ring=120;
+    }else if(utility==="Yard Drain"){
+      ctx.beginPath();ctx.arc(cx,cy,125,0,Math.PI*2);ctx.stroke();
+      ctx.lineWidth=3;
+      for(var a=0;a<Math.PI*2;a+=Math.PI/8){ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+120*Math.cos(a),cy+120*Math.sin(a));ctx.stroke()}
+      ctx.font="bold 26px Arial";ctx.textAlign="center";ctx.fillText("YARD DRAIN",cx,cy+9);
+      ring=125;
+    }else if(utility==="Flared End Section"||utility==="End Section"){
+      ctx.beginPath();ctx.moveTo(cx-190,cy+95);ctx.lineTo(cx-70,cy-80);ctx.lineTo(cx+70,cy-80);ctx.lineTo(cx+190,cy+95);ctx.stroke();
+      ctx.beginPath();ctx.ellipse(cx,cy-80,70,40,0,0,Math.PI*2);ctx.stroke();
+      ctx.font="bold 26px Arial";ctx.textAlign="center";
+      ctx.fillText(utility==="Flared End Section"?"FLARED END":"END SECTION",cx,cy+34);
+      ring=105;
+    }else if(utility==="Handhole / Pull Box"){
+      ctx.strokeRect(cx-125,cy-125,250,250);
+      ctx.font="bold 27px Arial";ctx.textAlign="center";ctx.fillText("HANDHOLE",cx,cy+9);
+      ring=125;
+    }else{
+      ctx.beginPath();ctx.arc(cx,cy,ring,0,Math.PI*2);ctx.stroke();
+      ctx.font="bold 36px Arial";ctx.textAlign="center";ctx.fillText("MH",cx,cy+12);
+    }
+    ctx.restore();
+  }
+  drawStructureSymbol();
+
+  var dirs={
+    N:[0,-1],NNE:[.383,-.924],NE:[.707,-.707],ENE:[.924,-.383],
+    E:[1,0],ESE:[.924,.383],SE:[.707,.707],SSE:[.383,.924],
+    S:[0,1],SSW:[-.383,.924],SW:[-.707,.707],WSW:[-.924,.383],
+    W:[-1,0],WNW:[-.924,-.383],NW:[-.707,-.707],NNW:[-.383,-.924]
+  };
+
+  var labels=[];
+  rows.forEach(function(row,i){
+    var d=normalizeDirection(row.querySelector(".direction").value);
+    var v=dirs[d];
+    var sx=cx+v[0]*ring,sy=cy+v[1]*ring;
+    var ex=cx+v[0]*outer,ey=cy+v[1]*outer;
+    var flow=row.querySelector(".flow").value;
+    var type=row.querySelector(".pipeType").value;
+    var size=row.querySelector(".pipeSize").value.trim();
+    var inv=row.querySelector(".invertElevation").value.trim();
+
+    var pipeColor=style==="bw"?"#17212b":(flow==="IN"?"#176b87":flow==="OUT"?"#b42318":"#17212b");
+    ctx.strokeStyle=pipeColor;ctx.fillStyle=pipeColor;ctx.lineWidth=7;
+    arrow(ctx,sx,sy,ex,ey,flow!=="IN");
+
+    var sizeText=size?size.replace(/\s*in(ch(es)?)?$/i,"")+'"':"";
+    var customX=parseFloat(row.querySelector(".labelX").value);
+    var customY=parseFloat(row.querySelector(".labelY").value);
+    labels.push({
+      x:ex,y:ey,
+      line1:(i+1)+" "+(flow||"")+" "+d,
+      line2:[sizeText,type,inv?("Inv "+inv):""].filter(Boolean).join("  "),
+      side:v[0]>=0?"right":"left",
+      color:pipeColor,
+      rowIndex:getRows().indexOf(row),
+      customX:Number.isFinite(customX)?customX:null,
+      customY:Number.isFinite(customY)?customY:null
+    });
+  });
+
+  labelHitBoxes=[];
+  function drawLabel(l,tx,ly){
+    ctx.fillStyle=l.color;
+    ctx.textAlign="left";
+    ctx.font="bold 25px Arial";
+    ctx.fillText(l.line1,tx,ly);
+    var w1=ctx.measureText(l.line1).width;
+    ctx.font="21px Arial";
+    ctx.fillText(l.line2,tx,ly+31);
+    var w2=ctx.measureText(l.line2).width;
+    labelHitBoxes.push({
+      rowIndex:l.rowIndex,
+      x:tx-8,
+      y:ly-28,
+      width:Math.max(w1,w2)+16,
+      height:64
+    });
+  }
+
+  function placeSide(side){
+    var arr=labels.filter(function(l){return l.side===side}).sort(function(a,b){return a.y-b.y});
+    var auto=arr.filter(function(l){return l.customX==null||l.customY==null});
+    var custom=arr.filter(function(l){return l.customX!=null&&l.customY!=null});
+    var minY=285,maxY=1025,gap=64;
+
+    if(auto.length){
+      var ys=auto.map(function(l){return Math.max(minY,Math.min(maxY,l.y))});
+      for(var i=1;i<ys.length;i++){
+        if(ys[i]-ys[i-1]<gap)ys[i]=ys[i-1]+gap;
+      }
+      if(ys.length && ys[ys.length-1]>maxY){
+        var shift=ys[ys.length-1]-maxY;
+        ys=ys.map(function(y){return y-shift});
+      }
+      for(var j=ys.length-2;j>=0;j--){
+        if(ys[j+1]-ys[j]<gap)ys[j]=ys[j+1]-gap;
+      }
+
+      auto.forEach(function(l,idx){
+        var ly=Math.max(minY,Math.min(maxY,ys[idx]));
+        var tx=side==="right"?Math.min(w-330,l.x+24):Math.max(55,l.x-305);
+        drawLabel(l,tx,ly);
+      });
+    }
+
+    custom.forEach(function(l){
+      var tx=Math.max(20,Math.min(w-340,l.customX));
+      var ly=Math.max(40,Math.min(h-80,l.customY));
+      drawLabel(l,tx,ly);
+    });
+  }
+  placeSide("left");placeSide("right");
+
+  // Compact legend without a large border.
+  ctx.font="18px Arial";ctx.textAlign="left";
+  if(style==="bw"){
+    ctx.fillStyle="#17212b";
+    ctx.fillText("IN = FLOW TOWARD STRUCTURE     OUT = FLOW AWAY FROM STRUCTURE",55,1145);
+  }else{
+    ctx.fillStyle="#176b87";ctx.fillText("IN = FLOW TOWARD STRUCTURE",55,1145);
+    ctx.fillStyle="#b42318";ctx.fillText("OUT = FLOW AWAY FROM STRUCTURE",420,1145);
+  }
+}
+
+document.getElementById("addInvert").addEventListener("click",function(e){
+  e.preventDefault();addInvert({});
+});
+invertList.addEventListener("click",function(e){
+  var row=e.target.closest(".invert-row");
+  if(!row)return;
+  var idx=getRows().indexOf(row);
+
+  if(e.target.classList.contains("editInvert")){
+    e.preventDefault();
+    setInvertLocked(row,false);
+    setActiveRow(idx);
+    drawDiagram();
+    status.textContent="Invert "+(idx+1)+" is unlocked for editing and label movement.";
+    return;
+  }
+
+  if(e.target.classList.contains("saveInvert")){
+    e.preventDefault();
+    var flow=row.querySelector(".flow").value;
+    var direction=row.querySelector(".direction").value;
+    if(!flow||!direction){
+      alert("Select flow and direction before saving this invert.");
+      return;
+    }
+    calculateRow(row);
+    setInvertLocked(row,true);
+    drawDiagram();
+    status.textContent="Invert "+(idx+1)+" saved and locked.";
+    return;
+  }
+
+  if(e.target.classList.contains("place")){
+    e.preventDefault();
+    if(row.dataset.locked==="1"){
+      alert("Press Edit before changing this invert or moving its label.");
+      return;
+    }
+    setActiveRow(idx);
+    drawDiagram();
+    return;
+  }
+
+  if(e.target.classList.contains("remove")){
+    e.preventDefault();
+    if(row.dataset.locked==="1" && !confirm("Delete this locked invert?"))return;
+    row.remove();
+    if(!invertList.children.length)addInvert({});
+    renumber();
+    setActiveRow(Math.min(idx,getRows().length-1));
+    drawDiagram();
+    return;
+  }
+
+  if(row.dataset.locked!=="1"){
+    setActiveRow(idx);
+    drawDiagram();
+  }
+});
+invertList.addEventListener("input",function(e){
+  var row=e.target.closest(".invert-row");if(!row)return;
+  if(e.target.classList.contains("measureDown"))calculateRow(row);
+  drawDiagram();
+});
+invertList.addEventListener("change",drawDiagram);
+["projectNumber","recordDate","number","utilityType","surveyor","photoNumber","diagramStyle","northing","easting","rim","units"].forEach(function(id){
+  document.getElementById(id).addEventListener("input",drawDiagram);
+  document.getElementById(id).addEventListener("change",drawDiagram);
+});
+document.getElementById("rim").addEventListener("input",function(){
+  getRows().forEach(calculateRow);drawDiagram();
+});
+
+function pointerToDirection(ev){
+  var rect=canvas.getBoundingClientRect();
+  var x=(ev.clientX-rect.left)*(canvas.width/rect.width)-canvas.width/2;
+  var y=(ev.clientY-rect.top)*(canvas.height/rect.height)-canvas.height/2;
+  if(Math.hypot(x,y)<55)return "";
+  var deg=(Math.atan2(x,-y)*180/Math.PI+360)%360;
+  var names=["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"];
+  return names[Math.round(deg/22.5)%16];
+}
+canvas.addEventListener("pointerdown",function(ev){
+  ev.preventDefault();
+  var rect=canvas.getBoundingClientRect();
+  var px=(ev.clientX-rect.left)*(canvas.width/rect.width);
+  var py=(ev.clientY-rect.top)*(canvas.height/rect.height);
+
+  var hit=labelHitBoxes.slice().reverse().find(function(b){
+    return px>=b.x&&px<=b.x+b.width&&py>=b.y&&py<=b.y+b.height;
+  });
+  if(hit){
+    var hitRow=getRows()[hit.rowIndex];
+    if(!hitRow||hitRow.dataset.locked==="1"){
+      status.textContent="Press Edit on that invert before moving its label.";
+      return;
+    }
+    dragLabelIndex=hit.rowIndex;
+    dragOffsetX=px-hit.x-8;
+    dragOffsetY=py-(hit.y+28);
+    canvas.setPointerCapture(ev.pointerId);
+    status.textContent="Drag the pipe label to a new position.";
+    return;
+  }
+
+  var rows=getRows();if(!rows.length)return;
+  if(rows[activeInvertIndex].dataset.locked==="1"){
+    status.textContent="Press Edit before changing this invert direction.";
+    return;
+  }
+  var dir=pointerToDirection(ev);if(!dir)return;
+  rows[activeInvertIndex].querySelector(".direction").value=dir;
+  drawDiagram();
+  status.textContent="Invert "+(activeInvertIndex+1)+" direction set to "+dir+".";
+});
+
+canvas.addEventListener("pointermove",function(ev){
+  if(dragLabelIndex<0)return;
+  ev.preventDefault();
+  var rect=canvas.getBoundingClientRect();
+  var px=(ev.clientX-rect.left)*(canvas.width/rect.width);
+  var py=(ev.clientY-rect.top)*(canvas.height/rect.height);
+  var rows=getRows();
+  var row=rows[dragLabelIndex];
+  if(!row)return;
+  row.querySelector(".labelX").value=Math.max(20,Math.min(canvas.width-340,px-dragOffsetX));
+  row.querySelector(".labelY").value=Math.max(40,Math.min(canvas.height-80,py-dragOffsetY));
+  drawDiagram();
+});
+
+function endLabelDrag(ev){
+  if(dragLabelIndex<0)return;
+  dragLabelIndex=-1;
+  try{canvas.releasePointerCapture(ev.pointerId)}catch(e){}
+  status.textContent="Label position saved with this structure.";
+}
+canvas.addEventListener("pointerup",endLabelDrag);
+canvas.addEventListener("pointercancel",endLabelDrag);
+
+document.getElementById("resetLabels").addEventListener("click",function(){
+  var changed=false;
+  getRows().forEach(function(r){
+    if(r.dataset.locked!=="1"){
+      r.querySelector(".labelX").value="";
+      r.querySelector(".labelY").value="";
+      changed=true;
+    }
+  });
+  if(!changed){
+    alert("Press Edit on an invert before resetting its label position.");
+    return;
+  }
+  drawDiagram();
+  status.textContent="Pipe labels returned to automatic placement.";
+});
+
+document.getElementById("clearDirections").addEventListener("click",function(){
+  if(!confirm("Clear all pipe directions from the current structure?"))return;
+  getRows().forEach(function(r){r.querySelector(".direction").value=""});
+  drawDiagram();
+});
+document.getElementById("saveDiagram").addEventListener("click",function(){
+  drawDiagram();
+  var crop=document.createElement("canvas");
+  crop.width=1200;crop.height=1170;
+  var cctx=crop.getContext("2d");
+  cctx.fillStyle="#fff";cctx.fillRect(0,0,crop.width,crop.height);
+  cctx.drawImage(canvas,0,0,1200,1170,0,0,1200,1170);
+
+  var a=document.createElement("a");
+  var project=(document.getElementById("projectNumber").value.trim()||"project").replace(/[^a-z0-9_-]+/gi,"_");
+  var date=(document.getElementById("recordDate").value||"date");
+  var structure=(document.getElementById("number").value.trim()||"structure").replace(/[^a-z0-9_-]+/gi,"_");
+  a.href=crop.toDataURL("image/jpeg",0.95);
+  a.download=project+"_"+date+"_"+structure+"_utility_sketch_v9_0.jpg";
+  a.click();
+});
+
+function collectInverts(){
+  return getRows().map(function(row){
+    return {
+      flow:row.querySelector(".flow").value,
+      direction:row.querySelector(".direction").value.trim(),
+      pipeType:row.querySelector(".pipeType").value,
+      pipeSize:row.querySelector(".pipeSize").value.trim(),
+      measureDown:row.querySelector(".measureDown").value.trim(),
+      invertElevation:row.querySelector(".invertElevation").value.trim(),
+      labelX:row.querySelector(".labelX").value,
+      labelY:row.querySelector(".labelY").value
+    };
+  }).filter(function(x){return x.flow||x.direction||x.pipeType||x.pipeSize||x.measureDown||x.invertElevation});
+}
+function save(){
+  localStorage.setItem(KEY,JSON.stringify(records));render();
+}
+document.getElementById("form").addEventListener("submit",function(e){
+  e.preventDefault();
+  var unlocked=getRows().some(function(r){return r.dataset.locked!=="1"});
+  if(unlocked){
+    alert("Save each invert before saving the structure.");
+    return;
+  }
+  drawDiagram();
+  var record={
+    id:editingId||Date.now().toString(),
+    number:document.getElementById("number").value.trim(),
+    projectNumber:document.getElementById("projectNumber").value.trim(),
+    recordDate:document.getElementById("recordDate").value,
+    utilityType:document.getElementById("utilityType").value,
+    rim:document.getElementById("rim").value.trim(),
+    units:document.getElementById("units").value,
+    northing:document.getElementById("northing").value.trim(),
+    easting:document.getElementById("easting").value.trim(),
+    surveyor:document.getElementById("surveyor").value.trim(),
+    fieldCrew:document.getElementById("surveyor").value.trim(),
+    fieldCrew:document.getElementById("surveyor").value.trim(),
+    photoNumber:document.getElementById("photoNumber").value.trim(),
+    diagramStyle:document.getElementById("diagramStyle").value,
+    notes:document.getElementById("notes").value.trim(),
+    inverts:collectInverts(),
+    diagramJpeg:(function(){
+      var crop=document.createElement("canvas");crop.width=1200;crop.height=1170;
+      var cctx=crop.getContext("2d");cctx.fillStyle="#fff";cctx.fillRect(0,0,1200,1170);
+      cctx.drawImage(canvas,0,0,1200,1170,0,0,1200,1170);
+      return crop.toDataURL("image/jpeg",0.95);
+    })()
+  };
+  if(!record.number||!record.utilityType||!record.rim){alert("Structure number, utility type, and rim elevation are required.");return}
+  if(editingId){records=records.map(function(r){return r.id===editingId?record:r})}
+  else{records.unshift(record)}
+  save();clearForm();
+});
+function clearForm(){
+  document.getElementById("form").reset();editingId=null;invertList.innerHTML="";addInvert({});
+  document.querySelector('#form button[type="submit"]').textContent="Save Structure";drawDiagram();
+}
+document.getElementById("clearForm").addEventListener("click",clearForm);
+
+window.removeRecord=function(id){
+  if(!confirm("Delete this record?"))return;
+  records=records.filter(function(r){return r.id!==id});save();
+};
+window.editRecord=function(id){
+  var r=records.find(function(x){return x.id===id});if(!r)return;
+  editingId=id;
+  document.getElementById("number").value=r.number||"";
+  document.getElementById("projectNumber").value=r.projectNumber||"";
+  document.getElementById("recordDate").value=r.recordDate||"";
+  document.getElementById("utilityType").value=r.utilityType||"";
+  document.getElementById("rim").value=r.rim||"";
+  document.getElementById("units").value=r.units||"ft";
+  document.getElementById("northing").value=r.northing||"";
+  document.getElementById("easting").value=r.easting||"";
+  document.getElementById("surveyor").value=r.fieldCrew||r.surveyor||"";
+  document.getElementById("photoNumber").value=r.photoNumber||"";
+  document.getElementById("diagramStyle").value=r.diagramStyle||"color";
+  document.getElementById("notes").value=r.notes||"";
+  invertList.innerHTML="";
+  var rows=(r.inverts&&r.inverts.length)?r.inverts:[{}];
+  rows.forEach(addInvert);
+  setActiveRow(0);drawDiagram();
+  document.querySelector('#form button[type="submit"]').textContent="Update Structure";
+  window.scrollTo({top:0,behavior:"smooth"});
+};
+window.downloadRecordImage=function(id){
+  var r=records.find(function(x){return x.id===id});
+  var image=r?(r.diagramJpeg||r.diagramPng):"";
+  if(!image){alert("No saved diagram is available for this record.");return}
+  var a=document.createElement("a");
+  if(image.indexOf("image/png")>=0){
+    var temp=document.createElement("canvas");temp.width=420;temp.height=420;
+    var tctx=temp.getContext("2d");tctx.fillStyle="#fff";tctx.fillRect(0,0,420,420);
+    var img=new Image();
+    img.onload=function(){
+      tctx.drawImage(img,0,0);
+      a.href=temp.toDataURL("image/jpeg",0.95);
+      a.download=(r.number||"structure")+"_utility_sketch_v8_2.jpg";
+      a.click();
+    };
+    img.src=image;
+  }else{
+    a.href=image;
+    a.download=(r.number||"structure")+"_utility_sketch_v8_2.jpg";
+    a.click();
+  }
+};
+
+function render(){
+  var body=document.getElementById("recordsBody");
+  if(!records.length){body.innerHTML='<tr><td colspan="10" style="text-align:center;color:#667085;padding:24px">No records saved.</td></tr>';return}
+  body.innerHTML=records.map(function(r){
+    var inv=(r.inverts||[]).map(function(i){
+      return '<div><strong>'+esc((i.flow?i.flow+" ":"")+(i.direction||"Pipe"))+'</strong>: '+esc(i.pipeType||"")+
+      (i.pipeSize?' · '+esc(i.pipeSize):'')+
+      (i.measureDown?' · Down '+esc(i.measureDown)+' '+esc(r.units):'')+
+      (i.invertElevation?' · Inv. '+esc(i.invertElevation)+' '+esc(r.units):'')+'</div>';
+    }).join("");
+    var diagram=(r.diagramJpeg||r.diagramPng)?'<button class="secondary" onclick="downloadRecordImage(\''+esc(r.id)+'\')">JPEG</button>':'—';
+    return '<tr>'+
+      '<td>'+esc(r.projectNumber||"—")+'</td>'+
+      '<td>'+esc(r.recordDate||"—")+'</td>'+
+      '<td><strong>'+esc(r.number)+'</strong></td>'+
+      '<td>'+esc(r.utilityType)+'</td>'+
+      '<td>'+esc(r.rim)+' '+esc(r.units)+'</td>'+
+      '<td>'+inv+'</td>'+
+      '<td>N: '+esc(r.northing||"—")+'<br>E: '+esc(r.easting||"—")+'</td>'+
+      '<td>'+diagram+'</td>'+
+      '<td>'+esc(r.notes||"—")+'</td>'+
+      '<td><button class="secondary" onclick="editRecord(\''+esc(r.id)+'\')">Edit</button> <button class="danger" onclick="removeRecord(\''+esc(r.id)+'\')">Delete</button></td>'+
+      '</tr>';
+  }).join("");
+}
+
+function buildCurrentReportRecord(){
+  drawDiagram();
+  var crop=document.createElement("canvas");
+  crop.width=1200;crop.height=1170;
+  var cctx=crop.getContext("2d");
+  cctx.fillStyle="#fff";cctx.fillRect(0,0,1200,1170);
+  cctx.drawImage(canvas,0,0,1200,1170,0,0,1200,1170);
+
+  return {
+    projectNumber:document.getElementById("projectNumber").value.trim(),
+    recordDate:document.getElementById("recordDate").value,
+    number:document.getElementById("number").value.trim(),
+    utilityType:document.getElementById("utilityType").value,
+    rim:document.getElementById("rim").value.trim(),
+    units:document.getElementById("units").value,
+    northing:document.getElementById("northing").value.trim(),
+    easting:document.getElementById("easting").value.trim(),
+    surveyor:document.getElementById("surveyor").value.trim(),
+    fieldCrew:document.getElementById("surveyor").value.trim(),
+    photoNumber:document.getElementById("photoNumber").value.trim(),
+    notes:document.getElementById("notes").value.trim(),
+    inverts:collectInverts(),
+    diagramJpeg:crop.toDataURL("image/jpeg",0.95)
+  };
+}
+
+function reportEsc(v){
+  return String(v==null?"":v).replace(/[&<>"']/g,function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c];
+  });
+}
+
+function structureReportPage(r,index,total){
+  var inverts=(r.inverts||[]);
+  var units=r.units||"";
+  var pipeRows=inverts.length?inverts.map(function(p,i){
+    var size=String(p.pipeSize||"").trim();
+    if(size && !/["”]|in(ch(es)?)?$/i.test(size))size=size+'"';
+    return '<tr>'+
+      '<td>'+(i+1)+'</td>'+
+      '<td>'+reportEsc(p.flow||"")+'</td>'+
+      '<td>'+reportEsc(p.direction||"")+'</td>'+
+      '<td>'+reportEsc(p.pipeType||"")+'</td>'+
+      '<td>'+reportEsc(size)+'</td>'+
+      '<td>'+reportEsc(p.measureDown||"")+'</td>'+
+      '<td>'+reportEsc(p.invertElevation||"")+'</td>'+
+    '</tr>';
+  }).join(""):'<tr><td colspan="7">No pipe records.</td></tr>';
+
+  var image=r.diagramJpeg||r.diagramPng||"";
+  var imageHtml=image?'<img class="diagram" src="'+image+'" alt="Structure diagram">':'<div class="no-diagram">No diagram available</div>';
+
+  var notesHtml=r.notes?
+    '<div class="notes"><strong>Notes:</strong><br>'+reportEsc(r.notes).replace(/\n/g,"<br>")+'</div>':
+    '<div class="notes empty"><strong>Notes:</strong> —</div>';
+
+  return '<section class="report-page">'+
+    '<div class="diagram-frame">'+imageHtml+'</div>'+
+    '<h2>Pipe / Invert Data</h2>'+
+    '<table><thead><tr>'+
+      '<th>No.</th><th>Flow</th><th>Direction</th><th>Material</th>'+
+      '<th>Size (in.)</th><th>Measure Down ('+reportEsc(units)+')</th><th>Invert Elev. ('+reportEsc(units)+')</th>'+
+    '</tr></thead><tbody>'+pipeRows+'</tbody></table>'+
+    notesHtml+
+    '<div class="page-number">Page '+index+' of '+total+'</div>'+
+  '</section>';
+}
+
+function openPdfReport(reportRecords,title){
+  if(!reportRecords.length){alert("No structures available for the PDF report.");return}
+  var pages=reportRecords.map(function(r,i){
+    return structureReportPage(r,i+1,reportRecords.length);
+  }).join("");
+
+  var reportHtml='<!DOCTYPE html><html><head><meta charset="UTF-8">'+
+    '<title>'+reportEsc(title)+'</title>'+
+     '<style>'+
+      '@page{size:letter portrait;margin:0.28in}'+
+      '*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;color:#17212b;background:#fff}'+
+      '.report-page{position:relative;page-break-after:always;min-height:10.35in;padding:0.02in 0.02in .25in}'+
+      '.report-page:last-child{page-break-after:auto}'+
+      '.diagram-frame{height:7.25in;display:flex;align-items:center;justify-content:center;margin:0 0 4px;overflow:hidden}'+
+      '.diagram{display:block;width:100%;height:100%;object-fit:contain}'+
+      '.no-diagram{width:100%;height:100%;display:flex;align-items:center;justify-content:center;border:1px dashed #999;color:#667085}'+
+      'h2{font-size:13px;margin:4px 0 3px}'+
+      'table{width:100%;border-collapse:collapse;font-size:9.5px;table-layout:fixed}'+
+      'th,td{border:1px solid #777;padding:4px 5px;text-align:center;vertical-align:middle}'+
+      'th{background:#eef3f6;font-weight:700}'+
+      'tbody tr:nth-child(even){background:#f7f9fa}'+
+      'th:nth-child(1),td:nth-child(1){width:6%}'+
+      'th:nth-child(2),td:nth-child(2){width:9%}'+
+      'th:nth-child(3),td:nth-child(3){width:12%}'+
+      'th:nth-child(4),td:nth-child(4){width:16%}'+
+      'th:nth-child(5),td:nth-child(5){width:11%}'+
+      'th:nth-child(6),td:nth-child(6){width:22%}'+
+      'th:nth-child(7),td:nth-child(7){width:24%}'+
+      '.notes{margin-top:5px;border:1px solid #777;padding:6px;font-size:10px;min-height:.38in}'+
+      '.notes.empty{min-height:0;padding:4px 6px}'+
+      '.page-number{position:absolute;right:2px;bottom:0;font-size:9px;color:#667085}'+
+      '@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}'+
+    '</style></head><body>'+pages+
+    '<script>window.onload=function(){setTimeout(function(){window.print()},350)};<\/script>'+
+    '</body></html>';
+
+  var win=window.open("","_blank");
+  if(!win){
+    alert("The PDF report window was blocked. Allow pop-ups for this file and try again.");
+    return;
+  }
+  win.document.open();
+  win.document.write(reportHtml);
+  win.document.close();
+}
+
+document.getElementById("exportCurrentPdf").addEventListener("click",function(){
+  var r=buildCurrentReportRecord();
+  if(!r.number||!r.utilityType||!r.rim){
+    alert("Enter the structure number, utility type, and rim elevation before exporting the current PDF.");
+    return;
+  }
+  openPdfReport([r],"Structure "+r.number+" Report");
+});
+
+document.getElementById("exportAllPdf").addEventListener("click",function(){
+  if(!records.length){
+    alert("No saved structures are available. Save structures first, then export the combined PDF.");
+    return;
+  }
+  openPdfReport(records.slice(),"All Utility Structures Report");
+});
+
+
+function download(name,text,type){
+  var blob=new Blob([text],{type:type});var a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();
+  setTimeout(function(){URL.revokeObjectURL(a.href)},1000);
+}
+function csv(v){return '"'+String(v==null?"":v).replace(/"/g,'""')+'"'}
+document.getElementById("exportCsv").addEventListener("click",function(){
+  if(!records.length){alert("No records to export.");return}
+  var max=1;records.forEach(function(r){max=Math.max(max,(r.inverts||[]).length)});
+  var headers=["Project Number","Date","Structure","Utility Type","Rim Elevation","Units","Northing","Easting","Field Crew","Photo Number","Diagram Style","Notes"];
+  for(var i=1;i<=max;i++)headers.push("Invert "+i+" Flow","Invert "+i+" Direction","Invert "+i+" Pipe Type","Invert "+i+" Pipe Size","Invert "+i+" Measure Down","Invert "+i+" Elevation");
+  var rows=[headers.map(csv).join(",")];
+  records.forEach(function(r){
+    var row=[r.projectNumber||"",r.recordDate||"",r.number,r.utilityType,r.rim,r.units,r.northing,r.easting,(r.fieldCrew||r.surveyor||""),r.photoNumber||"",r.diagramStyle||"color",r.notes];
+    for(var i=0;i<max;i++){var x=(r.inverts||[])[i]||{};row.push(x.flow||"",x.direction||"",x.pipeType||"",x.pipeSize||"",x.measureDown||"",x.invertElevation||"")}
+    rows.push(row.map(csv).join(","));
+  });
+  download("survey_utility_records_v9_0.csv",rows.join("\n"),"text/csv");
+});
+document.getElementById("backupJson").addEventListener("click",function(){
+  if(!records.length){alert("No records to back up.");return}
+  download("survey_utility_backup_v9_0.json",JSON.stringify(records,null,2),"application/json");
+});
+document.getElementById("clearAll").addEventListener("click",function(){
+  if(records.length&&confirm("Delete all saved records?")){records=[];save()}
+});
+
+if(!document.getElementById("recordDate").value){
+  document.getElementById("recordDate").value=new Date().toISOString().slice(0,10);
+}
+addInvert({});drawDiagram();render();
+})();
+</script>
+</body>
+</html>
