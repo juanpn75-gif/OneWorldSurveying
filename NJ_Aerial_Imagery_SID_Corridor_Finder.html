@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NJ Aerial Imagery &amp; SID Corridor Finder | One World Surveying</title>
+<meta name="author" content="Juan A. Pichardo">
+<meta name="description" content="Find New Jersey SID aerial imagery tiles by address, coordinates, State Plane, or highway milepost corridor.">
+<link rel="stylesheet" href="assets/nj-sid.css">
+</head>
+<body>
+<div class="wrap">
+  <section class="hero">
+    <h1>NJ Aerial Imagery &amp; SID Corridor Finder</h1>
+    <p>Find individual 5,000 × 5,000 ft SID imagery tiles — or every SID tile required along a New Jersey highway milepost corridor.</p>
+    <div class="byline">Version 2.1 · Created by Juan A. Pichardo</div>
+  </section>
+
+  <div class="grid">
+    <section class="card">
+      <h2>1. Enter a location</h2>
+      <div class="tabs">
+        <button class="tab active" data-pane="address">Address</button>
+        <button class="tab" data-pane="latlon">Lat / Long</button>
+        <button class="tab" data-pane="stateplane">NJ State Plane</button>
+        <button class="tab" data-pane="routecorridor">Route Corridor</button>
+      </div>
+
+      <div id="address" class="pane active">
+        <label for="addr">Street address</label>
+        <input id="addr" class="input" value="36 James Street, South River, NJ" placeholder="36 James Street, South River, NJ">
+        <div class="btns"><button id="geocodeBtn" class="btn primary">Find SID tile</button></div>
+        <div class="note">Address lookup requires an internet connection. The app first tries the U.S. Census geocoder and then OpenStreetMap/Nominatim as a fallback. Coordinate and State Plane lookups work offline.</div>
+      </div>
+
+      <div id="latlon" class="pane">
+        <label for="coordText">Coordinates</label>
+        <textarea id="coordText" placeholder="Examples:\nN 40 26 23.78, W 74 23 11.81\n40.4399389, -74.3866139"></textarea>
+        <div class="btns"><button id="coordBtn" class="btn primary">Find SID tile</button><button id="testBtn" class="btn secondary">Load South River test</button></div>
+      </div>
+
+      <div id="stateplane" class="pane">
+        <div class="row">
+          <div><label for="easting">Easting (ftUS)</label><input id="easting" class="input" inputmode="decimal" placeholder="523683.64"></div>
+          <div><label for="northing">Northing (ftUS)</label><input id="northing" class="input" inputmode="decimal" placeholder="585189.15"></div>
+        </div>
+        <div class="btns"><button id="spBtn" class="btn primary">Find SID tile</button></div>
+      </div>
+
+      <div id="routecorridor" class="pane">
+        <label for="routeNumber">NJ route number</label>
+        <input id="routeNumber" class="input" value="295" placeholder="Examples: 295, I-295, NJ 18, US 1">
+        <div class="row">
+          <div><label for="routeFromMP">From milepost</label><input id="routeFromMP" class="input" type="number" step="0.1" value="20.0"></div>
+          <div><label for="routeToMP">To milepost</label><input id="routeToMP" class="input" type="number" step="0.1" value="25.0"></div>
+        </div>
+        <label for="routeBuffer">Corridor buffer — each side of route centerline (ft)</label>
+        <input id="routeBuffer" class="input" type="number" min="0" step="50" value="1000">
+        <div class="small" style="margin-top:5px">0 ft selects only tiles crossed by the route centerline. For survey/project coverage, 500–2,000 ft each side is typical.</div>
+        <details class="routeAdvanced">
+          <summary>Advanced route alignment</summary>
+          <label for="routeSri">Override NJDOT SRI</label>
+          <input id="routeSri" class="input" placeholder="Leave blank for mainline, e.g. 00000295__">
+          <div class="small" style="margin-top:5px">The normal route lookup automatically builds the mainline SRI from the route number. Use this only for express, connector, secondary, or other special alignments.</div>
+        </details>
+        <div class="btns"><button id="routeBtn" class="btn primary">Find corridor SID tiles</button></div>
+        <div class="note">Route milepost geometry is requested from the public NJDOT ArcGIS milepost feature service. The SID index intersection and corridor buffer calculation are performed locally in this HTML app. Internet is required for Route Corridor lookup and SID downloads.</div>
+      </div>
+
+      <hr style="border:0;border-top:1px solid var(--line);margin:18px 0">
+      <label for="edgeTol">Flag adjacent tiles when point is within this distance of an edge</label>
+      <div class="row"><input id="edgeTol" class="input" type="number" min="0" step="10" value="250"><div class="small" style="align-self:center">feet</div></div>
+      <div id="msg"></div>
+    </section>
+
+    <section class="card">
+      <h2>2. SID result</h2>
+      <div id="result" class="resultEmpty">Enter a location or route corridor to identify the required SID tile(s).</div>
+    </section>
+  </div>
+
+  <div class="footer">
+    Created by <b>Juan A. Pichardo</b>. Route corridor source: <b>NJDOT New Jersey Standard Route ID and Milepost ArcGIS feature service</b>. Tile index source: <b>Index.dxf</b>. SID imagery source: <b>NJOGIS 2020 MrSID (MG3), public HTTPS/AWS S3 imagery bucket</b>. Individual tile objects are stored as <b>&lt;TileID&gt;.zip</b>. Downloads are browser-only; no PowerShell, BAT, or AWS CLI is used. The file contains 9,201 indexed 5,000-ft square footprints. Index coordinate system used by this app: NAD83 / New Jersey (US survey foot), EPSG:3424. Address geocoders normally return WGS84-style latitude/longitude; this app projects them with the GRS80/NAD83 State Plane parameters. Near a tile edge, use the adjacent-tile warning as the safer check. The background map has built-in map logic (no external JavaScript library) and uses Esri World Street Map or Esri World Imagery. Background tiles require an internet connection; coordinate conversion and SID tile calculations remain offline.
+  </div>
+</div>
+<script src="data/sid-index-01.js"></script>
+<script src="data/sid-index-02.js"></script>
+<script src="data/sid-index-03.js"></script>
+<script src="data/sid-index-04.js"></script>
+<script src="data/sid-index-05.js"></script>
+<script src="data/sid-index-06.js"></script>
+<script src="data/sid-index-07.js"></script>
+<script src="data/sid-index-08.js"></script>
+<script src="data/sid-index-09.js"></script>
+<script src="data/sid-index-10.js"></script>
+<script src="data/sid-index-11.js"></script>
+<script src="data/sid-index-12.js"></script>
+<script src="data/sid-index-13.js"></script>
+<script src="data/sid-index-14.js"></script>
+<script src="data/sid-index-15.js"></script>
+<script src="data/sid-index-16.js"></script>
+<script src="data/sid-index-17.js"></script>
+<script src="data/sid-index-18.js"></script>
+<script src="assets/nj-sid-app-1.js"></script>
+<script src="assets/nj-sid-app-2.js"></script>
+<script src="assets/nj-sid-app-3.js"></script>
+</body>
+</html>
