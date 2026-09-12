@@ -6,6 +6,7 @@
 <title>Three-Wire Differential Leveling | One World Surveying</title>
 <meta name="author" content="Juan A. Pichardo">
 <meta name="description" content="Three-wire differential leveling calculator with wire checks, stadia distances, closure adjustment, CSV export, and closure-based order classification.">
+<link rel="stylesheet" href="assets/app-help.css">
 <style>
 :root{--navy:#103d4b;--teal:#087f78;--bg:#eef3f5;--card:#fff;--border:#cbd5dc;--text:#1f2937;--muted:#667085;--ok:#067647;--bad:#b42318;--warn:#b54708}
 *{box-sizing:border-box} body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
@@ -39,6 +40,40 @@ td input{min-width:76px;min-height:36px;padding:5px;text-align:center}
 </head>
 <body>
 <header><h1>One World Three-Wire Differential Leveling</h1><p>Three-wire checks, stadia distances, closure adjustment, and order classification</p></header>
+
+<div class="ow-help-wrap">
+<details class="ow-help">
+<summary>❓ How to Use This App</summary>
+<div class="ow-help-body">
+<div class="ow-help-grid">
+<div>
+<h3>Enter the level run</h3>
+<ol>
+<li>Enter the project and crew if desired.</li>
+<li>Enter the <b>Starting BM Elevation</b>. Enter the <b>Known Closing Elevation</b> when you want a closure check and adjustment.</li>
+<li>Select feet or meters, confirm the stadia constant, set the wire-check tolerance, and choose the target order/class.</li>
+<li>For each setup, enter the upper, middle, and lower wire readings for the backsight and foresight. Use <b>Add Row</b> for additional setups or turning points.</li>
+<li>Press <b>Calculate</b> at any time. The app also recalculates as values are edited.</li>
+</ol>
+</div>
+<div>
+<h3>Review the results</h3>
+<ul>
+<li><b>Wire Error</b> checks the middle reading against the average of the upper and lower readings.</li>
+<li><b>Distance</b> is computed from the upper-minus-lower stadia interval times the stadia constant.</li>
+<li>The summary shows computed closing elevation, misclosure, BS/FS distance balance, allowable misclosure, and closure status.</li>
+<li>When a known closing elevation is supplied, the app distributes the closure correction by cumulative distance and reports adjusted elevations.</li>
+<li><b>Export CSV</b> saves the level-run inputs and calculated results. <b>Load Example</b> fills in a sample run for practice.</li>
+</ul>
+</div>
+</div>
+<h4>Example workflow</h4>
+<p>Start on a known benchmark, enter the three-wire backsight, then enter the three-wire foresight to the first turning point. Continue with the next backsight/foresight sequence until the run closes on a known benchmark. Enter that known closing elevation and review the misclosure and classification.</p>
+<div class="ow-help-note"><b>Important:</b> The order/class result is based on closure only. Passing the closure tolerance by itself does not certify that the leveling run meets a formal geodetic order; equipment, sight lengths, balance, procedures, and the governing specification still matter.</div>
+</div>
+</details>
+</div>
+
 <main>
 <section class="card">
 <div class="grid">
