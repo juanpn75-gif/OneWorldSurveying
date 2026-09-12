@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Three-Wire Differential Leveling | One World Surveying</title>
+<meta name="author" content="Juan A. Pichardo">
+<meta name="description" content="Three-wire differential leveling calculator with wire checks, stadia distances, closure adjustment, CSV export, and closure-based order classification.">
+<style>
+:root{--navy:#103d4b;--teal:#087f78;--bg:#eef3f5;--card:#fff;--border:#cbd5dc;--text:#1f2937;--muted:#667085;--ok:#067647;--bad:#b42318;--warn:#b54708}
+*{box-sizing:border-box} body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
+header{background:var(--navy);color:#fff;padding:16px max(12px,env(safe-area-inset-left));position:sticky;top:0;z-index:10}
+header h1{font-size:1.25rem;margin:0 0 3px} header p{margin:0;font-size:.85rem;opacity:.9}
+main{max-width:1600px;margin:auto;padding:12px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:9px}
+label{display:block;font-size:.78rem;color:var(--muted);margin-bottom:4px}
+input,select,button{width:100%;min-height:42px;border:1px solid var(--border);border-radius:8px;padding:8px;font:inherit;background:#fff}
+button{border:none;background:var(--teal);color:#fff;font-weight:700;cursor:pointer;touch-action:manipulation}
+button.secondary{background:#475467} button.light{background:#e4e7ec;color:#101828} button.danger{background:var(--bad)}
+.actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-top:10px;position:sticky;bottom:0;background:rgba(255,255,255,.96);padding:8px 0 2px;z-index:5}
+.table-wrap{overflow:auto;-webkit-overflow-scrolling:touch;max-height:62vh;border:1px solid var(--border);border-radius:9px}
+table{border-collapse:separate;border-spacing:0;min-width:2140px;width:100%}
+th,td{border-right:1px solid var(--border);border-bottom:1px solid var(--border);padding:5px;text-align:center;font-size:.78rem}
+th{background:#eef3f6;position:sticky;top:0;z-index:3}
+th:first-child,td:first-child{position:sticky;left:0;background:#fff;z-index:2}
+thead th:first-child{z-index:4;background:#eef3f6}
+td input{min-width:76px;min-height:36px;padding:5px;text-align:center}
+.group-bs{background:#eaf8f5}.group-fs{background:#fff4e8}.group-calc{background:#f7f9fb}
+.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:9px}
+.metric{border:1px solid var(--border);border-radius:9px;padding:9px;background:#fafafa}
+.name{font-size:.76rem;color:var(--muted)} .value{font-size:1.02rem;font-weight:700;margin-top:3px}
+.ok{color:var(--ok)}.bad{color:var(--bad)}.warn{color:var(--warn)}
+.note{font-size:.8rem;color:var(--muted);line-height:1.4;margin-top:8px}
+.order-table{width:100%;min-width:0;border-collapse:collapse}.order-table th,.order-table td{position:static;border:1px solid var(--border);font-size:.8rem}
+.badge{display:inline-block;padding:3px 7px;border-radius:999px;font-size:.75rem;font-weight:700;background:#e7f6ef;color:var(--ok)}
+@media(max-width:650px){main{padding:8px}.card{padding:9px}.table-wrap{max-height:55vh}.actions{grid-template-columns:1fr 1fr}header h1{font-size:1.05rem}}
+</style>
+</head>
+<body>
+<header><h1>One World Three-Wire Differential Leveling</h1><p>Three-wire checks, stadia distances, closure adjustment, and order classification</p></header>
+<main>
+<section class="card">
+<div class="grid">
+<div><label>Project</label><input id="project" placeholder="Project name"></div>
+<div><label>Crew</label><input id="crew" placeholder="Crew names"></div>
+<div><label>Starting BM Elevation</label><input id="startElev" type="number" step="0.0001" value="100.0000"></div>
+<div><label>Known Closing Elevation</label><input id="knownEndElev" type="number" step="0.0001" placeholder="Required for closure"></div>
+<div><label>Reading Units</label><select id="unit"><option value="ft">Feet</option><option value="m">Meters</option></select></div>
+<div><label>Stadia Constant</label><input id="stadiaConstant" type="number" step="0.001" value="100"></div>
+<div><label>Wire Check Tolerance</label><input id="wireTolerance" type="number" step="0.0001" value="0.005"></div>
+<div><label>Target Order</label>
+<select id="targetOrder">
+<option value="3">First Order, Class I — 3 mm√km</option>
+<option value="4">First Order, Class II — 4 mm√km</option>
+<option value="6">Second Order, Class I — 6 mm√km</option>
+<option value="8">Second Order, Class II — 8 mm√km</option>
+<option value="12" selected>Third Order — 12 mm√km</option>
+<option value="custom">Custom</option>
+</select></div>
+<div><label>Custom Constant C</label><input id="customConstant" type="number" step="0.001" value="0.050" disabled></div>
+</div>
+<div class="note">Wire error = Middle − (Upper + Lower) ÷ 2. Stadia distance = (Upper − Lower) × stadia constant. Order classification below is based on closure only. Formal order also depends on equipment, sight-length limits, balance, observation procedures, and the governing agency specification.</div>
+</section>
+
+<section class="card">
+<div class="table-wrap"><table>
+<thead><tr><th rowspan="2">#</th><th rowspan="2">Point</th><th colspan="6" class="group-bs">Backsight</th><th colspan="6" class="group-fs">Foresight</th><th colspan="7" class="group-calc">Calculated</th><th rowspan="2">Remarks</th><th rowspan="2">Delete</th></tr>
+<tr><th class="group-bs">Upper</th><th class="group-bs">Middle</th><th class="group-bs">Lower</th><th class="group-bs">Wire Error</th><th class="group-bs">Distance</th><th class="group-bs">Status</th>
+<th class="group-fs">Upper</th><th class="group-fs">Middle</th><th class="group-fs">Lower</th><th class="group-fs">Wire Error</th><th class="group-fs">Distance</th><th class="group-fs">Status</th>
+<th>HI</th><th>Unadjusted Elev.</th><th>Segment Distance</th><th>Cumulative Distance</th><th>Correction</th><th>Adjusted Elev.</th><th>BS−FS</th></tr></thead>
+<tbody id="rows"></tbody></table></div>
+<div class="actions">
+<button id="addRowBtn">Add Row</button><button id="calcBtn" class="secondary">Calculate</button><button id="exampleBtn" class="light">Load Example</button><button id="exportBtn" class="light">Export CSV</button><button id="clearBtn" class="danger">Clear</button>
+</div></section>
+
+<section class="card"><h3 style="margin:0 0 10px">Level Run Summary</h3><div class="summary">
+<div class="metric"><div class="name">Sum BS Middle</div><div class="value" id="sumBS">0.0000</div></div>
+<div class="metric"><div class="name">Sum FS Middle</div><div class="value" id="sumFS">0.0000</div></div>
+<div class="metric"><div class="name">Computed Closing Elevation</div><div class="value" id="computedClose">—</div></div>
+<div class="metric"><div class="name">Known Closing Elevation</div><div class="value" id="knownClose">—</div></div>
+<div class="metric"><div class="name">Misclosure</div><div class="value" id="misclosure">—</div></div>
+<div class="metric"><div class="name">Total BS Distance</div><div class="value" id="totalBSD">0.000</div></div>
+<div class="metric"><div class="name">Total FS Distance</div><div class="value" id="totalFSD">0.000</div></div>
+<div class="metric"><div class="name">Total Run Distance</div><div class="value" id="totalDistance">0.000</div></div>
+<div class="metric"><div class="name">BS/FS Distance Difference</div><div class="value" id="distanceBalance">0.000</div></div>
+<div class="metric"><div class="name">Allowable Misclosure</div><div class="value" id="allowable">—</div></div>
+<div class="metric"><div class="name">Closure Status</div><div class="value warn" id="status">Enter readings</div></div>
+<div class="metric"><div class="name">Wire Check Status</div><div class="value warn" id="wireStatus">Enter readings</div></div>
+<div class="metric"><div class="name">Observed Closure Constant</div><div class="value" id="observedConstant">—</div></div>
+<div class="metric"><div class="name">Closure-Based Classification</div><div class="value" id="classification">—</div></div>
+</div></section>
+
+<section class="card"><h3 style="margin:0 0 8px">Classification Reference</h3>
+<table class="order-table"><thead><tr><th>Order / Class</th><th>Metric tolerance</th><th>Equivalent feet tolerance</th></tr></thead>
+<tbody>
+<tr><td>First Order, Class I</td><td>3 mm√km</td><td>0.0125 ft√mi</td></tr>
+<tr><td>First Order, Class II</td><td>4 mm√km</td><td>0.0167 ft√mi</td></tr>
+<tr><td>Second Order, Class I</td><td>6 mm√km</td><td>0.0250 ft√mi</td></tr>
+<tr><td>Second Order, Class II</td><td>8 mm√km</td><td>0.0333 ft√mi</td></tr>
+<tr><td>Third Order</td><td>12 mm√km</td><td>0.0500 ft√mi</td></tr>
+</tbody></table>
+<div class="note">The app reports the highest closure category achieved. Passing closure alone does not certify a formal geodetic order.</div></section>
+</main>
+<script>
+const rowsBody=document.getElementById("rows");
+const $=id=>document.getElementById(id);
+const num=v=>{const n=parseFloat(v);return Number.isFinite(n)?n:null};
+const fmt=(v,d=4)=>Number.isFinite(v)?v.toFixed(d):"";
+
+function input(cls, ro=false){return `<input class="${cls}" ${ro?'readonly tabindex="-1"':''}>`;}
+function addRow(data={}){
+ const tr=document.createElement("tr");
+ tr.innerHTML=`<td class="rownum"></td><td>${input("point")}</td>
+ <td>${input("bsu")}</td><td>${input("bsm")}</td><td>${input("bsl")}</td><td>${input("bserr",true)}</td><td>${input("bsdist",true)}</td><td>${input("bsstatus",true)}</td>
+ <td>${input("fsu")}</td><td>${input("fsm")}</td><td>${input("fsl")}</td><td>${input("fserr",true)}</td><td>${input("fsdist",true)}</td><td>${input("fsstatus",true)}</td>
+ <td>${input("hi",true)}</td><td>${input("elev",true)}</td><td>${input("segdist",true)}</td><td>${input("cumdist",true)}</td><td>${input("corr",true)}</td><td>${input("adjelev",true)}</td><td>${input("delta",true)}</td>
+ <td>${input("remarks")}</td><td><button class="danger del" type="button">×</button></td>`;
+ Object.entries(data).forEach(([k,v])=>{const el=tr.querySelector("."+k);if(el)el.value=v});
+ tr.querySelector(".del").onclick=()=>{tr.remove();renumber();calculate()};
+ rowsBody.appendChild(tr);renumber();
+}
+function renumber(){[...rowsBody.children].forEach((r,i)=>r.querySelector(".rownum").textContent=i+1)}
+function wire(u,m,l,tol,constant){
+ if([u,m,l].some(x=>x===null))return null;
+ const err=m-(u+l)/2, dist=(u-l)*constant;
+ return {err,dist,pass:Math.abs(err)<=tol};
+}
+function selectedMmConstant(){
+ if($("targetOrder").value==="custom") return null;
+ return parseFloat($("targetOrder").value);
+}
+function customNativeConstant(){
+ const c=num($("customConstant").value); return c;
+}
+function allowableFor(total,unit){
+ if(total<=0)return null;
+ const mm=selectedMmConstant();
+ if(mm!==null){
+   const km=unit==="ft" ? total*0.0003048 : total/1000;
+   const allowanceMeters=(mm/1000)*Math.sqrt(km);
+   return unit==="ft" ? allowanceMeters/0.3048 : allowanceMeters;
+ }
+ const c=customNativeConstant();
+ if(c===null)return null;
+ const K=unit==="ft"?total/5280:total/1000;
+ return c*Math.sqrt(K);
+}
+function observedC(mis,total,unit){
+ if(mis===null||total<=0)return null;
+ const K=unit==="ft"?total/5280:total/1000;
+ return Math.abs(mis)/Math.sqrt(K);
+}
+function classify(mis,total,unit){
+ if(mis===null||total<=0)return {text:"—",cls:"warn"};
+ const km=unit==="ft"?total*0.0003048:total/1000;
+ const misMeters=unit==="ft"?Math.abs(mis)*0.3048:Math.abs(mis);
+ const observedMm=misMeters*1000/Math.sqrt(km);
+ const standards=[[3,"First Order, Class I"],[4,"First Order, Class II"],[6,"Second Order, Class I"],[8,"Second Order, Class II"],[12,"Third Order"]];
+ for(const [limit,name] of standards) if(observedMm<=limit+1e-12)return {text:name+" (closure only)",cls:"ok"};
+ return {text:"Does not meet Third Order",cls:"bad"};
+}
+function calculate(){
+ const unit=$("unit").value, constant=num($("stadiaConstant").value)||100, tol=num($("wireTolerance").value)||0;
+ const start=num($("startElev").value), known=num($("knownEndElev").value);
+ let current=start, sumBS=0,sumFS=0,totalBSD=0,totalFSD=0,cum=0,allWire=true,hasAny=false;
+ const results=[];
+ [...rowsBody.children].forEach(tr=>{
+   const g=c=>num(tr.querySelector("."+c).value);
+   const bs=wire(g("bsu"),g("bsm"),g("bsl"),tol,constant);
+   const fs=wire(g("fsu"),g("fsm"),g("fsl"),tol,constant);
+   let hi=null,elev=current,delta=null,seg=0;
+   if(bs){hasAny=true;sumBS+=g("bsm");totalBSD+=bs.dist;hi=(current===null?null:current+g("bsm"));tr.querySelector(".bserr").value=fmt(bs.err);tr.querySelector(".bsdist").value=fmt(bs.dist,3);tr.querySelector(".bsstatus").value=bs.pass?"PASS":"CHECK";allWire=allWire&&bs.pass}
+   else ["bserr","bsdist","bsstatus"].forEach(c=>tr.querySelector("."+c).value="");
+   if(fs){hasAny=true;sumFS+=g("fsm");totalFSD+=fs.dist;delta=(bs?g("bsm"):0)-g("fsm"); if(hi!==null)elev=hi-g("fsm"); else if(current!==null)elev=current-g("fsm"); current=elev;
+     tr.querySelector(".fserr").value=fmt(fs.err);tr.querySelector(".fsdist").value=fmt(fs.dist,3);tr.querySelector(".fsstatus").value=fs.pass?"PASS":"CHECK";allWire=allWire&&fs.pass}
+   else ["fserr","fsdist","fsstatus"].forEach(c=>tr.querySelector("."+c).value="");
+   seg=(bs?bs.dist:0)+(fs?fs.dist:0);cum+=seg;
+   tr.querySelector(".hi").value=fmt(hi);tr.querySelector(".elev").value=fmt(elev);tr.querySelector(".segdist").value=fmt(seg,3);tr.querySelector(".cumdist").value=fmt(cum,3);tr.querySelector(".delta").value=fmt(delta);
+   results.push({tr,elev,cum});
+ });
+ const computed=(start===null)?null:start+sumBS-sumFS;
+ const mis=(computed!==null&&known!==null)?computed-known:null;
+ const allow=allowableFor(cum,unit);
+ results.forEach(r=>{const corr=(mis!==null&&cum>0)?-mis*(r.cum/cum):0;r.tr.querySelector(".corr").value=fmt(corr);r.tr.querySelector(".adjelev").value=fmt(r.elev===null?null:r.elev+corr)});
+ $("sumBS").textContent=fmt(sumBS);$("sumFS").textContent=fmt(sumFS);$("computedClose").textContent=computed===null?"—":fmt(computed);$("knownClose").textContent=known===null?"—":fmt(known);$("misclosure").textContent=mis===null?"—":fmt(mis);
+ $("totalBSD").textContent=fmt(totalBSD,3)+" "+unit;$("totalFSD").textContent=fmt(totalFSD,3)+" "+unit;$("totalDistance").textContent=fmt(cum,3)+" "+unit;$("distanceBalance").textContent=fmt(totalBSD-totalFSD,3)+" "+unit;$("allowable").textContent=allow===null?"—":fmt(allow)+" "+unit;
+ const st=$("status"); if(known===null){st.textContent="Enter known closing elevation";st.className="value warn"} else if(allow===null){st.textContent="Enter complete readings";st.className="value warn"} else if(Math.abs(mis)<=allow){st.textContent="PASS";st.className="value ok"} else {st.textContent="FAIL";st.className="value bad"}
+ const ws=$("wireStatus");ws.textContent=!hasAny?"Enter readings":allWire?"PASS":"CHECK READINGS";ws.className="value "+(!hasAny?"warn":allWire?"ok":"bad");
+ const oc=observedC(mis,cum,unit);$("observedConstant").textContent=oc===null?"—":fmt(oc,4)+" "+unit+"√"+(unit==="ft"?"mi":"km");
+ const cl=classify(mis,cum,unit);$("classification").textContent=cl.text;$("classification").className="value "+cl.cls;
+ saveLocal();
+}
+function loadExample(){
+ rowsBody.innerHTML="";$("startElev").value="151.277";$("knownEndElev").value="151.277";$("unit").value="ft";
+ [
+ {point:"BM-START",bsu:"4.43",bsm:"4.01",bsl:"3.59",remarks:"Start BM"},
+ {point:"TP-1",fsu:"6.55",fsm:"6.13",fsl:"5.70",bsu:"5.42",bsm:"4.87",bsl:"4.32"},
+ {point:"TP-2",fsu:"4.98",fsm:"4.545",fsl:"4.105",bsu:"3.88",bsm:"3.24",bsl:"2.60"},
+ {point:"BM-END",fsu:"4.92",fsm:"4.48",fsl:"4.05",remarks:"Closing BM"}
+ ].forEach(addRow);calculate();
+}
+function clearAll(){rowsBody.innerHTML="";addRow();$("knownEndElev").value="";calculate()}
+function exportCSV(){
+ calculate();const project=$("project").value.trim()||"Three_Wire_Level_Run";
+ const lines=[["Project",project],["Crew",$("crew").value],["Units",$("unit").value],["Target Order",$("targetOrder").selectedOptions[0].text],["Observed Constant",$("observedConstant").textContent],["Classification",$("classification").textContent],[],
+ ["No.","Point","BS Upper","BS Middle","BS Lower","BS Wire Error","BS Distance","BS Status","FS Upper","FS Middle","FS Lower","FS Wire Error","FS Distance","FS Status","HI","Unadjusted Elevation","Segment Distance","Cumulative Distance","Correction","Adjusted Elevation","BS-FS","Remarks"]];
+ [...rowsBody.children].forEach((tr,i)=>{const g=c=>tr.querySelector("."+c).value;lines.push([i+1,g("point"),g("bsu"),g("bsm"),g("bsl"),g("bserr"),g("bsdist"),g("bsstatus"),g("fsu"),g("fsm"),g("fsl"),g("fserr"),g("fsdist"),g("fsstatus"),g("hi"),g("elev"),g("segdist"),g("cumdist"),g("corr"),g("adjelev"),g("delta"),g("remarks")])});
+ const csv=lines.map(r=>r.map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(",")).join("\n");
+ const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download=project.replace(/[^a-z0-9_-]+/gi,"_")+".csv";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+function saveLocal(){try{localStorage.setItem("ow_three_wire_v4",JSON.stringify({project:$("project").value,crew:$("crew").value,startElev:$("startElev").value,knownEndElev:$("knownEndElev").value,unit:$("unit").value,stadiaConstant:$("stadiaConstant").value,wireTolerance:$("wireTolerance").value,targetOrder:$("targetOrder").value,customConstant:$("customConstant").value,rows:[...rowsBody.children].map(tr=>{const g=c=>tr.querySelector("."+c).value;return {point:g("point"),bsu:g("bsu"),bsm:g("bsm"),bsl:g("bsl"),fsu:g("fsu"),fsm:g("fsm"),fsl:g("fsl"),remarks:g("remarks")}})}))}catch(e){}}
+function restore(){try{const d=JSON.parse(localStorage.getItem("ow_three_wire_v4")||"null");if(!d){addRow();return}["project","crew","startElev","knownEndElev","unit","stadiaConstant","wireTolerance","targetOrder","customConstant"].forEach(id=>{if(d[id]!==undefined)$(id).value=d[id]});(d.rows?.length?d.rows:[{}]).forEach(addRow)}catch(e){addRow()} toggleCustom();calculate()}
+function toggleCustom(){$("customConstant").disabled=$("targetOrder").value!=="custom"}
+$("addRowBtn").onclick=()=>{addRow();calculate()};$("calcBtn").onclick=calculate;$("exampleBtn").onclick=loadExample;$("exportBtn").onclick=exportCSV;$("clearBtn").onclick=clearAll;
+document.addEventListener("input",e=>{if(e.target.matches("input,select"))calculate()});$("targetOrder").addEventListener("change",()=>{toggleCustom();calculate()});
+restore();
+</script></body></html>
