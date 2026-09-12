@@ -4,11 +4,68 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0b1f33" />
-  <meta name="description" content="One World Surveying — surveying and geospatial web tools by Juan A. Pichardo." />
-  <title>One World Surveying | Apps</title>
+
+  <title>One World Surveying | Land Surveying, GNSS, LiDAR & Geospatial Tools</title>
+  <meta name="description" content="One World Surveying provides land surveying and geospatial resources focused on GNSS, LiDAR, mapping, coordinate conversion, CAD, and practical field-to-office survey workflows." />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+  <link rel="canonical" href="https://oneworldsurveying.com/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="One World Surveying" />
+  <meta property="og:title" content="One World Surveying | Land Surveying, GNSS, LiDAR & Geospatial Tools" />
+  <meta property="og:description" content="Surveying and geospatial resources for GNSS, LiDAR, mapping, coordinate conversion, CAD, and field-to-office workflows." />
+  <meta property="og:url" content="https://oneworldsurveying.com/" />
+  <meta property="og:image" content="https://oneworldsurveying.com/assets/one-world-surveying-logo.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="One World Surveying" />
+  <meta name="twitter:description" content="Land surveying, GNSS, LiDAR, mapping and geospatial tools for real field and office work." />
+  <meta name="twitter:image" content="https://oneworldsurveying.com/assets/one-world-surveying-logo.jpg" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://oneworldsurveying.com/#organization",
+        "name": "One World Surveying",
+        "url": "https://oneworldsurveying.com/",
+        "logo": "https://oneworldsurveying.com/assets/one-world-surveying-logo.jpg",
+        "founder": {
+          "@type": "Person",
+          "name": "Juan A. Pichardo"
+        },
+        "sameAs": [
+          "https://www.instagram.com/oneworldsurveying/"
+        ],
+        "knowsAbout": [
+          "Land surveying",
+          "GNSS",
+          "LiDAR",
+          "Geospatial technology",
+          "Mapping",
+          "Coordinate conversion",
+          "CAD",
+          "Survey field workflows"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://oneworldsurveying.com/#website",
+        "url": "https://oneworldsurveying.com/",
+        "name": "One World Surveying",
+        "publisher": {
+          "@id": "https://oneworldsurveying.com/#organization"
+        }
+      }
+    ]
+  }
+  </script>
+
   <style>
     :root{--navy:#0b1f33;--navy2:#163a5f;--gold:#d9a441;--paper:#f4f7fa;--white:#fff;--text:#17212b;--muted:#667789;--line:#dfe7ee;--shadow:0 12px 30px rgba(11,31,51,.10);--radius:18px}
     *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
     body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--paper);color:var(--text);min-height:100vh}
     header{background:linear-gradient(135deg,var(--navy),var(--navy2));color:var(--white);padding:20px 22px 72px;position:relative;overflow:hidden}
     header::after{content:"";position:absolute;width:330px;height:330px;border:1px solid rgba(255,255,255,.10);border-radius:50%;right:-105px;top:-145px;box-shadow:0 0 0 46px rgba(255,255,255,.035),0 0 0 92px rgba(255,255,255,.025)}
@@ -21,13 +78,22 @@
     .instagram{display:inline-flex;align-items:center;gap:8px;padding:9px 13px;border:1px solid rgba(255,255,255,.22);border-radius:999px;text-decoration:none;color:#fff;font-size:13px;font-weight:750;background:rgba(255,255,255,.06);backdrop-filter:blur(6px);transition:.18s ease}
     .instagram:hover{background:rgba(255,255,255,.13);transform:translateY(-1px)}
     .instagram svg{width:17px;height:17px;fill:currentColor}
-    .hero{padding-top:42px;position:relative;z-index:1}.eyebrow{color:var(--gold);font-weight:800;font-size:13px;letter-spacing:1.8px;text-transform:uppercase;margin-bottom:14px}
-    h1{margin:0;max-width:800px;font-size:clamp(38px,6vw,70px);line-height:.98;letter-spacing:-2.2px}.hero p{margin:22px 0 0;max-width:720px;font-size:clamp(17px,2vw,20px);line-height:1.6;color:rgba(255,255,255,.78)}
-    main{margin-top:-34px;padding-bottom:64px;position:relative;z-index:2}.panel{background:var(--white);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);padding:30px}.section-head{display:flex;justify-content:space-between;align-items:end;gap:18px;margin-bottom:22px}.section-head h2{margin:0;font-size:26px;letter-spacing:-.5px}.section-head p{margin:4px 0 0;color:var(--muted)}
-    .badge{white-space:nowrap;border:1px solid var(--line);color:var(--muted);border-radius:999px;padding:7px 11px;font-size:12px;font-weight:700;background:#f8fafc}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+    .hero{padding-top:42px;position:relative;z-index:1}
+    .eyebrow{color:var(--gold);font-weight:800;font-size:13px;letter-spacing:1.8px;text-transform:uppercase;margin-bottom:14px}
+    h1{margin:0;max-width:860px;font-size:clamp(38px,6vw,70px);line-height:.98;letter-spacing:-2.2px}
+    .hero p{margin:22px 0 0;max-width:760px;font-size:clamp(17px,2vw,20px);line-height:1.6;color:rgba(255,255,255,.80)}
+    main{margin-top:-34px;padding-bottom:64px;position:relative;z-index:2;display:grid;gap:22px}
+    .panel{background:var(--white);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);padding:30px}
+    .section-head{display:flex;justify-content:space-between;align-items:end;gap:18px;margin-bottom:22px}.section-head h2{margin:0;font-size:26px;letter-spacing:-.5px}.section-head p{margin:4px 0 0;color:var(--muted)}
+    .badge{white-space:nowrap;border:1px solid var(--line);color:var(--muted);border-radius:999px;padding:7px 11px;font-size:12px;font-weight:700;background:#f8fafc}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+    .focus-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+    .focus{border:1px solid var(--line);border-radius:16px;padding:18px;background:#fbfcfd}.focus strong{display:block;margin-bottom:7px;color:var(--navy2)}.focus span{color:var(--muted);font-size:14px;line-height:1.5}
+    .about{font-size:16px;line-height:1.75;color:#344454;margin:0}.about strong{color:var(--navy)}
     .card{border:1px solid var(--line);border-radius:var(--radius);padding:24px;text-decoration:none;color:inherit;background:linear-gradient(180deg,#fff,#fbfcfd);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;min-height:210px;display:flex;flex-direction:column}.card:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(11,31,51,.10);border-color:#c8d5e1}.icon{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;background:#edf3f8;color:var(--navy2);font-size:22px;margin-bottom:20px}.card h3{margin:0 0 9px;font-size:21px;letter-spacing:-.35px}.card p{margin:0;color:var(--muted);line-height:1.55;font-size:15px}.open{margin-top:auto;padding-top:24px;display:flex;align-items:center;justify-content:space-between;font-size:14px;font-weight:800;color:var(--navy2)}.arrow{width:31px;height:31px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;background:#fff}
     footer{padding:0 0 38px;color:var(--muted);font-size:13px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}.footer-right{display:flex;align-items:center;gap:15px;flex-wrap:wrap}.footer-instagram{color:var(--navy2);text-decoration:none;font-weight:750}.footer-instagram:hover{text-decoration:underline}
-    @media(max-width:760px){header{padding-bottom:62px}.nav{align-items:flex-start}.domain{display:none}.brand-logo{width:250px;max-width:64vw}.instagram span{display:none}.hero{padding-top:34px}.panel{padding:20px}.section-head{align-items:flex-start;flex-direction:column}.grid{grid-template-columns:1fr}}
+    @media(max-width:900px){.focus-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:760px){header{padding-bottom:62px}.nav{align-items:flex-start}.domain{display:none}.brand-logo{width:250px;max-width:64vw}.instagram span{display:none}.hero{padding-top:34px}.panel{padding:20px}.section-head{align-items:flex-start;flex-direction:column}.grid,.focus-grid{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
@@ -45,27 +111,47 @@
       </div>
     </div>
     <div class="hero">
-      <div class="eyebrow">Surveying · Mapping · Geospatial</div>
-      <h1>Survey tools built for real field and office work.</h1>
-      <p>Quick-access web applications for coordinate conversion, mapping, survey utilities, and geospatial workflows.</p>
+      <div class="eyebrow">Land Surveying · GNSS · LiDAR · Mapping</div>
+      <h1>Surveying and geospatial tools built for real field and office work.</h1>
+      <p>One World Surveying focuses on practical land surveying, GNSS, LiDAR, mapping, coordinate conversion, CAD, and field-to-office geospatial workflows.</p>
     </div>
   </header>
 
   <main>
-    <section class="panel">
+    <section class="panel" aria-labelledby="about-heading">
       <div class="section-head">
-        <div><h2>Available Apps</h2><p>Select a tool to launch it in your browser.</p></div>
+        <div><h2 id="about-heading">About One World Surveying</h2><p>Surveying knowledge, workflow development and geospatial technology.</p></div>
+        <div class="badge">oneworldsurveying.com</div>
+      </div>
+      <p class="about"><strong>One World Surveying</strong> is a surveying and geospatial technology resource created by Juan A. Pichardo. The site brings together practical tools and workflows for land surveying, GNSS control, LiDAR and point-cloud work, mapping, coordinate systems, CAD, and field-to-office production.</p>
+    </section>
+
+    <section class="panel" aria-labelledby="focus-heading">
+      <div class="section-head">
+        <div><h2 id="focus-heading">Surveying & Geospatial Focus</h2><p>Core areas covered by One World Surveying.</p></div>
+      </div>
+      <div class="focus-grid">
+        <div class="focus"><strong>Land Surveying</strong><span>Practical field and office workflows, control, mapping and survey production.</span></div>
+        <div class="focus"><strong>GNSS & Control</strong><span>GNSS observations, coordinate systems, control networks and positioning workflows.</span></div>
+        <div class="focus"><strong>LiDAR & Mapping</strong><span>Laser scanning, point clouds, mapping, imagery and geospatial data workflows.</span></div>
+        <div class="focus"><strong>Survey Software</strong><span>Browser-based utilities for coordinate conversion, CAD support and survey calculations.</span></div>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="apps-heading">
+      <div class="section-head">
+        <div><h2 id="apps-heading">Survey & Geospatial Apps</h2><p>Select a tool to launch it directly in your browser.</p></div>
         <div class="badge">One World Surveying Apps</div>
       </div>
       <div class="grid">
         <a class="card" href="OneWorld_KMZ_to_State_Plane.html">
           <div class="icon">◎</div><h3>KMZ → State Plane</h3>
-          <p>Convert KMZ/KML geographic data into State Plane coordinate workflows for surveying and CAD use.</p>
+          <p>Convert KMZ/KML geographic data into State Plane coordinate workflows for surveying, mapping and CAD use.</p>
           <div class="open"><span>Open app</span><span class="arrow">→</span></div>
         </a>
         <a class="card" href="Survey_Utility_app.html">
           <div class="icon">⌖</div><h3>Survey Utility App</h3>
-          <p>Launch the One World Surveying utility collection for common survey and geospatial tasks.</p>
+          <p>Launch the One World Surveying utility collection for common survey, coordinate and geospatial tasks.</p>
           <div class="open"><span>Open app</span><span class="arrow">→</span></div>
         </a>
       </div>
