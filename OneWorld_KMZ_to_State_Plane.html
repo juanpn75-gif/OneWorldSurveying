@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>One World KMZ to State Plane Converter v4 — EPSG Corrected</title>
+<link rel="stylesheet" href="assets/app-help.css">
 <style>
 :root{--navy:#103d4b;--teal:#087f78;--bg:#eef3f5;--card:#fff;--border:#cbd5dc;--text:#1f2937;--muted:#667085;--ok:#067647;--bad:#b42318;--warn:#b54708}
 *{box-sizing:border-box}
@@ -45,6 +46,42 @@ th{background:#eef3f6;position:sticky;top:0;z-index:2}
 <h1>One World KMZ/KML to State Plane Converter v4</h1>
 <p>Exact EPSG State Plane projection parameters for NJ, NY, and PA</p>
 </header>
+
+<div class="ow-help-wrap">
+<details class="ow-help">
+<summary>❓ How to Use This App</summary>
+<div class="ow-help-body">
+<div class="ow-help-grid">
+<div>
+<h3>Convert a KMZ or KML file</h3>
+<ol>
+<li>Stay on the <b>KMZ/KML File</b> tab and drag a file into the drop area, or select it with the file picker.</li>
+<li>Choose the State Plane zone. <b>Automatic by location</b> can select among the supported NJ, NY, and PA zones, or you can force a specific zone.</li>
+<li>Choose output units, coordinate order, decimal places, elevation handling, and the starting point number.</li>
+<li>Press <b>Convert</b> if needed, then review the coordinate table and conversion summary.</li>
+<li>Export the results as <b>CSV</b>, <b>PNEZD TXT</b>, or <b>DXF</b>.</li>
+</ol>
+</div>
+<div>
+<h3>Convert manual coordinates</h3>
+<ol>
+<li>Select the <b>Manual Coordinates</b> tab.</li>
+<li>Enter one point per line as <code>Name, Longitude, Latitude, Elevation</code>. Longitude comes before latitude.</li>
+<li>Press <b>Load Manual Coordinates</b>.</li>
+<li>Set the same conversion options, review the projected results, and export in the format you need.</li>
+</ol>
+</div>
+</div>
+<h4>Supported State Plane systems</h4>
+<ul>
+<li>New Jersey — EPSG:3424.</li>
+<li>New York East, Central, West, and Long Island — EPSG:2260 through 2263.</li>
+<li>Pennsylvania North and South — EPSG:2271 and EPSG:2272.</li>
+</ul>
+<div class="ow-help-note"><b>Important:</b> KML/KMZ coordinates are read in KML order: longitude, latitude. The app keeps the source geographic precision for projection even though latitude and longitude are displayed to 6 decimals. Confirm the correct State Plane zone and units before using exported coordinates in CAD or survey work.</div>
+</div>
+</details>
+</div>
 
 <main>
 <section class="card">
