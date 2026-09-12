@@ -1,5 +1,31 @@
-const TILE_INDEX=window.TILE_INDEX||{};
 const TILE=5000;
+const SID_GRID={minX:190000,maxX:660000,minY:30000,maxY:920000,cols:95,rows:179};
+const SID_MASK_B64='AAAAAB4AAAAAAAAAAAAAAH8AAAAAAAAAAAAAgH8AAAAAAAAAAAAAwH8AAAAAAAAAAAAA4P8AAAAAAAAAAAAA8P8AAAAAAAAAAAAA8H8AAAAAAAAAAAAA+D8AAAAAAAAAAAAA/D8AAAAAAAAAAAAA/D8AAAAAAAAAAAAA/h8AAAAAAAAAAAAA/h8AAAAAAAAAAAAA/h8AAAAAAAAAAAAA/w8AAAAAAAAAAACA/wcAAAAAAAAAAADA/wMAAAAAAAAAAADA/wMAAAAAAAAAAADg/wMAAAAAAAAAAAD4/wEAAAAAAAAAMID//wEAAAAAAAAAPPz//wEAAAAAAAAA/v///wAAAAAAAAAA/////wAAAAAAAADA/////wAAAAAAAADw////fwAAAAAAAAD8/////wAAAAAAAAD//////wAAAAAAAPD//////wAAAAAAAPz//////wAAAAAAAP///////wAAAAAA8P///////wEAAAAA+P///////wMAAAAA/v///////wMAAACA/////////wMAAADg/////////wMAAADw/////////wMAAAD+/////////wMAAAD//////////wMAAMD//////////wEAAPj//////////wAAAP7//////////wAAAP///////////wAAgP//////////fwAAwP//////////fwAAwP//////////fwAA4P//////////PwAA8P//////////PwAA+P//////////HwAA/P//////////HwAA////////////HwDA////////////DwDg////////////DwDw////////////BwDw////////////BwDw////////////AwDw////////////AwD4////////////AQD8////////////AQD8////////////AAD8////////////AAD+//////////9/AAD///////////9/AID///////////8/AMD///////////8fAID///////////8PAID///////////8HAID///////////8DAAD///////////8BAAD///////////8AAADg//////////8AAADA/////////38AAAAA/////////z8AAAAA/////////x8AAACA/////////w8AAADA/////////wcAAADg/////////wMAAADw/////////wEAAADw/////////wEAAADg/////////wAAAADg////////fwAAAADg////////PwAAAADA////////HwAAAADA////////DwAAAADA////////DwAAAACA////////BwAAAAAA/v//////AwAAAAAA/v//////AQAAAAAA/P//////AAAAAAAA/v////9/AAAAAAAA8P////9/AAAAAAAA4P////8/AAAAAAAA/P////8fAAAAAAAA/v////8PAAAAAAAA//////8PAAAAAADA//////8HAAAAAAD4//////8DAAAAAAD+//////8BAAAAAID///////8BAAAAAOD///////8AAAAAAPD//////38AAAAAAPz//////z8AAAAAgP///////x8AAAAAwP///////w8AAAAA8P///////wcAAAAA+P///////wMAAAAA/v///////wEAAAAA/////////wAAAADA////////fwAAAAD+////////PwAAAID/////////HwAAAMD/////////DwAAAOD/////////BwAAAPD//////2/zAwAAAPj//////wfgAAAAAPz//////wNwAAAAAP7//////wAAAAAAAP//////fwAAAAAAgP//////PwAAAAAA4P//////HwAAAACA+///////PwAAAADg////////HwAAAADw////////HwAAAAD4////////DwAAAAD8////////BwAAAAD+////////AwAAAAD/////////fwAAAID//////////wAAAMD//////////wAAAOD/////////fwAAAPj/////////PwAAAPz/////////PwAAAPz/////////HwAAAP7/////////DwAAAP//////////DwAAgP//////////BwAAgP//////////AwAAwP//////////AwAAAP7/////////AQAAAP//////////AQAAgP//////////AQAAwP//////////AAAAwP////////9/AAAAgP////////9/AAAA8P////////8/AAAA+P////////8fAAAA/P////////8PAAAA//////////8PAACA//////////8HAADg//////////8DAAD4//////////8DAAD8//////////8BAAD+//////////8AAAD+/////////38AAAD8/////////w8AAAD4/////////wEAAAD4////////PwAAAAD4////////BwAAAAD8////////AQAAAAD8//////8/AAAAAAD8//////8HAAAAAAD+//////8BAAAAAAD8/////x8AAAAAAAD8/////wcAAAAAAAD8/////wAAAAAAAAD8////PwAAAAAAAAD+////BwAAAAAAAAD+////AAAAAAAAAAD///8fAAAAAAAAAID///8HAAAAAAAAAMD///8AAAAAAAAAAOD//z8AAAAAAAAAAMD//wcAAAAAAAAAAOD//wEAAAAAAAAAAPD/PwAAAAAAAAAAAPD/BwAAAAAAAAAAAPD/AQAAAAAAAAAAAOA/AAAAAAAAAAAAAPAPAAAAAAAAAAAAAMABAAAAAAA=';
+const SID_MASK=Uint8Array.from(atob(SID_MASK_B64),c=>c.charCodeAt(0));
+function sidGridPresent(x,y){
+  if(!Number.isFinite(x)||!Number.isFinite(y)||x<SID_GRID.minX||x>SID_GRID.maxX||y<SID_GRID.minY||y>SID_GRID.maxY)return false;
+  if((x-SID_GRID.minX)%TILE!==0||(y-SID_GRID.minY)%TILE!==0)return false;
+  const col=(x-SID_GRID.minX)/TILE,row=(y-SID_GRID.minY)/TILE,idx=row*SID_GRID.cols+col;
+  return !!(SID_MASK[idx>>3]&(1<<(idx&7)));
+}
+function sidTileId(x,y){
+  if(!sidGridPresent(x,y))return undefined;
+  const letterIndex=Math.floor((x-190000)/40000);
+  const letter=String.fromCharCode(65+letterIndex);
+  const sheetRow=Math.floor((920000-y)/40000)+1;
+  const blockWest=190000+letterIndex*40000;
+  const blockTop=920000-(sheetRow-1)*40000;
+  const xIn=x-blockWest,yFromTop=blockTop-y;
+  const east=xIn>=20000,south=yFromTop>=20000;
+  const quadrant=south?(east?'D':'C'):(east?'B':'A');
+  const col=Math.floor((xIn%20000)/5000),row=Math.floor((yFromTop%20000)/5000);
+  return `${letter}${sheetRow}${quadrant}${row*4+col+1}`;
+}
+const TILE_INDEX=new Proxy(Object.create(null),{get(_target,prop){
+  if(typeof prop!=='string')return undefined;
+  const m=/^(-?\d+),(-?\d+)$/.exec(prop);
+  return m?sidTileId(Number(m[1]),Number(m[2])):undefined;
+}});
 
 function key(x,y){return `${Math.round(x)},${Math.round(y)}`}
 function tileAt(e,n){
