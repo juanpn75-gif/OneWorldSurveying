@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Survey Utility App v9.0 - Created by Juan Pichardo</title>
+<link rel="stylesheet" href="assets/app-help.css">
 <style>
 :root{--bg:#eef3f6;--card:#fff;--primary:#0f3d56;--secondary:#176b87;--line:#d6e0e6;--text:#17212b;--muted:#667085;--danger:#b42318}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -57,6 +58,41 @@ th{background:#e8f0f4;color:var(--primary)}
   <div>Record utility structures, pipe inverts, and interactive pipe-direction diagrams.</div>
 </header>
 <div style="background:#0f3d56;color:white;text-align:center;padding:8px;font-size:14px;font-weight:600">Created by Juan Pichardo</div>
+
+<div class="ow-help-wrap">
+<details class="ow-help">
+<summary>❓ How to Use This App</summary>
+<div class="ow-help-body">
+<div class="ow-help-grid">
+<div>
+<h3>Record a structure</h3>
+<ol>
+<li>Enter the structure/manhole number, utility type, and rim elevation. Project number, date, coordinates, field crew, photo number, diagram style, and notes are optional.</li>
+<li>Press <b>+ Add Invert</b> for each pipe entering or leaving the structure.</li>
+<li>For each invert, choose the flow, direction, pipe type, and pipe size. Enter the <b>Measure Down</b> from rim to invert; the app calculates the invert elevation as rim minus measure-down.</li>
+<li>Use <b>Place on Diagram</b> and tap the diagram to set pipe direction, or choose the direction from the list. Labels can be dragged while that invert is in Edit mode.</li>
+<li>Press <b>Save Invert</b> for every pipe. Each invert must be saved/locked before the structure itself can be saved.</li>
+<li>Press <b>Save Structure</b>. The saved record appears in the table below.</li>
+</ol>
+</div>
+<div>
+<h3>Diagram and exports</h3>
+<ul>
+<li><b>Save Report-Ready JPEG</b> saves the current utility sketch as an image.</li>
+<li><b>Current Structure PDF</b> creates a printable report for the structure currently on screen.</li>
+<li><b>All Structures PDF</b> creates a combined printable report from saved structures.</li>
+<li><b>Export CSV</b> exports saved structure and invert data.</li>
+<li><b>Backup JSON</b> saves a backup copy of the records stored in this browser.</li>
+<li>Use <b>Edit</b> in the saved-record table to reopen and revise a structure.</li>
+</ul>
+</div>
+</div>
+<h4>Field workflow example</h4>
+<p>For a storm manhole, enter the rim elevation, add each pipe, record whether it is incoming or outgoing, its compass direction, material, size, and measure-down, then save each invert. Confirm the diagram matches the field sketch before saving the structure.</p>
+<div class="ow-help-note"><b>Data note:</b> Saved structures are stored in this browser using local storage. Clearing browser/site data can remove those records, so use <b>Backup JSON</b> and/or CSV/PDF exports when the data matters. Verify field notes, pipe directions, measure-downs, and elevations before final survey production.</div>
+</div>
+</details>
+</div>
 
 <main>
 <section class="card">
@@ -274,7 +310,6 @@ function addInvert(data){
   renumber();
   calculateRow(row);
 
-  // Existing saved inverts load locked; a newly added blank invert starts editable.
   var hasExisting=!!(data.flow||data.direction||data.pipeType||data.pipeSize||data.measureDown||data.invertElevation);
   setInvertLocked(row,hasExisting);
   setActiveRow(Math.max(0,invertList.children.length-1));
@@ -346,14 +381,12 @@ function drawDiagram(){
 
   ctx.strokeStyle="#17212b";ctx.fillStyle="#17212b";ctx.lineWidth=3;
 
-  // Compact title block
   var titleTop=30,titleH=135;
   ctx.strokeRect(40,titleTop,w-80,titleH);
   ctx.textAlign="center";
   ctx.font="bold 31px Arial";
   ctx.fillText("UTILITY STRUCTURE SKETCH",w/2,70);
 
-  // Use the selected utility/structure wording directly.
   var structureTypeText=utility.toUpperCase();
 
   ctx.font="18px Arial";
@@ -371,7 +404,6 @@ function drawDiagram(){
   ctx.fillText(date,785,140);
   ctx.fillText(rim?(rim+" "+units):"—",970,140);
 
-  // Optional metadata line only when populated.
   var extras=[];
   if(surveyor)extras.push("FIELD CREW "+surveyor);
   if(photo)extras.push("PHOTO "+photo);
@@ -383,7 +415,6 @@ function drawDiagram(){
     ctx.fillText(extras.join("     "),w/2,195);
   }
 
-  // North arrow
   ctx.fillStyle="#17212b";ctx.strokeStyle="#17212b";ctx.lineWidth=5;
   ctx.beginPath();ctx.moveTo(110,375);ctx.lineTo(110,275);ctx.stroke();
   ctx.beginPath();ctx.moveTo(110,275);ctx.lineTo(92,315);ctx.lineTo(128,315);ctx.closePath();ctx.fill();
@@ -528,7 +559,6 @@ function drawDiagram(){
   }
   placeSide("left");placeSide("right");
 
-  // Compact legend without a large border.
   ctx.font="18px Arial";ctx.textAlign="left";
   if(style==="bw"){
     ctx.fillStyle="#17212b";
@@ -982,7 +1012,6 @@ document.getElementById("exportAllPdf").addEventListener("click",function(){
   }
   openPdfReport(records.slice(),"All Utility Structures Report");
 });
-
 
 function download(name,text,type){
   var blob=new Blob([text],{type:type});var a=document.createElement("a");
