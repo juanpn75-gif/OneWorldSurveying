@@ -13,7 +13,7 @@
   <meta property="og:title" content="Survey Photo Gallery | One World Surveying" />
   <meta property="og:description" content="Survey-related field photos covering land surveying, GNSS, LiDAR, mapping and geospatial work." />
   <meta property="og:url" content="https://oneworldsurveying.com/gallery.html" />
-  <meta property="og:image" content="https://oneworldsurveying.com/assets/one-world-surveying-logo.jpg" />
+  <meta property="og:image" content="https://oneworldsurveying.com/gallery/nj-geodetic-control-total-station.jpg" />
   <style>
     :root{--navy:#0b1f33;--navy2:#163a5f;--gold:#d9a441;--paper:#f4f7fa;--white:#fff;--text:#17212b;--muted:#667789;--line:#dfe7ee;--shadow:0 12px 30px rgba(11,31,51,.10)}
     *{box-sizing:border-box}
@@ -28,7 +28,7 @@
     main{margin-top:-34px;padding-bottom:64px}.panel{background:#fff;border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);padding:28px}
     .section-head{display:flex;justify-content:space-between;gap:18px;align-items:end;margin-bottom:22px}.section-head h2{margin:0;font-size:27px}.section-head p{margin:5px 0 0;color:var(--muted)}
     .gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.photo{border:1px solid var(--line);border-radius:18px;overflow:hidden;background:#fbfcfd;box-shadow:0 5px 16px rgba(11,31,51,.05)}
-    .photo img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;background:#e9eef3}.caption{padding:14px 15px}.caption strong{display:block;color:var(--navy2);margin-bottom:5px}.caption span{color:var(--muted);font-size:14px;line-height:1.45}
+    .photo img{display:block;width:100%;aspect-ratio:3/4;object-fit:cover;background:#e9eef3;cursor:zoom-in}.caption{padding:14px 15px}.caption strong{display:block;color:var(--navy2);margin-bottom:5px}.caption span{color:var(--muted);font-size:14px;line-height:1.45}
     .empty{border:2px dashed #cdd9e4;border-radius:18px;padding:54px 22px;text-align:center;color:var(--muted);background:#fbfcfd}.empty strong{display:block;color:var(--navy2);font-size:20px;margin-bottom:8px}
     footer{padding:0 0 38px;color:var(--muted);font-size:13px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}footer a{color:var(--navy2);font-weight:750;text-decoration:none}
     .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.88);display:none;align-items:center;justify-content:center;padding:30px;z-index:99}.lightbox.open{display:flex}.lightbox img{max-width:95vw;max-height:88vh;border-radius:10px}.close{position:absolute;right:22px;top:18px;color:white;background:none;border:0;font-size:42px;cursor:pointer}
@@ -50,7 +50,7 @@
 </header>
 <main>
   <section class="panel">
-    <div class="section-head"><div><h2>Field Gallery</h2><p>Surveying photos will be added here as the collection grows.</p></div></div>
+    <div class="section-head"><div><h2>Field Gallery</h2><p>Survey field work, geodetic control, equipment, and mapping photos.</p></div></div>
     <div id="gallery" class="gallery"></div>
     <div id="empty" class="empty"><strong>Gallery ready</strong>Survey-related photos will appear here once they are added.</div>
   </section>
@@ -63,9 +63,16 @@
 <script>
   document.getElementById('year').textContent=new Date().getFullYear();
   const photos = [
-    /* Add survey photos here as:
-       {src:'gallery/photo-name.jpg', title:'GNSS Control', caption:'Project or field-work description.'}
-    */
+    {
+      src:'gallery/nj-geodetic-control-total-station.jpg',
+      title:'Total Station at NJ Geodetic Control',
+      caption:'Total station setup beside a New Jersey geodetic survey control marker and witness post.'
+    },
+    {
+      src:'gallery/nj-geodetic-control-mark.jpg',
+      title:'Vertical Control Mark — 1974',
+      caption:'Close-up of a National Geodetic Survey vertical control mark in New Jersey.'
+    }
   ];
   const gallery=document.getElementById('gallery');
   const empty=document.getElementById('empty');
