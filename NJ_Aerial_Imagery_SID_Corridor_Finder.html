@@ -7,6 +7,7 @@
 <meta name="author" content="Juan A. Pichardo">
 <meta name="description" content="Find New Jersey SID aerial imagery tiles by address, coordinates, State Plane, or highway milepost corridor.">
 <link rel="stylesheet" href="assets/nj-sid.css">
+<link rel="stylesheet" href="assets/app-help.css">
 </head>
 <body>
 <div class="wrap">
@@ -15,6 +16,42 @@
     <p>Find individual 5,000 × 5,000 ft SID imagery tiles — or every SID tile required along a New Jersey highway milepost corridor.</p>
     <div class="byline">Version 2.1 · Created by Juan A. Pichardo</div>
   </section>
+
+  <div class="ow-help-wrap">
+    <details class="ow-help">
+      <summary>❓ How to Use This App</summary>
+      <div class="ow-help-body">
+        <div class="ow-help-grid">
+          <div>
+            <h3>Find one SID tile</h3>
+            <ol>
+              <li>Choose <b>Address</b>, <b>Lat / Long</b>, or <b>NJ State Plane</b>.</li>
+              <li>Enter the location. State Plane values are entered as Easting and Northing in US survey feet.</li>
+              <li>Set the adjacent-tile edge tolerance if you want nearby tiles flagged when the point is close to a tile boundary.</li>
+              <li>Press <b>Find SID tile</b>. Review the tile ID, map, and any adjacent-tile warning before downloading.</li>
+            </ol>
+          </div>
+          <div>
+            <h3>Find tiles for a highway corridor</h3>
+            <ol>
+              <li>Select <b>Route Corridor</b>.</li>
+              <li>Enter the NJ route number and the beginning and ending mileposts.</li>
+              <li>Enter the corridor buffer on each side of the route centerline. A value of 0 ft selects only tiles crossed by the route.</li>
+              <li>Use <b>Advanced route alignment</b> only when you need to override the automatically built NJDOT SRI.</li>
+              <li>Press <b>Find corridor SID tiles</b>, review the list and map, then download the required tile ZIP files.</li>
+            </ol>
+          </div>
+        </div>
+        <h4>Input notes</h4>
+        <ul>
+          <li>Latitude/longitude accepts decimal degrees and common degree-minute-second style entries.</li>
+          <li>The SID index is NAD83 / New Jersey State Plane, US survey foot, EPSG:3424.</li>
+          <li>Address lookup, Route Corridor lookup, map backgrounds, and SID downloads require an internet connection. Coordinate and State Plane tile calculations can work offline.</li>
+        </ul>
+        <div class="ow-help-note"><b>Survey tip:</b> If a point falls near a tile edge, include the adjacent tile shown by the app. For corridor work, use enough buffer to cover the actual mapping or survey limits rather than relying only on the route centerline.</div>
+      </div>
+    </details>
+  </div>
 
   <div class="grid">
     <section class="card">
