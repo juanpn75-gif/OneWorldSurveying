@@ -86,6 +86,7 @@
     .brand-logo{display:block;width:360px;max-width:48vw;height:auto;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.24)}
     .nav-right{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:flex-end}
     .domain{font-size:14px;color:rgba(255,255,255,.72)}
+    .julian-day{display:inline-flex;align-items:center;padding:9px 13px;border:1px solid rgba(217,164,65,.55);border-radius:999px;color:#f6d58a;font-size:13px;font-weight:800;background:rgba(217,164,65,.10);backdrop-filter:blur(6px);white-space:nowrap}
     .instagram{display:inline-flex;align-items:center;gap:8px;padding:9px 13px;border:1px solid rgba(255,255,255,.22);border-radius:999px;text-decoration:none;color:#fff;font-size:13px;font-weight:750;background:rgba(255,255,255,.06);backdrop-filter:blur(6px);transition:.18s ease}
     .instagram:hover{background:rgba(255,255,255,.13);transform:translateY(-1px)}
     .instagram svg{width:17px;height:17px;fill:currentColor}
@@ -104,7 +105,7 @@
     .card{border:1px solid var(--line);border-radius:var(--radius);padding:24px;text-decoration:none;color:inherit;background:linear-gradient(180deg,rgba(255,255,255,.97),rgba(251,252,253,.97));transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;min-height:210px;display:flex;flex-direction:column}.card:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(11,31,51,.10);border-color:#c8d5e1}.icon{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;background:#edf3f8;color:var(--navy2);font-size:22px;margin-bottom:20px}.card h3{margin:0 0 9px;font-size:21px;letter-spacing:-.35px}.card p{margin:0;color:var(--muted);line-height:1.55;font-size:15px}.open{margin-top:auto;padding-top:24px;display:flex;align-items:center;justify-content:space-between;font-size:14px;font-weight:800;color:var(--navy2)}.arrow{width:31px;height:31px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;background:#fff}
     footer{padding:0 0 38px;color:var(--muted);font-size:13px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;position:relative;z-index:1}.footer-right{display:flex;align-items:center;gap:15px;flex-wrap:wrap}.footer-instagram{color:var(--navy2);text-decoration:none;font-weight:750}.footer-instagram:hover{text-decoration:underline}
     @media(max-width:900px){.focus-grid{grid-template-columns:repeat(2,minmax(0,1fr))}header::before{right:-150px;opacity:.10}body::before{right:-180px;width:560px}}
-    @media(max-width:760px){header{padding-bottom:62px}.nav{align-items:flex-start}.domain{display:none}.brand-logo{width:250px;max-width:64vw}.instagram span{display:none}.hero{padding-top:34px}.panel{padding:20px}.section-head{align-items:flex-start;flex-direction:column}.grid,.focus-grid{grid-template-columns:1fr}header::before{width:390px;height:600px;right:-185px;top:-55px;opacity:.085}body::before{width:390px;height:620px;right:-185px;top:520px;opacity:.045}}
+    @media(max-width:760px){header{padding-bottom:62px}.nav{align-items:flex-start}.domain{display:none}.brand-logo{width:250px;max-width:64vw}.instagram span{display:none}.julian-day{padding:8px 10px;font-size:12px}.hero{padding-top:34px}.panel{padding:20px}.section-head{align-items:flex-start;flex-direction:column}.grid,.focus-grid{grid-template-columns:1fr}header::before{width:390px;height:600px;right:-185px;top:-55px;opacity:.085}body::before{width:390px;height:620px;right:-185px;top:520px;opacity:.045}}
   </style>
 </head>
 <body>
@@ -115,6 +116,7 @@
       </a>
       <div class="nav-right">
         <div class="domain">oneworldsurveying.com</div>
+        <div class="julian-day" id="julianDay" aria-label="Current Julian day"></div>
         <a class="instagram" href="https://www.instagram.com/oneworldsurveying/" target="_blank" rel="noopener noreferrer" aria-label="Follow One World Surveying on Instagram">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7zm10 2c1.65 0 3 1.35 3 3v10c0 1.65-1.35 3-3 3H7c-1.65 0-3-1.35-3-3V7c0-1.65 1.35-3 3-3h10zm.5 1.5a1.25 1.25 0 1 0 0 2.5 1.25 1.25 0 0 0 0-2.5zM12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 2a3 3 0 1 1 0 6 3 3 0 0 1 0-6z"/></svg>
           <span>@oneworldsurveying</span>
@@ -186,6 +188,15 @@
       <span>Created by Juan A. Pichardo, PLS</span>
     </div>
   </footer>
-  <script>document.getElementById('year').textContent=new Date().getFullYear();</script>
+  <script>
+    const now = new Date();
+    document.getElementById('year').textContent = now.getFullYear();
+    const y = now.getFullYear();
+    const m = now.getMonth();
+    const d = now.getDate();
+    const julianDay = Math.floor((Date.UTC(y,m,d)-Date.UTC(y,0,0))/86400000);
+    const dateLabel = now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+    document.getElementById('julianDay').textContent = `${dateLabel} · Julian Day ${julianDay}`;
+  </script>
 </body>
 </html>
