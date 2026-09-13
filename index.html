@@ -102,7 +102,7 @@
     .focus-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
     .focus{border:1px solid var(--line);border-radius:16px;padding:18px;background:rgba(251,252,253,.95)}.focus strong{display:block;margin-bottom:7px;color:var(--navy2)}.focus span{color:var(--muted);font-size:14px;line-height:1.5}
     .about{font-size:16px;line-height:1.75;color:#344454;margin:0}.about strong{color:var(--navy)}
-    .card{border:1px solid var(--line);border-radius:var(--radius);padding:24px;text-decoration:none;color:inherit;background:linear-gradient(180deg,rgba(255,255,255,.97),rgba(251,252,253,.97));transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;min-height:210px;display:flex;flex-direction:column}.card:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(11,31,51,.10);border-color:#c8d5e1}.icon{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;background:#edf3f8;color:var(--navy2);font-size:22px;margin-bottom:20px}.card h3{margin:0 0 9px;font-size:21px;letter-spacing:-.35px}.card p{margin:0;color:var(--muted);line-height:1.55;font-size:15px}.open{margin-top:auto;padding-top:24px;display:flex;align-items:center;justify-content:space-between;font-size:14px;font-weight:800;color:var(--navy2)}.arrow{width:31px;height:31px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;background:#fff}
+    .card{border:1px solid var(--line);border-radius:var(--radius);padding:24px;color:inherit;background:linear-gradient(180deg,rgba(255,255,255,.97),rgba(251,252,253,.97));transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;min-height:225px;display:flex;flex-direction:column}.card:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(11,31,51,.10);border-color:#c8d5e1}.icon{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;background:#edf3f8;color:var(--navy2);font-size:22px;margin-bottom:20px}.card h3{margin:0 0 9px;font-size:21px;letter-spacing:-.35px}.card p{margin:0;color:var(--muted);line-height:1.55;font-size:15px}.actions{margin-top:auto;padding-top:24px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}.app-open,.download-btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:42px;border-radius:11px;text-decoration:none;font-size:14px;font-weight:800;transition:.18s ease}.app-open{flex:1 1 150px;padding:10px 14px;background:var(--navy2);color:#fff;border:1px solid var(--navy2)}.app-open:hover{background:var(--navy);border-color:var(--navy);transform:translateY(-1px)}.download-btn{flex:1 1 150px;padding:10px 14px;background:#fff;color:var(--navy2);border:1px solid #c8d5e1}.download-btn:hover{border-color:var(--gold);color:var(--navy);background:#fffaf0;transform:translateY(-1px)}.action-icon{font-size:16px;line-height:1}
     .bottom-deed-decor{position:relative;height:0;z-index:0;pointer-events:none}
     .deed-fragment{position:absolute;bottom:320px;width:335px;height:425px;opacity:.09;overflow:visible}
     .deed-left{left:-170px}.deed-right{right:-170px}
@@ -157,30 +157,42 @@
 
     <section class="panel" aria-labelledby="apps-heading">
       <div class="section-head">
-        <div><h2 id="apps-heading">Survey & Geospatial Apps</h2><p>Select a tool to launch it directly in your browser.</p></div>
+        <div><h2 id="apps-heading">Survey & Geospatial Apps</h2><p>Open a tool in your browser or download the HTML app for offline use.</p></div>
         <div class="badge">One World Surveying Apps</div>
       </div>
       <div class="grid">
-        <a class="card" href="OneWorld_KMZ_to_State_Plane.html">
+        <div class="card">
           <div class="icon">◎</div><h3>KMZ → State Plane</h3>
           <p>Convert KMZ/KML geographic data into State Plane coordinate workflows for surveying, mapping and CAD use.</p>
-          <div class="open"><span>Open app</span><span class="arrow">→</span></div>
-        </a>
-        <a class="card" href="Survey_Utility_app.html">
+          <div class="actions">
+            <a class="app-open" href="OneWorld_KMZ_to_State_Plane.html"><span>Open App</span><span class="action-icon">→</span></a>
+            <a class="download-btn" href="OneWorld_KMZ_to_State_Plane.html" download="OneWorld_KMZ_to_State_Plane.html"><span class="action-icon">↓</span><span>Download App</span></a>
+          </div>
+        </div>
+        <div class="card">
           <div class="icon">⌖</div><h3>Survey Utility App</h3>
           <p>Launch the One World Surveying utility collection for common survey, coordinate and geospatial tasks.</p>
-          <div class="open"><span>Open app</span><span class="arrow">→</span></div>
-        </a>
-        <a class="card" href="NJ_Aerial_Imagery_SID_Corridor_Finder.html">
+          <div class="actions">
+            <a class="app-open" href="Survey_Utility_app.html"><span>Open App</span><span class="action-icon">→</span></a>
+            <a class="download-btn" href="Survey_Utility_app.html" download="Survey_Utility_app.html"><span class="action-icon">↓</span><span>Download App</span></a>
+          </div>
+        </div>
+        <div class="card">
           <div class="icon">▦</div><h3>NJ Aerial Imagery &amp; SID Corridor Finder</h3>
           <p>Find New Jersey SID aerial imagery tiles by address, coordinates, NJ State Plane, or highway milepost corridor, with direct browser downloads.</p>
-          <div class="open"><span>Open app</span><span class="arrow">→</span></div>
-        </a>
-        <a class="card" href="Three_Wire_Differential_Leveling.html">
+          <div class="actions">
+            <a class="app-open" href="NJ_Aerial_Imagery_SID_Corridor_Finder.html"><span>Open App</span><span class="action-icon">→</span></a>
+            <a class="download-btn" href="NJ_Aerial_Imagery_SID_Corridor_Finder.html" download="NJ_Aerial_Imagery_SID_Corridor_Finder.html"><span class="action-icon">↓</span><span>Download App</span></a>
+          </div>
+        </div>
+        <div class="card">
           <div class="icon">≋</div><h3>Three-Wire Differential Leveling</h3>
           <p>Check three-wire observations, stadia distances, leveling closure, adjustments, and closure-based order classification.</p>
-          <div class="open"><span>Open app</span><span class="arrow">→</span></div>
-        </a>
+          <div class="actions">
+            <a class="app-open" href="Three_Wire_Differential_Leveling.html"><span>Open App</span><span class="action-icon">→</span></a>
+            <a class="download-btn" href="Three_Wire_Differential_Leveling.html" download="Three_Wire_Differential_Leveling.html"><span class="action-icon">↓</span><span>Download App</span></a>
+          </div>
+        </div>
       </div>
     </section>
   </main>
