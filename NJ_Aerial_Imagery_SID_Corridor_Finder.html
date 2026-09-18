@@ -123,5 +123,145 @@
 <script src="assets/nj-sid-app-1.js"></script>
 <script src="assets/nj-sid-app-2.js"></script>
 <script src="assets/nj-sid-app-3.js"></script>
+
+<!-- One World Surveying Feedback Widget -->
+<style>
+  #ows-feedback-btn{
+    position:fixed;right:18px;bottom:18px;z-index:9998;
+    border:0;border-radius:999px;padding:12px 18px;
+    background:#0f766e;color:#fff;font:700 14px/1.1 Arial,sans-serif;
+    box-shadow:0 8px 24px rgba(0,0,0,.18);cursor:pointer
+  }
+  #ows-feedback-btn:hover{filter:brightness(.96)}
+  #ows-feedback-backdrop{
+    display:none;position:fixed;inset:0;z-index:9999;
+    background:rgba(15,23,42,.48);padding:18px;
+    align-items:center;justify-content:center
+  }
+  #ows-feedback-backdrop.open{display:flex}
+  #ows-feedback-panel{
+    width:min(100%,520px);max-height:92vh;overflow:auto;
+    background:#fff;color:#111827;border-radius:16px;padding:22px;
+    box-shadow:0 24px 70px rgba(0,0,0,.28);
+    font-family:Arial,sans-serif
+  }
+  #ows-feedback-panel h2{margin:0 0 6px;font-size:22px}
+  #ows-feedback-panel p{margin:0 0 16px;color:#667085;font-size:14px}
+  #ows-feedback-panel label{display:block;margin:12px 0 6px;font-weight:700;font-size:13px}
+  #ows-feedback-panel input,#ows-feedback-panel select,#ows-feedback-panel textarea{
+    width:100%;box-sizing:border-box;border:1px solid #d0d5dd;border-radius:10px;
+    padding:10px 11px;font:14px Arial,sans-serif;background:#fff;color:#111827
+  }
+  #ows-feedback-panel textarea{min-height:130px;resize:vertical}
+  .ows-feedback-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap}
+  .ows-feedback-actions button{
+    border:0;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer
+  }
+  #ows-feedback-cancel{background:#eef2f6;color:#344054}
+  #ows-feedback-send{background:#0f766e;color:#fff}
+  #ows-feedback-note{margin-top:10px!important;font-size:12px!important;color:#667085!important}
+  @media(max-width:640px){
+    #ows-feedback-btn{right:12px;bottom:12px}
+    #ows-feedback-panel{padding:18px;border-radius:14px}
+  }
+</style>
+
+<button id="ows-feedback-btn" type="button" aria-haspopup="dialog" aria-controls="ows-feedback-backdrop">
+  Feedback
+</button>
+
+<div id="ows-feedback-backdrop" role="dialog" aria-modal="true" aria-labelledby="ows-feedback-title">
+  <div id="ows-feedback-panel">
+    <h2 id="ows-feedback-title">Send Feedback</h2>
+    <p>Help improve this One World Surveying app.</p>
+
+    <label for="ows-feedback-type">Feedback type</label>
+    <select id="ows-feedback-type">
+      <option>Report a Problem</option>
+      <option>Request a Feature</option>
+      <option>Suggest an Improvement</option>
+      <option>General Feedback</option>
+    </select>
+
+    <label for="ows-feedback-name">Name (optional)</label>
+    <input id="ows-feedback-name" type="text" autocomplete="name" placeholder="Your name">
+
+    <label for="ows-feedback-email">Your email (optional)</label>
+    <input id="ows-feedback-email" type="email" autocomplete="email" placeholder="you@example.com">
+
+    <label for="ows-feedback-message">Message</label>
+    <textarea id="ows-feedback-message" placeholder="Tell me what happened, what you would like changed, or what could make this app better."></textarea>
+
+    <div class="ows-feedback-actions">
+      <button id="ows-feedback-cancel" type="button">Cancel</button>
+      <button id="ows-feedback-send" type="button">Send Feedback</button>
+    </div>
+
+    <p id="ows-feedback-note">This will open your email app with the message prepared for you.</p>
+  </div>
+</div>
+
+<script>
+(function(){
+  const targetEmail = "Juanpn75@hotmail.com";
+  const btn = document.getElementById("ows-feedback-btn");
+  const backdrop = document.getElementById("ows-feedback-backdrop");
+  const cancel = document.getElementById("ows-feedback-cancel");
+  const send = document.getElementById("ows-feedback-send");
+
+  function appName(){
+    const h1 = document.querySelector("h1");
+    return (h1 && h1.textContent.trim()) || document.title || "One World Surveying App";
+  }
+  function appVersion(){
+    const candidates = document.querySelectorAll(".byline, .version, footer, .footer");
+    for (const el of candidates){
+      const t = (el.textContent || "").trim();
+      if (/version\s*[0-9]/i.test(t)) return t.replace(/\s+/g," ").slice(0,140);
+    }
+    return "Not listed";
+  }
+  function open(){ backdrop.classList.add("open"); setTimeout(()=>document.getElementById("ows-feedback-message").focus(),0); }
+  function close(){ backdrop.classList.remove("open"); }
+
+  btn.addEventListener("click", open);
+  cancel.addEventListener("click", close);
+  backdrop.addEventListener("click", e => { if(e.target === backdrop) close(); });
+  document.addEventListener("keydown", e => { if(e.key === "Escape") close(); });
+
+  send.addEventListener("click", function(){
+    const type = document.getElementById("ows-feedback-type").value;
+    const name = document.getElementById("ows-feedback-name").value.trim();
+    const email = document.getElementById("ows-feedback-email").value.trim();
+    const message = document.getElementById("ows-feedback-message").value.trim();
+
+    if(!message){
+      alert("Please enter a feedback message.");
+      return;
+    }
+
+    const subject = "One World Surveying - " + appName() + " - " + type;
+    const body = [
+      "App: " + appName(),
+      "Feedback type: " + type,
+      "Version: " + appVersion(),
+      "Page: " + window.location.href,
+      "",
+      "Name: " + (name || "Not provided"),
+      "Reply email: " + (email || "Not provided"),
+      "",
+      "Message:",
+      message
+    ].join("\n");
+
+    window.location.href =
+      "mailto:" + encodeURIComponent(targetEmail) +
+      "?subject=" + encodeURIComponent(subject) +
+      "&body=" + encodeURIComponent(body);
+  });
+})();
+</script>
+<!-- End One World Surveying Feedback Widget -->
+
 </body>
 </html>
