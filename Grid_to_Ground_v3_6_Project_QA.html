@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--
+GRID TO GROUND — PROPRIETARY SOFTWARE
+Copyright © 2026 Juan Pichardo, PLS. All Rights Reserved.
+Proprietary software. Unauthorized copying, modification, redistribution, resale, sublicensing, or removal of attribution is prohibited.
+Build: GTG-2026-0920-PUBLIC-3.6
+
+This copyright and ownership notice must not be removed or altered.
+Public availability of this file does not place the software in the public domain.
+-->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="author" content="Juan Pichardo, PLS">
+<meta name="copyright" content="Copyright © 2026 Juan Pichardo, PLS. All Rights Reserved.">
+<meta name="rights" content="Proprietary software. Unauthorized copying, modification, redistribution, resale, sublicensing, or removal of attribution is prohibited.">
+<meta name="application-name" content="Grid to Ground">
+<meta name="version" content="3.6">
+<meta name="build-id" content="GTG-2026-0920-PUBLIC-3.6">
+<meta name="release-fingerprint" content="97FAC0727B8B42D0CC6C">
+<title>Grid to Ground Coordinate Converter v3.6 | One World Surveying</title>
+<meta name="description" content="Free browser-based Grid to Ground coordinate converter for surveying workflows, with nationwide SPCS83, GEOID18, Ground/Modified coordinates, LDP design, distortion analysis and QA tools.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://oneworldsurveying.com/Grid_to_Ground_v3_6_Project_QA.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="One World Surveying">
+<meta property="og:title" content="Grid to Ground Coordinate Converter v3.6">
+<meta property="og:description" content="Surveying coordinate conversion with SPCS83, GEOID18, Ground/Modified coordinates, LDP design, distortion analysis and round-trip QA.">
+<meta property="og:url" content="https://oneworldsurveying.com/Grid_to_Ground_v3_6_Project_QA.html">
+<style>
+:root{--bg:#f3f6f8;--card:#fff;--ink:#17212b;--muted:#637381;--line:#d6dee5;--accent:#0b6fa4;--ok:#176b3a;--bad:#a32828;--warn:#9a5b00}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+header{background:#17324a;color:#fff;padding:20px 16px} header h1{margin:0;font-size:24px} header p{margin:5px 0 0;color:#d9e7f1;font-size:13px}
+main{max-width:1180px;margin:auto;padding:16px 12px 44px}.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:12px}.card{grid-column:span 12;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:15px;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+@media(min-width:900px){.half{grid-column:span 6}.third{grid-column:span 4}.twoThird{grid-column:span 8}}h2{font-size:17px;margin:0 0 12px}.row{display:grid;grid-template-columns:repeat(12,1fr);gap:9px;margin-bottom:9px}.field{grid-column:span 12}.s3{grid-column:span 3}.s4{grid-column:span 4}.s6{grid-column:span 6}.s8{grid-column:span 8}@media(max-width:650px){.s3,.s4,.s6,.s8{grid-column:span 12}}
+label{display:block;font-weight:700;font-size:12px;color:#405465;margin-bottom:5px}input,select,textarea,button{font:inherit}input,select,textarea{width:100%;padding:9px 10px;border:1px solid #c7d2db;border-radius:8px;background:#fff;color:var(--ink)}input[type=file]{padding:7px}button{border:0;border-radius:8px;padding:10px 13px;font-weight:750;cursor:pointer}.primary{background:var(--accent);color:#fff}.secondary{background:#e9eef2;color:#203645}.ghost{background:#fff;border:1px solid #cbd5dc;color:#244055}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.help{font-size:12px;color:var(--muted);line-height:1.45;margin-top:5px}.status{padding:9px 10px;border-radius:8px;background:#eef2f5;color:#445a6a;font-size:12px;line-height:1.45;white-space:pre-wrap;margin-top:8px}.status.ok{background:#edf8f1;color:var(--ok)}.status.bad{background:#fff0f0;color:var(--bad)}.status.warn{background:#fff7e8;color:var(--warn)}
+.notice{padding:10px 11px;border-radius:8px;background:#eef6fa;border-left:4px solid var(--accent);font-size:12px;line-height:1.45}.tableWrap{overflow:auto;max-height:470px;border:1px solid var(--line);border-radius:8px}table{border-collapse:collapse;width:100%;font-size:12px}th,td{border-bottom:1px solid #e6ebef;padding:7px;text-align:right;white-space:nowrap}th{position:sticky;top:0;background:#f7f9fb;color:#405465;text-transform:uppercase;font-size:10px;letter-spacing:.02em}th:first-child,td:first-child,th:last-child,td:last-child{text-align:left}.metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}@media(min-width:700px){.metrics{grid-template-columns:repeat(5,1fr)}}.metric{border:1px solid #e1e7ec;background:#f8fafb;border-radius:8px;padding:9px}.metric .k{font-size:10px;color:var(--muted);text-transform:uppercase}.metric .v{font-weight:800;margin-top:3px;font-variant-numeric:tabular-nums}.hidden{display:none!important}.mini{font-size:11px;color:var(--muted)}.tabs{display:flex;gap:7px;flex-wrap:wrap;border-bottom:1px solid var(--line);margin:-2px 0 13px;padding-bottom:9px}.tabBtn{background:#eef2f5;color:#324b5d;border:1px solid #d5dee5}.tabBtn.active{background:var(--accent);color:#fff;border-color:var(--accent)}.inverseMetrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}@media(min-width:780px){.inverseMetrics{grid-template-columns:repeat(4,minmax(0,1fr))}}.inverseMetric{border:1px solid #e1e7ec;background:#f8fafb;border-radius:8px;padding:11px;min-width:0}.inverseMetric .k{font-size:10px;color:var(--muted);text-transform:uppercase}.inverseMetric .v{font-weight:800;font-size:16px;margin-top:4px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}.shiftNote{margin-top:10px;font-size:11px;color:var(--muted);line-height:1.45}
+
+.dropzone{border:2px dashed #94a3b8;border-radius:12px;padding:18px;margin:6px 0 12px;text-align:center;display:flex;flex-direction:column;gap:5px;cursor:pointer;background:#f8fafc;color:#334155;transition:border-color .15s ease,background .15s ease}
+.dropzone .small{font-size:12px;color:#64748b}
+.dropzone.dragover{border-color:var(--accent);background:#eef6fa}
+.dropzone:focus{outline:3px solid rgba(15,104,155,.22);outline-offset:2px}
+
+
+.copyright-bar{max-width:1180px;margin:10px auto 0;padding:11px 14px;border:1px solid var(--line);border-radius:10px;background:var(--card);display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.copyright-sub{margin-top:3px;font-size:12px;color:var(--muted);max-width:850px}
+.license-copy p{line-height:1.45}
+
+
+.distortionChart{margin:12px 0;border:1px solid var(--line);border-radius:10px;background:#fff;padding:8px;overflow-x:auto}
+.distortionChart svg{display:block;width:100%;min-width:680px;height:300px}
+.distortionChart .axis{stroke:#7a8a97;stroke-width:1}
+.distortionChart .zero{stroke:#34495e;stroke-width:1.2;stroke-dasharray:5 4}
+.distortionChart .gridline{stroke:#d9e1e7;stroke-width:1}
+.distortionChart .sourceLine{fill:none;stroke:#4d6273;stroke-width:2}
+.distortionChart .ldpLine{fill:none;stroke:#9a5b00;stroke-width:2}
+.distortionChart .sourceDot{fill:#4d6273}
+.distortionChart .ldpDot{fill:#9a5b00}
+.distortionChart text{font-size:11px;fill:#4b5f6f}
+
+
+.site-release-bar{max-width:1180px;margin:10px auto 0;padding:10px 14px;border:1px solid var(--line);border-radius:10px;background:var(--card);display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.site-release-brand{font-weight:800;color:#17324a}.site-release-actions{display:flex;gap:8px;flex-wrap:wrap}.site-link{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;border-radius:8px;padding:9px 12px;font-weight:750;font-size:13px}.site-link.primaryLink{background:var(--accent);color:#fff}.site-link.secondaryLink{background:#fff;border:1px solid #cbd5dc;color:#244055}.site-link:hover{filter:brightness(.97)}
+</style>
+</head>
+<body>
+<header><h1>Grid → Ground Coordinate Converter v3.6</h1><p>Nationwide SPCS83 • Ground/Modified + LDP • Project Save/Load • Distortion Analysis • Round-Trip QA • One World Surveying public release</p><p style="margin-top:6px;font-size:13px;opacity:.8">Created by: <strong>Juan Pichardo, PLS</strong></p></header>
+<div class="site-release-bar">
+  <div><span class="site-release-brand">One World Surveying</span><div class="copyright-sub">Grid to Ground v3.6 — website and offline release</div></div>
+  <div class="site-release-actions">
+    <a class="site-link secondaryLink" href="https://oneworldsurveying.com/">Home</a>
+    <a class="site-link primaryLink" href="Grid_to_Ground_v3_6_Project_QA.html" download="Grid_to_Ground_v3_6_Project_QA.html">Download App</a>
+    <a class="site-link secondaryLink" href="mailto:Juanpn75@hotmail.com?subject=Grid%20to%20Ground%20v3.6%20Feedback">Send Feedback</a>
+  </div>
+</div>
+<div class="copyright-bar">
+  <div>
+    <strong>Copyright © 2026 Juan Pichardo, PLS. All Rights Reserved.</strong>
+    <div class="copyright-sub">Proprietary software. Unauthorized copying, modification, redistribution, resale, sublicensing, or removal of attribution is prohibited.</div>
+  </div>
+  <button id="showLicense" type="button" class="ghost">License / About</button>
+</div>
+<main><div class="grid">
+<section class="card"><h2>Project File</h2>
+  <div class="row">
+    <div class="field s8"><label>Project JSON</label><input id="projectJsonFile" type="file" accept=".json,application/json"></div>
+    <div class="field s4"><label>Project status</label><div id="projectFileStatus" class="status">No project JSON loaded.</div></div>
+  </div>
+  <div class="actions">
+    <button id="saveProjectJson" type="button" class="secondary">Save Project JSON</button>
+    <button id="loadProjectJson" type="button" class="secondary">Load Project JSON</button>
+  </div>
+  <div class="help">Saves project settings, State Plane selection, datum/ellipsoid, GRID points, Ground/LDP settings, and QA preferences. GEOID binary data is not embedded; the project stores the GEOID filenames and the remembered-file feature can reconnect them.</div>
+</section>
+
+<section class="card half"><h2>1. Load GRID Coordinates</h2>
+  <div id="pointDropZone" class="dropzone" tabindex="0" role="button" aria-label="Drop GRID coordinate file here or choose a file">
+    <strong>Drop GRID coordinate file here</strong>
+    <span>TXT, CSV, ASC, PNEZD or similar coordinate file</span>
+    <span class="small">Or tap/click this box to browse.</span>
+  </div>
+  <div class="row"><div class="field s8"><label>GRID coordinate file</label><input id="pointFile" type="file" accept="*/*"></div><div class="field s4"><label>Input order</label><select id="pointOrder"><option value="PNEZD">P,N,E,Z,Description</option><option value="PENZD">P,E,N,Z,Description</option></select></div></div>
+  <div class="row"><div class="field s6"><label>Horizontal units</label><select id="hUnits"><option value="usft">US survey feet</option><option value="ft">International feet</option><option value="m">Meters</option></select></div><div class="field s6"><label>Elevation units</label><select id="vUnits"><option value="usft">US survey feet</option><option value="ft">International feet</option><option value="m">Meters</option></select></div></div>
+  <div class="help">Accepts GRID-coordinate TXT, CSV, ASC, PNEZD and other plain-text files. Comma, tab, semicolon and whitespace delimiters are supported. Point IDs may be numeric or alphanumeric (for example 1A, 1B, 61X). Header rows are skipped automatically.</div>
+  <div class="notice" style="margin-top:10px"><strong>INPUT REQUIREMENT — GRID COORDINATES ONLY</strong><br>Imported Northing/Easting coordinates must be <b>GRID coordinates</b> in the selected State Plane coordinate system. Do <b>not</b> load previously scaled ground, local, modified, or already grid-to-ground-converted coordinates. Doing so would apply the correction a second time and produce incorrect coordinates.</div>
+  <div class="actions"><button id="loadSelectedPoint" class="secondary">Load Selected GRID Point File</button></div>
+  <label style="margin-top:10px">Or paste coordinates</label><textarea id="pointPaste" rows="5" placeholder="1A,495727.7621,430762.1097,63.5573,COR ADA"></textarea><div class="actions"><button id="loadPaste" class="ghost">Load Pasted Points</button></div>
+  <div id="pointStatus" class="status">No points loaded.</div>
+  <div id="inputQaStatus" class="status">Input QA will run when a GRID file is loaded.</div>
+</section>
+
+<section class="card half"><h2>2. Datum / Projection</h2>
+  <div class="row">
+    <div class="field s6"><label>State</label><select id="state"></select></div>
+    <div class="field s6"><label>State Plane zone</label><select id="preset"></select></div>
+  </div>
+
+  <div class="row">
+    <div class="field s6"><label>Horizontal datum</label><select id="datum">
+      <option value="NAD83_2011">NAD83(2011)</option>
+      <option value="NAD83_PA11">NAD83(PA11)</option>
+      <option value="NAD83_NSRS2007">NAD83(NSRS2007)</option>
+      <option value="NAD83_CORS96">NAD83(CORS96)</option>
+      <option value="NAD83_HARN">NAD83(HARN)</option>
+      <option value="NAD83_1986">NAD83(1986)</option>
+      <option value="WGS84">WGS 84</option>
+      <option value="CUSTOM">Custom / Local Datum</option>
+    </select></div>
+    <div class="field s6"><label>Ellipsoid</label><select id="ellipsoid">
+      <option value="GRS80">GRS 1980</option>
+      <option value="WGS84">WGS 84</option>
+      <option value="CLARKE1866">Clarke 1866</option>
+      <option value="INTL1924">International 1924</option>
+      <option value="CUSTOM">Custom Ellipsoid</option>
+    </select></div>
+  </div>
+
+  <div id="customEllipsoid" class="row hidden">
+    <div class="field s6"><label>Semi-major axis a (m)</label><input id="customA" type="number" step="any" value="6378137"></div>
+    <div class="field s6"><label>Inverse flattening 1/f</label><input id="customInvF" type="number" step="any" value="298.257222101"></div>
+  </div>
+
+  <div class="help">Datum selection tells the app what datum the input State Plane coordinates are already on; it does <b>not</b> transform coordinates from one datum to another. The built-in zone definitions cover the standard SPCS83 zones for all 50 states. NAD83 realizations use GRS 1980; Hawaii's official modern zone definitions use NAD83(PA11). Selecting a different datum does not transform coordinates—it applies that datum/ellipsoid to the selected SPCS83 projection geometry.</div>
+  <div id="projStatus" class="status ok"></div>
+  <div id="datumWarning" class="status"></div>
+  <div id="zoneQaStatus" class="status">Geographic zone QA will run after GRID points are loaded.</div>
+</section>
+
+<section class="card half"><h2>3. Vertical / GEOID18</h2>
+  <div class="row"><div class="field"><label>Height method</label><select id="heightMode"><option value="geoid">Input Z = orthometric H; use loaded geoid grid</option><option value="constant">Input Z = orthometric H; use constant geoid N</option><option value="ellipsoid">Input Z = ellipsoid height h</option></select></div></div>
+  <div id="geoidWrap">
+  <label>GEOID18 binary tile(s)</label>
+  <div class="actions" style="margin-top:6px">
+    <button id="chooseRememberGeoid" type="button" class="secondary">Choose &amp; Remember GEOID File</button>
+    <button id="loadRememberedGeoid" type="button" class="ghost">Load Remembered GEOID</button>
+    <button id="forgetRememberedGeoid" type="button" class="ghost">Forget Remembered GEOID</button>
+  </div>
+  <input id="geoidFiles" type="file" multiple accept="*/*">
+  <div class="help">Preferred on Edge/Chrome: use <b>Choose &amp; Remember GEOID File</b>. The browser stores a secure file handle (not the visible Windows path) and can reopen the same GEOID file later if permission remains available. The normal file picker remains available as a fallback. Designed for NGS GEOID18 <code>g2018*.bin</code> tiles.</div>
+  <div id="geoidMemoryStatus" class="status">No remembered GEOID file.</div>
+  <div id="geoidStatus" class="status">No geoid grid loaded.</div>
+  <div id="geoidCoverageStatus" class="status">Project GEOID coverage will be checked before calculation.</div>
+</div>
+  <div id="constantWrap" class="hidden"><label>Constant geoid separation N</label><input id="constantN" type="number" step="any" placeholder="Example: -105.25"><div class="help">Enter N in the selected elevation units. The app uses h = H + N.</div></div>
+  <div class="notice" style="margin-top:10px">The app interpolates geoid separation at each point after converting the State Plane coordinate to latitude/longitude. Geoid grid values are interpreted in meters.</div>
+</section>
+
+<section class="card half"><h2>4. Output Coordinate System</h2>
+  <div class="row"><div class="field"><label>Output method</label><select id="outputMode">
+    <option value="ground">Ground / Modified Coordinates</option>
+    <option value="ldp">Low Distortion Projection (LDP) GRID</option>
+  </select></div></div>
+
+  <div id="groundOutputWrap">
+    <div class="row"><div class="field s6"><label>Point of origin</label><select id="originMode"><option value="stateplane">State Plane Origin</option><option value="centroid" selected>Project Centroid</option><option value="manual">Manual Origin</option></select></div><div class="field s6"><label>Project factor</label><select id="factorMode"><option value="average">Computed Average Combined Factor</option><option value="manual">Manual combined factor</option></select></div></div>
+    <div id="manualOrigin" class="row hidden"><div class="field s6"><label>Manual grid Northing</label><input id="originN" type="number" step="any"></div><div class="field s6"><label>Manual grid Easting</label><input id="originE" type="number" step="any"></div></div>
+    <div id="manualFactor" class="row hidden"><div class="field s6"><label>Manual CSF (grid / ground)</label><input id="csf" type="number" step="any" value="0.9999"></div></div>
+    <div class="row"><div class="field s6"><label>Origin ground Northing</label><input id="groundOriginN" type="number" step="any" placeholder="defaults to grid origin"></div><div class="field s6"><label>Origin ground Easting</label><input id="groundOriginE" type="number" step="any" placeholder="defaults to grid origin"></div></div>
+    <div class="row"><div class="field s6"><label>Optional clockwise rotation (°)</label><input id="rotation" type="number" step="any" value="0"></div></div>
+  </div>
+
+  <div id="ldpOutputWrap" class="hidden">
+    <div class="notice"><strong>LDP workflow:</strong> Input remains the selected <b>State Plane GRID</b>. Output is a custom LDP GRID designed to keep the combined factor near 1.000000 across the project. LDP coordinates are grid coordinates—not scaled ground coordinates.</div>
+
+    <div class="row">
+      <div class="field s6"><label>LDP name</label><input id="ldpName" type="text" value="Project LDP" placeholder="Example: Route 295 LDP"></div>
+      <div class="field s6"><label>LDP projection</label><select id="ldpProjection"><option value="TM">Transverse Mercator</option><option value="LCC">Lambert Conformal Conic (2SP)</option></select></div>
+    </div>
+
+    <div class="row">
+      <div class="field s6"><label>Latitude of origin / center (°)</label><input id="ldpLat0" type="number" step="any" value="40.00000000"></div>
+      <div class="field s6"><label>Central meridian (°)</label><input id="ldpLon0" type="number" step="any" value="-74.50000000"></div>
+    </div>
+
+    <div id="ldpTmWrap">
+      <div class="row">
+        <div class="field s4"><label>Scale factor at origin k₀</label><input id="ldpK0" type="number" step="0.000000001" value="1.000000000"></div>
+        <div class="field s4"><label>False Easting (m)</label><input id="ldpFE" type="number" step="any" value="500000.000"></div>
+        <div class="field s4"><label>False Northing (m)</label><input id="ldpFN" type="number" step="any" value="100000.000"></div>
+      </div>
+    </div>
+
+    <div id="ldpLccWrap" class="hidden">
+      <div class="row">
+        <div class="field s6"><label>1st standard parallel (°)</label><input id="ldpLat1" type="number" step="any" value="39.8333333333"></div>
+        <div class="field s6"><label>2nd standard parallel (°)</label><input id="ldpLat2" type="number" step="any" value="40.1666666667"></div>
+      </div>
+      <div class="row">
+        <div class="field s6"><label>False Easting (m)</label><input id="ldpFELcc" type="number" step="any" value="500000.000"></div>
+        <div class="field s6"><label>False Northing (m)</label><input id="ldpFNLcc" type="number" step="any" value="100000.000"></div>
+      </div>
+    </div>
+
+    <div class="actions"><button id="designLdp" type="button" class="secondary">Design TM LDP From Loaded Project</button></div>
+    <div class="help">The design helper centers a Transverse Mercator projection on the project and solves k₀ so the average LDP combined factor is approximately 1.000000 at the loaded project elevations. Review the parameters and distortion before adopting the LDP.</div>
+    <div id="ldpStatus" class="status">Load and confirm State Plane GRID points to design an LDP.</div>
+  </div>
+
+  <div id="originStatus" class="status">Origin: Project Centroid — load points to calculate.</div>
+  <div id="originQaStatus" class="status"></div>
+  <div id="factorQaStatus" class="status"></div>
+</section>
+
+<section class="card"><h2>5. Calculate / Export</h2>
+  <div class="row">
+    <div class="field s4"><label>Project number</label><input id="projectNumber" type="text" placeholder="Example: 1560"></div>
+    <div class="field s4"><label>Report date</label><input id="reportDate" type="date"></div>
+    <div class="field s4"><label>Created by</label><input id="creatorName" type="text" value="Juan Pichardo, PLS" placeholder="Creator name"></div>
+  </div>
+  <div class="help">Project number, date, and creator name are included in the four-coordinate-table CSV and PDF. The PDF repeats the project/date, datum, coordinate system, CACF, table title, and column headers on every page.</div>
+  <div class="notice" style="margin-top:10px">
+    <label style="display:flex;align-items:flex-start;gap:10px;font-weight:700;cursor:pointer">
+      <input id="confirmGrid" type="checkbox" style="width:20px;height:20px;margin-top:1px;flex:0 0 auto">
+      <span>I confirm the loaded Northing/Easting coordinates are <b>GRID coordinates</b> in the selected State Plane coordinate system.</span>
+    </label>
+  </div>
+  <div class="actions">
+    <button id="calc" class="primary" disabled>Calculate Ground Coordinates</button>
+    <button id="csv" class="secondary" disabled>Export Ground CSV</button>
+    <button id="txt" class="secondary" disabled>Export Ground PNEZD TXT</button>
+    <button id="finalControl" class="secondary" disabled>Export Final Control CSV</button>
+    <button id="coord4csv" class="secondary" disabled>Export 4 Tables CSV</button>
+    <button id="coord4pdf" class="secondary" disabled>Export 4 Tables PDF</button>
+    <button id="report" class="ghost" disabled>Download Conversion Report</button>
+  </div>
+  <div id="calcStatus" class="status">Load GRID coordinates and confirm the input type before calculating.</div>
+  <div id="coordExportStatus" class="status">Four-table export will be available after calculation.</div>
+</section>
+
+<section id="summary" class="card hidden"><h2>Conversion Summary</h2><div class="metrics">
+<div class="metric"><div class="k">Points</div><div class="v" id="mPts">—</div></div>
+<div class="metric"><div class="k" id="mCsfLabel">Project CACF</div><div class="v" id="mCsf">—</div></div>
+<div class="metric"><div class="k" id="mMinLabel">Min CSF</div><div class="v" id="mMin">—</div></div>
+<div class="metric"><div class="k" id="mMaxLabel">Max CSF</div><div class="v" id="mMax">—</div></div>
+<div class="metric"><div class="k">Geoid N range</div><div class="v" id="mGeoid">—</div></div>
+<div class="metric groundSummaryOnly"><div class="k">Average ΔN</div><div class="v" id="mShiftN">—</div></div>
+<div class="metric groundSummaryOnly"><div class="k">Average ΔE</div><div class="v" id="mShiftE">—</div></div>
+<div class="metric groundSummaryOnly"><div class="k">Net Average Shift</div><div class="v" id="mShiftMag">—</div></div>
+<div class="metric groundSummaryOnly"><div class="k">Average Shift Direction</div><div class="v" id="mShiftDir">—</div></div>
+<div class="metric groundSummaryOnly"><div class="k">Average Point Shift</div><div class="v" id="mAvgPointShift">—</div></div>
+<div class="metric ldpSummaryOnly hidden"><div class="k">Avg LDP Distortion</div><div class="v" id="mLdpAvgPpm">—</div></div>
+<div class="metric ldpSummaryOnly hidden"><div class="k">Max |LDP Distortion|</div><div class="v" id="mLdpMaxPpm">—</div></div>
+</div><div id="shiftNote" class="shiftNote">ΔN and ΔE are Ground − Grid. “Net Average Shift” is the vector average. With Project Centroid as the origin it can be near zero by design; “Average Point Shift” shows the average amount each coordinate moved.</div></section>
+
+<section id="analysisCard" class="card hidden"><div class="tabs"><button type="button" class="tabBtn active" data-tab="resultsTab">Results</button><button type="button" class="tabBtn" data-tab="inverseTab">Pair Inverse</button><button type="button" class="tabBtn" data-tab="distortionTab">Distortion Analysis</button><button type="button" class="tabBtn" data-tab="roundTripTab">Round-Trip QA</button></div>
+<div id="resultsTab" class="tabPane"><h2>Converted Coordinates</h2><div class="tableWrap"><table><thead><tr><th>Point</th><th>Grid N</th><th>Grid E</th><th id="outNHeader">Ground N</th><th id="outEHeader">Ground E</th><th>Elev H</th><th>Geoid N m</th><th>Lat</th><th>Lon</th><th>Grid Scale</th><th>Elev Factor</th><th>CSF</th><th>Description</th></tr></thead><tbody id="tbody"></tbody></table></div></div>
+<div id="inverseTab" class="tabPane hidden"><h2>Pair Inverse — Grid vs Ground</h2><div class="row"><div class="field s6"><label>From point</label><select id="inverseA"></select></div><div class="field s6"><label>To point</label><select id="inverseB"></select></div></div><div class="actions"><button type="button" id="swapInverse" class="ghost">Swap Points</button></div><div id="inverseStatus" class="status">Select two different points.</div><div class="inverseMetrics">
+<div class="inverseMetric"><div class="k">Grid Distance</div><div class="v" id="invGridDist">—</div></div>
+<div class="inverseMetric"><div class="k" id="invOutputDistLabel">Ground Distance</div><div class="v" id="invGroundDist">—</div></div>
+<div class="inverseMetric"><div class="k" id="invDiffLabel">Ground − Grid</div><div class="v" id="invDistDiff">—</div></div>
+<div class="inverseMetric"><div class="k">Distance Ratio</div><div class="v" id="invRatio">—</div></div>
+<div class="inverseMetric"><div class="k">Grid Azimuth</div><div class="v" id="invGridAz">—</div></div>
+<div class="inverseMetric"><div class="k" id="invOutputAzLabel">Ground Azimuth</div><div class="v" id="invGroundAz">—</div></div>
+<div class="inverseMetric"><div class="k">Grid ΔN / ΔE</div><div class="v" id="invGridDE">—</div></div>
+<div class="inverseMetric"><div class="k" id="invOutputDELabel">Ground ΔN / ΔE</div><div class="v" id="invGroundDE">—</div></div>
+</div></div>
+
+<div id="distortionTab" class="tabPane hidden">
+  <h2>Distortion Analysis</h2>
+  <div class="metrics">
+    <div class="metric"><div class="k">Source Avg Distortion</div><div class="v" id="dSourceAvg">—</div></div>
+    <div class="metric"><div class="k">Source Max |Distortion|</div><div class="v" id="dSourceMax">—</div></div>
+    <div class="metric ldpDistOnly hidden"><div class="k">LDP Avg Distortion</div><div class="v" id="dLdpAvg">—</div></div>
+    <div class="metric ldpDistOnly hidden"><div class="k">LDP Max |Distortion|</div><div class="v" id="dLdpMax">—</div></div>
+  </div>
+  <div class="help">Distortion is reported in parts per million (ppm) from combined factor: (CF − 1) × 1,000,000. Positive means grid distance is longer than ground; negative means grid distance is shorter than ground.</div>
+  <div id="distortionChart" class="distortionChart"></div>
+  <div class="tableWrap"><table><thead><tr><th>Point</th><th>Source CF</th><th>Source ppm</th><th class="ldpDistCol">LDP CF</th><th class="ldpDistCol">LDP ppm</th><th>Elevation Factor</th></tr></thead><tbody id="distortionBody"></tbody></table></div>
+</div>
+
+<div id="roundTripTab" class="tabPane hidden">
+  <h2>Round-Trip QA</h2>
+  <div class="row">
+    <div class="field s6"><label>Pass tolerance (horizontal units)</label><input id="roundTripTol" type="number" min="0" step="0.0001" value="0.0010"></div>
+    <div class="field s6"><label>QA action</label><div class="actions"><button id="runRoundTrip" type="button" class="secondary">Run Round-Trip QA</button></div></div>
+  </div>
+  <div id="roundTripStatus" class="status">Calculate coordinates, then run the round-trip test.</div>
+  <div class="metrics">
+    <div class="metric"><div class="k">Source Projection Max</div><div class="v" id="rtSourceMax">—</div></div>
+    <div class="metric"><div class="k">Full Workflow Max</div><div class="v" id="rtFullMax">—</div></div>
+    <div class="metric"><div class="k">Full Workflow RMS</div><div class="v" id="rtRms">—</div></div>
+    <div class="metric"><div class="k">Worst Point</div><div class="v" id="rtWorst">—</div></div>
+  </div>
+  <div class="tableWrap"><table><thead><tr><th>Point</th><th>Source RT ΔN</th><th>Source RT ΔE</th><th>Source RT Hz</th><th>Full RT ΔN</th><th>Full RT ΔE</th><th>Full RT Hz</th><th>Status</th></tr></thead><tbody id="roundTripBody"></tbody></table></div>
+</div>
+
+</section>
+</div></main>
+
+<section id="licensePanel" class="card hidden license-copy" style="max-width:1180px;margin:12px auto">
+  <h2>License / About</h2>
+  <p><strong>Grid to Ground v3.6</strong><br>Copyright © 2026 Juan Pichardo, PLS. All Rights Reserved.</p>
+  <p>Proprietary software. Unauthorized copying, modification, redistribution, resale, sublicensing, or removal of attribution is prohibited.</p>
+  <p><strong>Permitted use:</strong> An authorized copy may be used as a surveying, engineering, mapping, QA/QC, training, or project-computation aid.</p>
+  <p><strong>Not permitted without written authorization from the copyright owner:</strong> republishing the source as another product; removing or altering creator attribution; selling, sublicensing, redistributing, or publishing modified versions; or representing the software as another person's work.</p>
+  <p><strong>Professional-use notice:</strong> Users must independently verify the applicable datum, State Plane zone, units, geoid model, combined factor, project requirements, and governing standards. This software is a computational aid and does not replace professional judgment or required QA/QC.</p>
+  <p><strong>No warranty:</strong> The software is provided as-is, to the extent permitted by law, without warranties of accuracy, merchantability, fitness for a particular purpose, or uninterrupted operation.</p>
+  <p><strong>Build:</strong> GTG-2026-0920-PUBLIC-3.6<br><strong>Release fingerprint:</strong> 97FAC0727B8B42D0CC6C</p>
+  <div class="actions"><button id="closeLicense" type="button" class="secondary">Close</button></div>
+</section>
+<script>
+'use strict';
+const $=id=>document.getElementById(id), DEG=Math.PI/180, RAD=180/Math.PI, USFT=1200/3937, IFT=0.3048;
+const SOFTWARE_OWNER="Juan Pichardo, PLS",SOFTWARE_COPYRIGHT="Copyright \u00a9 2026 Juan Pichardo, PLS. All Rights Reserved.",SOFTWARE_BUILD="GTG-2026-0920-PUBLIC-3.6";
+let A=6378137, INVF=298.257222101, F=1/INVF, E2=F*(2-F), E=Math.sqrt(E2), EP2=E2/(1-E2);
+const ELLIPSOIDS={
+  GRS80:{name:'GRS 1980',a:6378137,invf:298.257222101},
+  WGS84:{name:'WGS 84',a:6378137,invf:298.257223563},
+  CLARKE1866:{name:'Clarke 1866',a:6378206.4,invf:294.978698214},
+  INTL1924:{name:'International 1924',a:6378388,invf:297}
+};
+const DATUMS={
+  NAD83_2011:{name:'NAD83(2011)',ellipsoid:'GRS80'},
+  NAD83_PA11:{name:'NAD83(PA11)',ellipsoid:'GRS80'},
+  NAD83_NSRS2007:{name:'NAD83(NSRS2007)',ellipsoid:'GRS80'},
+  NAD83_CORS96:{name:'NAD83(CORS96)',ellipsoid:'GRS80'},
+  NAD83_HARN:{name:'NAD83(HARN)',ellipsoid:'GRS80'},
+  NAD83_1986:{name:'NAD83(1986)',ellipsoid:'GRS80'},
+  WGS84:{name:'WGS 84',ellipsoid:'WGS84'},
+  CUSTOM:{name:'Custom / Local Datum',ellipsoid:null}
+};
+function datumInfo(){return DATUMS[$('datum').value]||DATUMS.NAD83_2011}
+function datumName(){return datumInfo().name}
+function ellipsoidInfo(){
+  const key=$('ellipsoid').value;
+  if(key==='CUSTOM')return {name:'Custom Ellipsoid',a:Number($('customA').value),invf:Number($('customInvF').value)};
+  return ELLIPSOIDS[key]||ELLIPSOIDS.GRS80;
+}
+function applyEllipsoid(){
+  const e=ellipsoidInfo();
+  if(!Number.isFinite(e.a)||e.a<6000000||e.a>7000000)throw new Error('Custom semi-major axis must be a valid value in meters.');
+  if(!Number.isFinite(e.invf)||e.invf<200||e.invf>400)throw new Error('Custom inverse flattening must be between 200 and 400.');
+  A=e.a;INVF=e.invf;F=1/INVF;E2=F*(2-F);E=Math.sqrt(E2);EP2=E2/(1-E2);
+  return e;
+}
+function ellipsoidName(){return ellipsoidInfo().name}
+let points=[], results=[], pointFileName='', geoidGrids=[], lastSummary=null;
+
+const GEOID_DB='GridToGroundGeoidDB',GEOID_STORE='handles',GEOID_KEY='rememberedGeoidHandles';
+function geoidDbOpen(){
+  return new Promise((resolve,reject)=>{
+    if(!('indexedDB' in window)){reject(new Error('IndexedDB is not available in this browser.'));return}
+    const req=indexedDB.open(GEOID_DB,1);
+    req.onupgradeneeded=()=>{const db=req.result;if(!db.objectStoreNames.contains(GEOID_STORE))db.createObjectStore(GEOID_STORE)};
+    req.onsuccess=()=>resolve(req.result);
+    req.onerror=()=>reject(req.error||new Error('Unable to open GEOID memory database.'));
+  });
+}
+async function geoidDbSet(handles){
+  const db=await geoidDbOpen();
+  await new Promise((resolve,reject)=>{
+    const tx=db.transaction(GEOID_STORE,'readwrite');
+    tx.objectStore(GEOID_STORE).put(handles,GEOID_KEY);
+    tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);
+  });
+  db.close();
+}
+async function geoidDbGet(){
+  const db=await geoidDbOpen();
+  const value=await new Promise((resolve,reject)=>{
+    const tx=db.transaction(GEOID_STORE,'readonly'),req=tx.objectStore(GEOID_STORE).get(GEOID_KEY);
+    req.onsuccess=()=>resolve(req.result||[]);
+    req.onerror=()=>reject(req.error);
+  });
+  db.close();return value;
+}
+async function geoidDbClear(){
+  const db=await geoidDbOpen();
+  await new Promise((resolve,reject)=>{
+    const tx=db.transaction(GEOID_STORE,'readwrite');
+    tx.objectStore(GEOID_STORE).delete(GEOID_KEY);
+    tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);
+  });
+  db.close();
+}
+async function loadGeoidHandles(handles,askPermission){
+  if(!handles||!handles.length)throw new Error('No remembered GEOID file is available.');
+  const files=[],denied=[];
+  for(const h of handles){
+    try{
+      let perm=typeof h.queryPermission==='function'?await h.queryPermission({mode:'read'}):'granted';
+      if(perm!=='granted'&&askPermission&&typeof h.requestPermission==='function')perm=await h.requestPermission({mode:'read'});
+      if(perm==='granted')files.push(await h.getFile());
+      else denied.push(h.name||'GEOID file');
+    }catch(e){denied.push(h.name||'GEOID file')}
+  }
+  if(!files.length)throw new Error('The remembered GEOID file needs permission. Click "Load Remembered GEOID" to allow access.');
+  await loadGeoids(files);
+  setStatus('geoidMemoryStatus',`Remembered GEOID: ${handles.map(h=>h.name||'GEOID file').join(', ')}${denied.length?' (some files still need permission)':''}`,'ok');
+}
+async function chooseAndRememberGeoid(){
+  try{
+    if(typeof window.showOpenFilePicker!=='function'){
+      $('geoidFiles').click();
+      setStatus('geoidMemoryStatus','Persistent GEOID file handles are not supported by this browser. Use the normal file picker; the browser may remember the last folder itself.','warn');
+      return;
+    }
+    const handles=await window.showOpenFilePicker({
+      multiple:true,
+      types:[{description:'NGS GEOID binary grid',accept:{'application/octet-stream':['.bin']}}]
+    });
+    if(!handles.length)return;
+    await geoidDbSet(handles);
+    await loadGeoidHandles(handles,false);
+  }catch(e){
+    if(e&&e.name==='AbortError')return;
+    setStatus('geoidMemoryStatus','Unable to remember GEOID file: '+e.message,'bad');
+  }
+}
+async function loadRememberedGeoid(){
+  try{const handles=await geoidDbGet();await loadGeoidHandles(handles,true)}
+  catch(e){setStatus('geoidMemoryStatus',e.message,'bad')}
+}
+async function forgetRememberedGeoid(){
+  try{await geoidDbClear();setStatus('geoidMemoryStatus','Remembered GEOID file cleared.','ok')}
+  catch(e){setStatus('geoidMemoryStatus','Unable to clear remembered GEOID: '+e.message,'bad')}
+}
+async function initRememberedGeoid(){
+  try{
+    const handles=await geoidDbGet();
+    if(!handles.length){setStatus('geoidMemoryStatus','No remembered GEOID file.','');return}
+    setStatus('geoidMemoryStatus',`Remembered GEOID: ${handles.map(h=>h.name||'GEOID file').join(', ')}. Checking permission…`,'warn');
+    try{await loadGeoidHandles(handles,false)}
+    catch(e){setStatus('geoidMemoryStatus',`Remembered GEOID: ${handles.map(h=>h.name||'GEOID file').join(', ')}. Click "Load Remembered GEOID" to restore access.`,'warn')}
+  }catch(e){
+    setStatus('geoidMemoryStatus','GEOID memory is not available in this browser.','warn');
+  }
+}
+
+const STATE_ZONES={"Alabama":[{"name":"Alabama East","zone":"East","epsg":"6355","datumKey":"NAD83_2011","type":"TM","lat0":30.5,"lon0":-85.83333333333333,"k0":0.99996,"FE":200000.0,"FN":0.0,"bounds":[-86.79,30.99,-84.89,35.0]},{"name":"Alabama West","zone":"West","epsg":"6356","datumKey":"NAD83_2011","type":"TM","lat0":30.0,"lon0":-87.5,"k0":0.999933333,"FE":600000.0,"FN":0.0,"bounds":[-88.48,30.14,-86.3,35.02]}],"Alaska":[{"name":"Alaska zone 1","zone":"zone 1","epsg":"6394","datumKey":"NAD83_2011","type":"HOM","latc":57.0,"lonc":-133.66666666666666,"alpha":323.13010236111114,"gamma":323.13010236111114,"k0":0.9999,"FE":5000000.0,"FN":-5000000.0,"bounds":[-141.0,54.61,-129.99,60.35]},{"name":"Alaska zone 2","zone":"zone 2","epsg":"6395","datumKey":"NAD83_2011","type":"TM","lat0":54.0,"lon0":-142.0,"k0":0.9999,"FE":500000.0,"FN":0.0,"bounds":[-144.01,59.72,-140.98,70.16]},{"name":"Alaska zone 3","zone":"zone 3","epsg":"6396","datumKey":"NAD83_2011","type":"TM","lat0":54.0,"lon0":-146.0,"k0":0.9999,"FE":500000.0,"FN":0.0,"bounds":[-148.0,59.72,-144.0,70.38]},{"name":"Alaska zone 4","zone":"zone 4","epsg":"6397","datumKey":"NAD83_2011","type":"TM","lat0":54.0,"lon0":-150.0,"k0":0.9999,"FE":500000.0,"FN":0.0,"bounds":[-152.01,59.11,-147.99,70.63]},{"name":"Alaska zone 5","zone":"zone 5","epsg":"6398","datumKey":"NAD83_2011","type":"TM","lat0":54.0,"lon0":-154.0,"k0":0.9999,"FE":500000.0,"FN":0.0,"bounds":[-156.0,55.72,-151.86,71.28]},{"name":"Alaska zone 6","zone":"zone 6","epsg":"6399","datumKey":"NAD83_2011","type":"TM","lat0":54.0,"lon0":-158.0,"k0":0.9999,"FE":500000.0,"FN":0.0,"bounds":[-160.0,54.89,-155.99,71.4]},{"name":"Alaska zone 7","zone":"zone 7","epsg":"6400","datumKey":"NAD83_2011","type":"TM","lat0":54.0,"lon0":-162.0,"k0":0.9999,"FE":500000.0,"FN":0.0,"bounds":[-164.01,54.32,-160.0,70.74]},{"name":"Alaska zone 8","zone":"zone 8","epsg":"6401","datumKey":"NAD83_2011","type":"TM","lat0":54.0,"lon0":-166.0,"k0":0.9999,"FE":500000.0,"FN":0.0,"bounds":[-168.26,54.34,-164.0,69.05]},{"name":"Alaska zone 9","zone":"zone 9","epsg":"6402","datumKey":"NAD83_2011","type":"TM","lat0":54.0,"lon0":-170.0,"k0":0.9999,"FE":500000.0,"FN":0.0,"bounds":[-173.16,56.49,-168.0,65.82]},{"name":"Alaska zone 10","zone":"zone 10","epsg":"6403","datumKey":"NAD83_2011","type":"LCC","lat0":51.0,"lon0":-176.0,"lat1":53.833333333333336,"lat2":51.833333333333336,"FE":1000000.0,"FN":0.0,"bounds":[172.42,51.3,-164.84,54.34]}],"Arizona":[{"name":"Arizona East","zone":"East","epsg":"6406","datumKey":"NAD83_2011","type":"TM","lat0":31.0,"lon0":-110.16666666666667,"k0":0.9999,"FE":213360.0,"FN":0.0,"bounds":[-111.71,31.33,-109.04,37.01]},{"name":"Arizona Central","zone":"Central","epsg":"6404","datumKey":"NAD83_2011","type":"TM","lat0":31.0,"lon0":-111.91666666666667,"k0":0.9999,"FE":213360.0,"FN":0.0,"bounds":[-113.35,31.33,-110.44,37.01]},{"name":"Arizona West","zone":"West","epsg":"6408","datumKey":"NAD83_2011","type":"TM","lat0":31.0,"lon0":-113.75,"k0":0.999933333,"FE":213360.0,"FN":0.0,"bounds":[-114.81,32.05,-112.52,37.0]}],"Arkansas":[{"name":"Arkansas North","zone":"North","epsg":"6410","datumKey":"NAD83_2011","type":"LCC","lat0":34.333333333333336,"lon0":-92.0,"lat1":36.233333333333334,"lat2":34.93333333333333,"FE":400000.0,"FN":0.0,"bounds":[-94.62,34.67,-89.64,36.5]},{"name":"Arkansas South","zone":"South","epsg":"6412","datumKey":"NAD83_2011","type":"LCC","lat0":32.666666666666664,"lon0":-92.0,"lat1":34.766666666666666,"lat2":33.3,"FE":400000.0,"FN":400000.0,"bounds":[-94.48,33.01,-90.4,35.1]}],"California":[{"name":"California zone 1","zone":"zone 1","epsg":"6415","datumKey":"NAD83_2011","type":"LCC","lat0":39.333333333333336,"lon0":-122.0,"lat1":41.666666666666664,"lat2":40.0,"FE":2000000.0,"FN":500000.0,"bounds":[-124.45,39.59,-119.99,42.01]},{"name":"California zone 2","zone":"zone 2","epsg":"6417","datumKey":"NAD83_2011","type":"LCC","lat0":37.666666666666664,"lon0":-122.0,"lat1":39.833333333333336,"lat2":38.333333333333336,"FE":2000000.0,"FN":500000.0,"bounds":[-124.06,38.02,-119.54,40.16]},{"name":"California zone 3","zone":"zone 3","epsg":"6419","datumKey":"NAD83_2011","type":"LCC","lat0":36.5,"lon0":-120.5,"lat1":38.43333333333333,"lat2":37.06666666666667,"FE":2000000.0,"FN":500000.0,"bounds":[-123.02,36.73,-117.83,38.71]},{"name":"California zone 4","zone":"zone 4","epsg":"6421","datumKey":"NAD83_2011","type":"LCC","lat0":35.333333333333336,"lon0":-119.0,"lat1":37.25,"lat2":36.0,"FE":2000000.0,"FN":500000.0,"bounds":[-122.01,35.78,-115.62,37.58]},{"name":"California zone 5","zone":"zone 5","epsg":"6423","datumKey":"NAD83_2011","type":"LCC","lat0":33.5,"lon0":-118.0,"lat1":35.46666666666667,"lat2":34.03333333333333,"FE":2000000.0,"FN":500000.0,"bounds":[-121.42,32.76,-114.12,35.81]},{"name":"California zone 6","zone":"zone 6","epsg":"6425","datumKey":"NAD83_2011","type":"LCC","lat0":32.166666666666664,"lon0":-116.25,"lat1":33.88333333333333,"lat2":32.78333333333333,"FE":2000000.0,"FN":500000.0,"bounds":[-118.15,32.53,-114.42,34.08]}],"Colorado":[{"name":"Colorado North","zone":"North","epsg":"6429","datumKey":"NAD83_2011","type":"LCC","lat0":39.333333333333336,"lon0":-105.5,"lat1":40.78333333333333,"lat2":39.71666666666667,"FE":914401.8289,"FN":304800.6096,"bounds":[-109.06,39.56,-102.04,41.01]},{"name":"Colorado Central","zone":"Central","epsg":"6427","datumKey":"NAD83_2011","type":"LCC","lat0":37.833333333333336,"lon0":-105.5,"lat1":39.75,"lat2":38.45,"FE":914401.8289,"FN":304800.6096,"bounds":[-109.06,38.14,-102.04,40.09]},{"name":"Colorado South","zone":"South","epsg":"6431","datumKey":"NAD83_2011","type":"LCC","lat0":36.666666666666664,"lon0":-105.5,"lat1":38.43333333333333,"lat2":37.233333333333334,"FE":914401.8289,"FN":304800.6096,"bounds":[-109.06,36.98,-102.04,38.68]}],"Connecticut":[{"name":"Connecticut","zone":"Single Zone","epsg":"6433","datumKey":"NAD83_2011","type":"LCC","lat0":40.833333333333336,"lon0":-72.75,"lat1":41.86666666666667,"lat2":41.2,"FE":304800.6096,"FN":152400.3048,"bounds":[-73.73,40.98,-71.78,42.05]}],"Delaware":[{"name":"Delaware","zone":"Single Zone","epsg":"6435","datumKey":"NAD83_2011","type":"TM","lat0":38.0,"lon0":-75.41666666666667,"k0":0.999995,"FE":200000.0,"FN":0.0,"bounds":[-75.8,38.44,-74.97,39.85]}],"Florida":[{"name":"Florida East","zone":"East","epsg":"6437","datumKey":"NAD83_2011","type":"TM","lat0":24.333333333333332,"lon0":-81.0,"k0":0.999941177,"FE":200000.0,"FN":0.0,"bounds":[-82.33,24.41,-79.97,30.83]},{"name":"Florida West","zone":"West","epsg":"6442","datumKey":"NAD83_2011","type":"TM","lat0":24.333333333333332,"lon0":-82.0,"k0":0.999941177,"FE":200000.0,"FN":0.0,"bounds":[-83.34,26.27,-81.13,29.6]},{"name":"Florida North","zone":"North","epsg":"6440","datumKey":"NAD83_2011","type":"LCC","lat0":29.0,"lon0":-84.5,"lat1":30.75,"lat2":29.583333333333332,"FE":600000.0,"FN":0.0,"bounds":[-87.63,29.21,-82.04,31.01]}],"Georgia":[{"name":"Georgia East","zone":"East","epsg":"6444","datumKey":"NAD83_2011","type":"TM","lat0":30.0,"lon0":-82.16666666666667,"k0":0.9999,"FE":200000.0,"FN":0.0,"bounds":[-83.47,30.36,-80.77,34.68]},{"name":"Georgia West","zone":"West","epsg":"6446","datumKey":"NAD83_2011","type":"TM","lat0":30.0,"lon0":-84.16666666666667,"k0":0.9999,"FE":700000.0,"FN":0.0,"bounds":[-85.61,30.62,-82.99,35.01]}],"Hawaii":[{"name":"Hawaii zone 1","zone":"zone 1","epsg":"6628","datumKey":"NAD83_PA11","type":"TM","lat0":18.833333333333332,"lon0":-155.5,"k0":0.999966667,"FE":500000.0,"FN":0.0,"bounds":[-156.1,18.87,-154.74,20.33]},{"name":"Hawaii zone 2","zone":"zone 2","epsg":"6629","datumKey":"NAD83_PA11","type":"TM","lat0":20.333333333333332,"lon0":-156.66666666666666,"k0":0.999966667,"FE":500000.0,"FN":0.0,"bounds":[-157.36,20.45,-155.93,21.26]},{"name":"Hawaii zone 3","zone":"zone 3","epsg":"6630","datumKey":"NAD83_PA11","type":"TM","lat0":21.166666666666668,"lon0":-158.0,"k0":0.99999,"FE":500000.0,"FN":0.0,"bounds":[-158.33,21.2,-157.61,21.75]},{"name":"Hawaii zone 4","zone":"zone 4","epsg":"6631","datumKey":"NAD83_PA11","type":"TM","lat0":21.833333333333332,"lon0":-159.5,"k0":0.99999,"FE":500000.0,"FN":0.0,"bounds":[-159.85,21.81,-159.23,22.29]},{"name":"Hawaii zone 5","zone":"zone 5","epsg":"6632","datumKey":"NAD83_PA11","type":"TM","lat0":21.666666666666668,"lon0":-160.16666666666666,"k0":1.0,"FE":500000.0,"FN":0.0,"bounds":[-160.3,21.73,-159.99,22.07]}],"Idaho":[{"name":"Idaho East","zone":"East","epsg":"6450","datumKey":"NAD83_2011","type":"TM","lat0":41.666666666666664,"lon0":-112.16666666666667,"k0":0.999947368,"FE":200000.0,"FN":0.0,"bounds":[-113.24,41.99,-111.04,44.75]},{"name":"Idaho Central","zone":"Central","epsg":"6448","datumKey":"NAD83_2011","type":"TM","lat0":41.666666666666664,"lon0":-114.0,"k0":0.999947368,"FE":500000.0,"FN":0.0,"bounds":[-115.3,41.99,-112.67,45.7]},{"name":"Idaho West","zone":"West","epsg":"6452","datumKey":"NAD83_2011","type":"TM","lat0":41.666666666666664,"lon0":-115.75,"k0":0.999933333,"FE":800000.0,"FN":0.0,"bounds":[-117.24,41.99,-114.32,49.01]}],"Illinois":[{"name":"Illinois East","zone":"East","epsg":"6454","datumKey":"NAD83_2011","type":"TM","lat0":36.666666666666664,"lon0":-88.33333333333333,"k0":0.999975,"FE":300000.0,"FN":0.0,"bounds":[-89.27,37.06,-87.02,42.5]},{"name":"Illinois West","zone":"West","epsg":"6456","datumKey":"NAD83_2011","type":"TM","lat0":36.666666666666664,"lon0":-90.16666666666667,"k0":0.999941177,"FE":700000.0,"FN":0.0,"bounds":[-91.52,36.97,-88.92,42.51]}],"Indiana":[{"name":"Indiana East","zone":"East","epsg":"6458","datumKey":"NAD83_2011","type":"TM","lat0":37.5,"lon0":-85.66666666666667,"k0":0.999966667,"FE":100000.0,"FN":250000.0,"bounds":[-86.59,37.95,-84.78,41.77]},{"name":"Indiana West","zone":"West","epsg":"6460","datumKey":"NAD83_2011","type":"TM","lat0":37.5,"lon0":-87.08333333333333,"k0":0.999966667,"FE":900000.0,"FN":250000.0,"bounds":[-88.1,37.77,-86.24,41.77]}],"Iowa":[{"name":"Iowa North","zone":"North","epsg":"6462","datumKey":"NAD83_2011","type":"LCC","lat0":41.5,"lon0":-93.5,"lat1":43.266666666666666,"lat2":42.06666666666667,"FE":1500000.0,"FN":1000000.0,"bounds":[-96.65,41.85,-90.15,43.51]},{"name":"Iowa South","zone":"South","epsg":"6464","datumKey":"NAD83_2011","type":"LCC","lat0":40.0,"lon0":-93.5,"lat1":41.78333333333333,"lat2":40.61666666666667,"FE":500000.0,"FN":0.0,"bounds":[-96.14,40.36,-90.14,42.04]}],"Kansas":[{"name":"Kansas North","zone":"North","epsg":"6466","datumKey":"NAD83_2011","type":"LCC","lat0":38.333333333333336,"lon0":-98.0,"lat1":39.78333333333333,"lat2":38.71666666666667,"FE":400000.0,"FN":0.0,"bounds":[-102.06,38.52,-94.58,40.01]},{"name":"Kansas South","zone":"South","epsg":"6468","datumKey":"NAD83_2011","type":"LCC","lat0":36.666666666666664,"lon0":-98.5,"lat1":38.56666666666667,"lat2":37.266666666666666,"FE":400000.0,"FN":400000.0,"bounds":[-102.05,36.99,-94.6,38.88]}],"Kentucky":[{"name":"Kentucky North","zone":"North","epsg":"6470","datumKey":"NAD83_2011","type":"LCC","lat0":37.5,"lon0":-84.25,"lat1":37.96666666666667,"lat2":38.96666666666667,"FE":500000.0,"FN":0.0,"bounds":[-85.96,37.71,-82.47,39.15]},{"name":"Kentucky South","zone":"South","epsg":"6474","datumKey":"NAD83_2011","type":"LCC","lat0":36.333333333333336,"lon0":-85.75,"lat1":37.93333333333333,"lat2":36.733333333333334,"FE":500000.0,"FN":500000.0,"bounds":[-89.57,36.49,-81.95,38.17]},{"name":"Kentucky Single Zone","zone":"Single Zone","epsg":"6472","datumKey":"NAD83_2011","type":"LCC","lat0":36.333333333333336,"lon0":-85.75,"lat1":37.083333333333336,"lat2":38.666666666666664,"FE":1500000.0,"FN":1000000.0,"bounds":[-89.57,36.49,-81.95,39.15]}],"Louisiana":[{"name":"Louisiana North","zone":"North","epsg":"6476","datumKey":"NAD83_2011","type":"LCC","lat0":30.5,"lon0":-92.5,"lat1":32.666666666666664,"lat2":31.166666666666668,"FE":1000000.0,"FN":0.0,"bounds":[-94.05,30.85,-90.86,33.03]},{"name":"Louisiana South","zone":"South","epsg":"6478","datumKey":"NAD83_2011","type":"LCC","lat0":28.5,"lon0":-91.33333333333333,"lat1":30.7,"lat2":29.3,"FE":1000000.0,"FN":0.0,"bounds":[-93.94,28.85,-88.75,31.07]}],"Maine":[{"name":"Maine East","zone":"East","epsg":"6483","datumKey":"NAD83_2011","type":"TM","lat0":43.666666666666664,"lon0":-68.5,"k0":0.9999,"FE":300000.0,"FN":0.0,"bounds":[-70.03,43.88,-66.91,47.47]},{"name":"Maine West","zone":"West","epsg":"6485","datumKey":"NAD83_2011","type":"TM","lat0":42.833333333333336,"lon0":-70.16666666666667,"k0":0.999966667,"FE":900000.0,"FN":0.0,"bounds":[-71.09,43.04,-69.26,46.58]}],"Maryland":[{"name":"Maryland","zone":"Single Zone","epsg":"6487","datumKey":"NAD83_2011","type":"LCC","lat0":37.666666666666664,"lon0":-77.0,"lat1":39.45,"lat2":38.3,"FE":400000.0,"FN":0.0,"bounds":[-79.49,37.97,-74.97,39.73]}],"Massachusetts":[{"name":"Massachusetts Mainland","zone":"Mainland","epsg":"6491","datumKey":"NAD83_2011","type":"LCC","lat0":41.0,"lon0":-71.5,"lat1":42.68333333333333,"lat2":41.71666666666667,"FE":200000.0,"FN":750000.0,"bounds":[-73.5,41.46,-69.86,42.89]},{"name":"Massachusetts Island","zone":"Island","epsg":"6489","datumKey":"NAD83_2011","type":"LCC","lat0":41.0,"lon0":-70.5,"lat1":41.483333333333334,"lat2":41.28333333333333,"FE":500000.0,"FN":0.0,"bounds":[-70.91,41.19,-69.89,41.51]}],"Michigan":[{"name":"Michigan North","zone":"North","epsg":"6495","datumKey":"NAD83_2011","type":"LCC","lat0":44.78333333333333,"lon0":-87.0,"lat1":47.083333333333336,"lat2":45.483333333333334,"FE":8000000.0,"FN":0.0,"bounds":[-90.42,45.08,-83.44,48.32]},{"name":"Michigan Central","zone":"Central","epsg":"6493","datumKey":"NAD83_2011","type":"LCC","lat0":43.31666666666667,"lon0":-84.36666666666666,"lat1":45.7,"lat2":44.18333333333333,"FE":6000000.0,"FN":0.0,"bounds":[-87.06,43.8,-82.27,45.92]},{"name":"Michigan South","zone":"South","epsg":"6498","datumKey":"NAD83_2011","type":"LCC","lat0":41.5,"lon0":-84.36666666666666,"lat1":43.666666666666664,"lat2":42.1,"FE":4000000.0,"FN":0.0,"bounds":[-87.2,41.69,-82.13,44.22]}],"Minnesota":[{"name":"Minnesota North","zone":"North","epsg":"6502","datumKey":"NAD83_2011","type":"LCC","lat0":46.5,"lon0":-93.1,"lat1":48.63333333333333,"lat2":47.03333333333333,"FE":800000.0,"FN":100000.0,"bounds":[-97.22,46.64,-89.49,49.38]},{"name":"Minnesota Central","zone":"Central","epsg":"6500","datumKey":"NAD83_2011","type":"LCC","lat0":45.0,"lon0":-94.25,"lat1":47.05,"lat2":45.61666666666667,"FE":800000.0,"FN":100000.0,"bounds":[-96.86,45.28,-92.29,47.48]},{"name":"Minnesota South","zone":"South","epsg":"6504","datumKey":"NAD83_2011","type":"LCC","lat0":43.0,"lon0":-94.0,"lat1":45.21666666666667,"lat2":43.78333333333333,"FE":800000.0,"FN":100000.0,"bounds":[-96.85,43.49,-91.21,45.59]}],"Mississippi":[{"name":"Mississippi East","zone":"East","epsg":"6506","datumKey":"NAD83_2011","type":"TM","lat0":29.5,"lon0":-88.83333333333333,"k0":0.99995,"FE":300000.0,"FN":0.0,"bounds":[-89.97,30.01,-88.09,35.01]},{"name":"Mississippi West","zone":"West","epsg":"6509","datumKey":"NAD83_2011","type":"TM","lat0":29.5,"lon0":-90.33333333333333,"k0":0.99995,"FE":700000.0,"FN":0.0,"bounds":[-91.65,31.0,-89.37,35.01]}],"Missouri":[{"name":"Missouri East","zone":"East","epsg":"6512","datumKey":"NAD83_2011","type":"TM","lat0":35.833333333333336,"lon0":-90.5,"k0":0.999933333,"FE":250000.0,"FN":0.0,"bounds":[-91.97,35.98,-89.1,40.61]},{"name":"Missouri Central","zone":"Central","epsg":"6511","datumKey":"NAD83_2011","type":"TM","lat0":35.833333333333336,"lon0":-92.5,"k0":0.999933333,"FE":500000.0,"FN":0.0,"bounds":[-93.79,36.48,-91.41,40.61]},{"name":"Missouri West","zone":"West","epsg":"6513","datumKey":"NAD83_2011","type":"TM","lat0":36.166666666666664,"lon0":-94.5,"k0":0.999941177,"FE":850000.0,"FN":0.0,"bounds":[-95.77,36.48,-93.48,40.59]}],"Montana":[{"name":"Montana","zone":"Single Zone","epsg":"6514","datumKey":"NAD83_2011","type":"LCC","lat0":44.25,"lon0":-109.5,"lat1":49.0,"lat2":45.0,"FE":600000.0,"FN":0.0,"bounds":[-116.07,44.35,-104.04,49.01]}],"Nebraska":[{"name":"Nebraska","zone":"Single Zone","epsg":"6516","datumKey":"NAD83_2011","type":"LCC","lat0":39.833333333333336,"lon0":-100.0,"lat1":43.0,"lat2":40.0,"FE":500000.0,"FN":0.0,"bounds":[-104.06,39.99,-95.3,43.01]}],"Nevada":[{"name":"Nevada East","zone":"East","epsg":"6520","datumKey":"NAD83_2011","type":"TM","lat0":34.75,"lon0":-115.58333333333333,"k0":0.9999,"FE":200000.0,"FN":8000000.0,"bounds":[-117.01,34.99,-114.03,42.0]},{"name":"Nevada Central","zone":"Central","epsg":"6518","datumKey":"NAD83_2011","type":"TM","lat0":34.75,"lon0":-116.66666666666667,"k0":0.9999,"FE":500000.0,"FN":6000000.0,"bounds":[-118.19,36.0,-114.99,41.0]},{"name":"Nevada West","zone":"West","epsg":"6522","datumKey":"NAD83_2011","type":"TM","lat0":34.75,"lon0":-118.58333333333333,"k0":0.9999,"FE":800000.0,"FN":4000000.0,"bounds":[-120.0,36.95,-116.99,42.0]}],"New Hampshire":[{"name":"New Hampshire","zone":"Single Zone","epsg":"6524","datumKey":"NAD83_2011","type":"TM","lat0":42.5,"lon0":-71.66666666666667,"k0":0.999966667,"FE":300000.0,"FN":0.0,"bounds":[-72.56,42.69,-70.63,45.31]}],"New Jersey":[{"name":"New Jersey","zone":"Single Zone","epsg":"6526","datumKey":"NAD83_2011","type":"TM","lat0":38.833333333333336,"lon0":-74.5,"k0":0.9999,"FE":150000.0,"FN":0.0,"bounds":[-75.6,38.87,-73.88,41.36]}],"New Mexico":[{"name":"New Mexico East","zone":"East","epsg":"6530","datumKey":"NAD83_2011","type":"TM","lat0":31.0,"lon0":-104.33333333333333,"k0":0.999909091,"FE":165000.0,"FN":0.0,"bounds":[-105.72,32.0,-102.99,37.0]},{"name":"New Mexico Central","zone":"Central","epsg":"6528","datumKey":"NAD83_2011","type":"TM","lat0":31.0,"lon0":-106.25,"k0":0.9999,"FE":500000.0,"FN":0.0,"bounds":[-107.73,31.78,-104.84,37.0]},{"name":"New Mexico West","zone":"West","epsg":"6532","datumKey":"NAD83_2011","type":"TM","lat0":31.0,"lon0":-107.83333333333333,"k0":0.999916667,"FE":830000.0,"FN":0.0,"bounds":[-109.06,31.33,-106.32,37.0]}],"New York":[{"name":"New York East","zone":"East","epsg":"6536","datumKey":"NAD83_2011","type":"TM","lat0":38.833333333333336,"lon0":-74.5,"k0":0.9999,"FE":150000.0,"FN":0.0,"bounds":[-75.87,40.88,-73.23,45.02]},{"name":"New York Central","zone":"Central","epsg":"6534","datumKey":"NAD83_2011","type":"TM","lat0":40.0,"lon0":-76.58333333333333,"k0":0.9999375,"FE":250000.0,"FN":0.0,"bounds":[-77.75,41.99,-75.06,44.41]},{"name":"New York West","zone":"West","epsg":"6540","datumKey":"NAD83_2011","type":"TM","lat0":40.0,"lon0":-78.58333333333333,"k0":0.9999375,"FE":350000.0,"FN":0.0,"bounds":[-79.77,41.99,-77.36,43.64]},{"name":"New York Long Island","zone":"Long Island","epsg":"6538","datumKey":"NAD83_2011","type":"LCC","lat0":40.166666666666664,"lon0":-74.0,"lat1":41.03333333333333,"lat2":40.666666666666664,"FE":300000.0,"FN":0.0,"bounds":[-74.26,40.47,-71.8,41.3]}],"North Carolina":[{"name":"North Carolina","zone":"Single Zone","epsg":"6542","datumKey":"NAD83_2011","type":"LCC","lat0":33.75,"lon0":-79.0,"lat1":36.166666666666664,"lat2":34.333333333333336,"FE":609601.22,"FN":0.0,"bounds":[-84.33,33.83,-75.38,36.59]}],"North Dakota":[{"name":"North Dakota North","zone":"North","epsg":"6544","datumKey":"NAD83_2011","type":"LCC","lat0":47.0,"lon0":-100.5,"lat1":48.733333333333334,"lat2":47.43333333333333,"FE":600000.0,"FN":0.0,"bounds":[-104.07,47.15,-96.83,49.01]},{"name":"North Dakota South","zone":"South","epsg":"6546","datumKey":"NAD83_2011","type":"LCC","lat0":45.666666666666664,"lon0":-100.5,"lat1":47.483333333333334,"lat2":46.18333333333333,"FE":600000.0,"FN":0.0,"bounds":[-104.05,45.93,-96.55,47.83]}],"Ohio":[{"name":"Ohio North","zone":"North","epsg":"6548","datumKey":"NAD83_2011","type":"LCC","lat0":39.666666666666664,"lon0":-82.5,"lat1":41.7,"lat2":40.43333333333333,"FE":600000.0,"FN":0.0,"bounds":[-84.81,40.1,-80.51,42.33]},{"name":"Ohio South","zone":"South","epsg":"6550","datumKey":"NAD83_2011","type":"LCC","lat0":38.0,"lon0":-82.5,"lat1":40.03333333333333,"lat2":38.733333333333334,"FE":600000.0,"FN":0.0,"bounds":[-84.83,38.4,-80.7,40.36]}],"Oklahoma":[{"name":"Oklahoma North","zone":"North","epsg":"6552","datumKey":"NAD83_2011","type":"LCC","lat0":35.0,"lon0":-98.0,"lat1":36.766666666666666,"lat2":35.56666666666667,"FE":600000.0,"FN":0.0,"bounds":[-103.0,35.27,-94.42,37.01]},{"name":"Oklahoma South","zone":"South","epsg":"6554","datumKey":"NAD83_2011","type":"LCC","lat0":33.333333333333336,"lon0":-98.0,"lat1":35.233333333333334,"lat2":33.93333333333333,"FE":600000.0,"FN":0.0,"bounds":[-100.0,33.62,-94.42,35.57]}],"Oregon":[{"name":"Oregon North","zone":"North","epsg":"6558","datumKey":"NAD83_2011","type":"LCC","lat0":43.666666666666664,"lon0":-120.5,"lat1":46.0,"lat2":44.333333333333336,"FE":2500000.0,"FN":0.0,"bounds":[-124.17,43.95,-116.47,46.26]},{"name":"Oregon South","zone":"South","epsg":"6560","datumKey":"NAD83_2011","type":"LCC","lat0":41.666666666666664,"lon0":-120.5,"lat1":44.0,"lat2":42.333333333333336,"FE":1500000.0,"FN":0.0,"bounds":[-124.6,41.98,-116.9,44.56]}],"Pennsylvania":[{"name":"Pennsylvania North","zone":"North","epsg":"6562","datumKey":"NAD83_2011","type":"LCC","lat0":40.166666666666664,"lon0":-77.75,"lat1":41.95,"lat2":40.88333333333333,"FE":600000.0,"FN":0.0,"bounds":[-80.53,40.6,-74.7,42.53]},{"name":"Pennsylvania South","zone":"South","epsg":"6564","datumKey":"NAD83_2011","type":"LCC","lat0":39.333333333333336,"lon0":-77.75,"lat1":40.96666666666667,"lat2":39.93333333333333,"FE":600000.0,"FN":0.0,"bounds":[-80.53,39.71,-74.72,41.18]}],"Rhode Island":[{"name":"Rhode Island","zone":"Single Zone","epsg":"6567","datumKey":"NAD83_2011","type":"TM","lat0":41.083333333333336,"lon0":-71.5,"k0":0.99999375,"FE":100000.0,"FN":0.0,"bounds":[-71.85,41.13,-71.08,42.02]}],"South Carolina":[{"name":"South Carolina","zone":"Single Zone","epsg":"6569","datumKey":"NAD83_2011","type":"LCC","lat0":31.833333333333332,"lon0":-81.0,"lat1":34.833333333333336,"lat2":32.5,"FE":609600.0,"FN":0.0,"bounds":[-83.36,32.05,-78.52,35.21]}],"South Dakota":[{"name":"South Dakota North","zone":"North","epsg":"6571","datumKey":"NAD83_2011","type":"LCC","lat0":43.833333333333336,"lon0":-100.0,"lat1":45.68333333333333,"lat2":44.416666666666664,"FE":600000.0,"FN":0.0,"bounds":[-104.07,44.14,-96.45,45.95]},{"name":"South Dakota South","zone":"South","epsg":"6573","datumKey":"NAD83_2011","type":"LCC","lat0":42.333333333333336,"lon0":-100.33333333333333,"lat1":44.4,"lat2":42.833333333333336,"FE":600000.0,"FN":0.0,"bounds":[-104.06,42.48,-96.43,44.79]}],"Tennessee":[{"name":"Tennessee","zone":"Single Zone","epsg":"6575","datumKey":"NAD83_2011","type":"LCC","lat0":34.333333333333336,"lon0":-86.0,"lat1":36.416666666666664,"lat2":35.25,"FE":600000.0,"FN":0.0,"bounds":[-90.31,34.98,-81.65,36.68]}],"Texas":[{"name":"Texas North","zone":"North","epsg":"6581","datumKey":"NAD83_2011","type":"LCC","lat0":34.0,"lon0":-101.5,"lat1":36.18333333333333,"lat2":34.65,"FE":200000.0,"FN":1000000.0,"bounds":[-103.03,34.3,-99.99,36.5]},{"name":"Texas North Central","zone":"North Central","epsg":"6583","datumKey":"NAD83_2011","type":"LCC","lat0":31.666666666666668,"lon0":-98.5,"lat1":33.96666666666667,"lat2":32.13333333333333,"FE":600000.0,"FN":2000000.0,"bounds":[-103.07,31.72,-94.0,34.58]},{"name":"Texas Central","zone":"Central","epsg":"6577","datumKey":"NAD83_2011","type":"LCC","lat0":29.666666666666668,"lon0":-100.33333333333333,"lat1":31.883333333333333,"lat2":30.116666666666667,"FE":700000.0,"FN":3000000.0,"bounds":[-106.66,29.78,-93.5,32.27]},{"name":"Texas South Central","zone":"South Central","epsg":"6587","datumKey":"NAD83_2011","type":"LCC","lat0":27.833333333333332,"lon0":-99.0,"lat1":30.283333333333335,"lat2":28.383333333333333,"FE":600000.0,"FN":4000000.0,"bounds":[-105.0,27.78,-93.76,30.67]},{"name":"Texas South","zone":"South","epsg":"6585","datumKey":"NAD83_2011","type":"LCC","lat0":25.666666666666668,"lon0":-98.5,"lat1":27.833333333333332,"lat2":26.166666666666668,"FE":300000.0,"FN":5000000.0,"bounds":[-100.2,25.83,-96.85,28.21]}],"Utah":[{"name":"Utah North","zone":"North","epsg":"6620","datumKey":"NAD83_2011","type":"LCC","lat0":40.333333333333336,"lon0":-111.5,"lat1":41.78333333333333,"lat2":40.71666666666667,"FE":500000.0,"FN":1000000.0,"bounds":[-114.04,40.55,-109.04,42.01]},{"name":"Utah Central","zone":"Central","epsg":"6619","datumKey":"NAD83_2011","type":"LCC","lat0":38.333333333333336,"lon0":-111.5,"lat1":40.65,"lat2":39.016666666666666,"FE":500000.0,"FN":2000000.0,"bounds":[-114.05,38.49,-109.04,41.08]},{"name":"Utah South","zone":"South","epsg":"6621","datumKey":"NAD83_2011","type":"LCC","lat0":36.666666666666664,"lon0":-111.5,"lat1":38.35,"lat2":37.21666666666667,"FE":500000.0,"FN":3000000.0,"bounds":[-114.05,36.99,-109.04,38.58]}],"Vermont":[{"name":"Vermont","zone":"Single Zone","epsg":"6589","datumKey":"NAD83_2011","type":"TM","lat0":42.5,"lon0":-72.5,"k0":0.999964286,"FE":500000.0,"FN":0.0,"bounds":[-73.44,42.72,-71.5,45.03]}],"Virginia":[{"name":"Virginia North","zone":"North","epsg":"6592","datumKey":"NAD83_2011","type":"LCC","lat0":37.666666666666664,"lon0":-78.5,"lat1":39.2,"lat2":38.03333333333333,"FE":3500000.0,"FN":2000000.0,"bounds":[-80.06,37.77,-76.51,39.46]},{"name":"Virginia South","zone":"South","epsg":"6594","datumKey":"NAD83_2011","type":"LCC","lat0":36.333333333333336,"lon0":-78.5,"lat1":37.96666666666667,"lat2":36.766666666666666,"FE":3500000.0,"FN":1000000.0,"bounds":[-83.68,36.54,-75.31,38.28]}],"Washington":[{"name":"Washington North","zone":"North","epsg":"6596","datumKey":"NAD83_2011","type":"LCC","lat0":47.0,"lon0":-120.83333333333333,"lat1":48.733333333333334,"lat2":47.5,"FE":500000.0,"FN":0.0,"bounds":[-124.79,47.08,-117.02,49.05]},{"name":"Washington South","zone":"South","epsg":"6598","datumKey":"NAD83_2011","type":"LCC","lat0":45.333333333333336,"lon0":-120.5,"lat1":47.333333333333336,"lat2":45.833333333333336,"FE":500000.0,"FN":0.0,"bounds":[-124.4,45.54,-116.91,47.61]}],"West Virginia":[{"name":"West Virginia North","zone":"North","epsg":"6600","datumKey":"NAD83_2011","type":"LCC","lat0":38.5,"lon0":-79.5,"lat1":40.25,"lat2":39.0,"FE":600000.0,"FN":0.0,"bounds":[-81.76,38.76,-77.72,40.64]},{"name":"West Virginia South","zone":"South","epsg":"6602","datumKey":"NAD83_2011","type":"LCC","lat0":37.0,"lon0":-81.0,"lat1":38.88333333333333,"lat2":37.483333333333334,"FE":600000.0,"FN":0.0,"bounds":[-82.65,37.2,-79.05,39.17]}],"Wisconsin":[{"name":"Wisconsin North","zone":"North","epsg":"6606","datumKey":"NAD83_2011","type":"LCC","lat0":45.166666666666664,"lon0":-90.0,"lat1":46.766666666666666,"lat2":45.56666666666667,"FE":600000.0,"FN":0.0,"bounds":[-92.89,45.37,-88.05,47.31]},{"name":"Wisconsin Central","zone":"Central","epsg":"6879","datumKey":"NAD83_2011","type":"LCC","lat0":43.833333333333336,"lon0":-90.0,"lat1":45.5,"lat2":44.25,"FE":600000.0,"FN":0.0,"bounds":[-92.89,43.98,-86.25,45.8]},{"name":"Wisconsin South","zone":"South","epsg":"6608","datumKey":"NAD83_2011","type":"LCC","lat0":42.0,"lon0":-90.0,"lat1":44.06666666666667,"lat2":42.733333333333334,"FE":600000.0,"FN":0.0,"bounds":[-91.43,42.48,-86.95,44.33]}],"Wyoming":[{"name":"Wyoming East","zone":"East","epsg":"6611","datumKey":"NAD83_2011","type":"TM","lat0":40.5,"lon0":-105.16666666666667,"k0":0.9999375,"FE":200000.0,"FN":0.0,"bounds":[-106.33,40.99,-104.05,45.01]},{"name":"Wyoming East Central","zone":"East Central","epsg":"6613","datumKey":"NAD83_2011","type":"TM","lat0":40.5,"lon0":-107.33333333333333,"k0":0.9999375,"FE":400000.0,"FN":100000.0,"bounds":[-108.63,40.99,-106.0,45.01]},{"name":"Wyoming West Central","zone":"West Central","epsg":"6617","datumKey":"NAD83_2011","type":"TM","lat0":40.5,"lon0":-108.75,"k0":0.9999375,"FE":600000.0,"FN":0.0,"bounds":[-111.06,40.99,-107.5,45.01]},{"name":"Wyoming West","zone":"West","epsg":"6615","datumKey":"NAD83_2011","type":"TM","lat0":40.5,"lon0":-110.08333333333333,"k0":0.9999375,"FE":800000.0,"FN":100000.0,"bounds":[-111.06,40.99,-109.04,44.67]}]};
+function populateStates(){
+  const s=$('state');
+  s.innerHTML='';
+  Object.keys(STATE_ZONES).forEach(name=>{
+    const o=document.createElement('option');o.value=name;o.textContent=name;s.appendChild(o);
+  });
+  s.value='New Jersey';
+  populateZones(false);
+}
+function populateZones(adjustDatum=true){
+  const state=$('state').value,z=$('preset'),zones=STATE_ZONES[state]||[];
+  z.innerHTML='';
+  zones.forEach(p=>{
+    const o=document.createElement('option');
+    o.value=p.epsg;
+    o.textContent=p.zone;
+    z.appendChild(o);
+  });
+  if(zones.length)z.value=zones[0].epsg;
+  if(adjustDatum){
+    if(state==='Hawaii'&&$('datum').value==='NAD83_2011')$('datum').value='NAD83_PA11';
+    if(state!=='Hawaii'&&$('datum').value==='NAD83_PA11')$('datum').value='NAD83_2011';
+    const d=datumInfo();if(d.ellipsoid)$('ellipsoid').value=d.ellipsoid;
+  }
+  updateProjection();
+}
+function preset(){
+  const zones=STATE_ZONES[$('state').value]||[];
+  return zones.find(p=>p.epsg===$('preset').value)||zones[0];
+}
+function hu(){return $('hUnits').value==='m'?1:$('hUnits').value==='ft'?IFT:USFT}
+function vu(){return $('vUnits').value==='m'?1:$('vUnits').value==='ft'?IFT:USFT}
+function setStatus(id,msg,cls=''){const el=$(id);el.textContent=msg;el.className='status'+(cls?' '+cls:'')}
+function mean(a){return a.reduce((s,v)=>s+v,0)/a.length} function min(a){return Math.min(...a)} function max(a){return Math.max(...a)}
+function radii(phi){const s=Math.sin(phi),w=Math.sqrt(1-E2*s*s),N=A/w,M=A*(1-E2)/(w*w*w);return {M,N,Rg:Math.sqrt(M*N)}}
+function meridional(phi){const e4=E2*E2,e6=e4*E2;return A*((1-E2/4-3*e4/64-5*e6/256)*phi-(3*E2/8+3*e4/32+45*e6/1024)*Math.sin(2*phi)+(15*e4/256+45*e6/1024)*Math.sin(4*phi)-(35*e6/3072)*Math.sin(6*phi))}
+function tmForward(lat,lon,p){const phi=lat,lam=lon,lam0=p.lon0*DEG,phi0=p.lat0*DEG,s=Math.sin(phi),c=Math.cos(phi),t=Math.tan(phi),N=A/Math.sqrt(1-E2*s*s),T=t*t,C=EP2*c*c,AA=(lam-lam0)*c,M=meridional(phi),M0=meridional(phi0);const x=p.FE+p.k0*N*(AA+(1-T+C)*AA**3/6+(5-18*T+T*T+72*C-58*EP2)*AA**5/120);const y=p.FN+p.k0*(M-M0+N*t*(AA*AA/2+(5-T+9*C+4*C*C)*AA**4/24+(61-58*T+T*T+600*C-330*EP2)*AA**6/720));return {x,y}}
+function tmInverse(x,y,p){const phi0=p.lat0*DEG,lam0=p.lon0*DEG,M0=meridional(phi0),M1=M0+(y-p.FN)/p.k0,e4=E2*E2,e6=e4*E2,mu=M1/(A*(1-E2/4-3*e4/64-5*e6/256)),e1=(1-Math.sqrt(1-E2))/(1+Math.sqrt(1-E2));const J1=3*e1/2-27*e1**3/32,J2=21*e1*e1/16-55*e1**4/32,J3=151*e1**3/96,J4=1097*e1**4/512;const fp=mu+J1*Math.sin(2*mu)+J2*Math.sin(4*mu)+J3*Math.sin(6*mu)+J4*Math.sin(8*mu),sf=Math.sin(fp),cf=Math.cos(fp),tf=Math.tan(fp),C1=EP2*cf*cf,T1=tf*tf,N1=A/Math.sqrt(1-E2*sf*sf),R1=A*(1-E2)/(1-E2*sf*sf)**1.5,D=(x-p.FE)/(N1*p.k0);const lat=fp-(N1*tf/R1)*(D*D/2-(5+3*T1+10*C1-4*C1*C1-9*EP2)*D**4/24+(61+90*T1+298*C1+45*T1*T1-252*EP2-3*C1*C1)*D**6/720);const lon=lam0+(D-(1+2*T1+C1)*D**3/6+(5-2*C1+28*T1-3*C1*C1+8*EP2+24*T1*T1)*D**5/120)/cf;return {lat,lon}}
+function lccT(phi){const s=Math.sin(phi);return Math.tan(Math.PI/4-phi/2)/Math.pow((1-E*s)/(1+E*s),E/2)}
+function lccM(phi){return Math.cos(phi)/Math.sqrt(1-E2*Math.sin(phi)**2)}
+function lccConst(p){const p0=p.lat0*DEG,p1=p.lat1*DEG,p2=p.lat2*DEG,lon0=p.lon0*DEG,m1=lccM(p1),m2=lccM(p2),t1=lccT(p1),t2=lccT(p2),t0=lccT(p0),n=Math.log(m1/m2)/Math.log(t1/t2),FF=m1/(n*Math.pow(t1,n)),rho0=A*FF*Math.pow(t0,n);return {n,FF,rho0,lon0}}
+function lccForward(lat,lon,p){const c=lccConst(p),rho=A*c.FF*Math.pow(lccT(lat),c.n),th=c.n*(lon-c.lon0);return {x:p.FE+rho*Math.sin(th),y:p.FN+c.rho0-rho*Math.cos(th)}}
+function lccInverse(x,y,p){const c=lccConst(p),dx=x-p.FE,dy=c.rho0-(y-p.FN),rho=Math.sign(c.n)*Math.hypot(dx,dy),th=Math.atan2(dx,dy),tt=Math.pow(rho/(A*c.FF),1/c.n);let phi=Math.PI/2-2*Math.atan(tt);for(let i=0;i<20;i++){const es=E*Math.sin(phi),next=Math.PI/2-2*Math.atan(tt*Math.pow((1-es)/(1+es),E/2));if(Math.abs(next-phi)<1e-13){phi=next;break}phi=next}return {lat:phi,lon:c.lon0+th/c.n}}
+
+function homConst(p){
+  const phic=p.latc*DEG,alphac=p.alpha*DEG,gammac=p.gamma*DEG,lamc=p.lonc*DEG;
+  const sp=Math.sin(phic),cp=Math.cos(phic);
+  const B=Math.sqrt(1+(E2*cp**4)/(1-E2));
+  const AA=A*B*p.k0*Math.sqrt(1-E2)/(1-E2*sp*sp);
+  const t0=lccT(phic);
+  const D=B*Math.sqrt(1-E2)/(cp*Math.sqrt(1-E2*sp*sp));
+  const FF=D+Math.sign(phic||1)*Math.sqrt(D*D-1);
+  const H=FF*Math.pow(t0,B);
+  const G=(FF-1/FF)/2;
+  const gamma0=Math.asin(Math.sin(alphac)/D);
+  const lam0=lamc-Math.asin(G*Math.tan(gamma0))/B;
+  return {B,AA,H,gamma0,lam0,gammac};
+}
+function homForward(lat,lon,p){
+  const c=homConst(p),t=lccT(lat),Q=c.H/Math.pow(t,c.B);
+  const S=(Q-1/Q)/2,T=(Q+1/Q)/2,V=Math.sin(c.B*(lon-c.lam0));
+  const U=(-V*Math.cos(c.gamma0)+S*Math.sin(c.gamma0))/T;
+  const v=c.AA/(2*c.B)*Math.log((1-U)/(1+U));
+  const u=c.AA/c.B*Math.atan2(S*Math.cos(c.gamma0)+V*Math.sin(c.gamma0),Math.cos(c.B*(lon-c.lam0)));
+  return {
+    x:p.FE+v*Math.cos(c.gammac)+u*Math.sin(c.gammac),
+    y:p.FN+u*Math.cos(c.gammac)-v*Math.sin(c.gammac)
+  };
+}
+function homInverse(x,y,p){
+  const c=homConst(p),dE=x-p.FE,dN=y-p.FN;
+  const v=dE*Math.cos(c.gammac)-dN*Math.sin(c.gammac);
+  const u=dE*Math.sin(c.gammac)+dN*Math.cos(c.gammac);
+  const Qp=Math.exp(-c.B*v/c.AA),Sp=(Qp-1/Qp)/2,Tp=(Qp+1/Qp)/2,Vp=Math.sin(c.B*u/c.AA);
+  const Up=(Vp*Math.cos(c.gamma0)+Sp*Math.sin(c.gamma0))/Tp;
+  const tt=Math.pow(c.H/Math.sqrt((1+Up)/(1-Up)),1/c.B);
+  let phi=Math.PI/2-2*Math.atan(tt);
+  for(let i=0;i<20;i++){
+    const es=E*Math.sin(phi);
+    const next=Math.PI/2-2*Math.atan(tt*Math.pow((1-es)/(1+es),E/2));
+    if(Math.abs(next-phi)<1e-13){phi=next;break}
+    phi=next;
+  }
+  const lon=c.lam0-Math.atan2(Sp*Math.cos(c.gamma0)-Vp*Math.sin(c.gamma0),Math.cos(c.B*u/c.AA))/c.B;
+  return {lat:phi,lon};
+}
+
+function inverseProjection(xm,ym){const p=preset();if(p.type==='TM')return tmInverse(xm,ym,p);if(p.type==='LCC')return lccInverse(xm,ym,p);return homInverse(xm,ym,p)}
+function forwardProjection(lat,lon){const p=preset();if(p.type==='TM')return tmForward(lat,lon,p);if(p.type==='LCC')return lccForward(lat,lon,p);return homForward(lat,lon,p)}
+function gridScale(lat,lon){const r=radii(lat),d=10,p0=forwardProjection(lat,lon),pn=forwardProjection(lat+d/r.M,lon),pe=forwardProjection(lat,lon+d/(r.N*Math.max(Math.cos(lat),1e-12)));return (Math.hypot(pn.x-p0.x,pn.y-p0.y)/d+Math.hypot(pe.x-p0.x,pe.y-p0.y)/d)/2}
+function splitLine(line){if(line.includes(','))return line.split(',').map(s=>s.trim());if(line.includes('\t'))return line.split(/\t+/).map(s=>s.trim());if(line.includes(';'))return line.split(';').map(s=>s.trim());return line.trim().split(/\s+/)}
+function normalizeNumericToken(v){return String(v??'').trim().replace(/[−–—]/g,'-').replace(/^\"|\"$/g,'').replace(/,/g,'')}
+function parsePointText(text){const order=$('pointOrder').value,pts=[],bad=[];const clean=String(text||'').replace(/^\uFEFF/,'').replace(/\u0000/g,'');clean.split(/\r\n|\n|\r/).forEach((raw,i)=>{const line=raw.trim();if(!line||line.startsWith('#')||line.startsWith('//'))return;const a=splitLine(line);if(a.length<4){bad.push(i+1);return}const id=String(a[0]??'').trim().replace(/^\"|\"$/g,'');let n,e,z;if(order==='PNEZD'){n=Number(normalizeNumericToken(a[1]));e=Number(normalizeNumericToken(a[2]));z=Number(normalizeNumericToken(a[3]))}else{e=Number(normalizeNumericToken(a[1]));n=Number(normalizeNumericToken(a[2]));z=Number(normalizeNumericToken(a[3]))}if(!id||![n,e,z].every(Number.isFinite)){if(i===0&&/point|north|east|elev|desc/i.test(line))return;bad.push(i+1);return}pts.push({p:id,n,e,z,desc:a.slice(4).join(line.includes(',')?', ':line.includes(';')?'; ':' ').replace(/^\"|\"$/g,'')})});return {pts,bad}}
+function decodePointBytes(buf){const u=new Uint8Array(buf);if(!u.length)return "";let enc='utf-8',off=0;if(u.length>=2&&u[0]===0xFF&&u[1]===0xFE){enc='utf-16le';off=2}else if(u.length>=2&&u[0]===0xFE&&u[1]===0xFF){enc='utf-16be';off=2}else{let zerosEven=0,zerosOdd=0,sample=Math.min(u.length,4000);for(let i=0;i<sample;i++){if(u[i]===0){if(i%2)zerosOdd++;else zerosEven++}}if(zerosOdd>sample*0.15)enc='utf-16le';else if(zerosEven>sample*0.15)enc='utf-16be'}try{return new TextDecoder(enc,{fatal:false}).decode(u.subarray(off))}catch(e){return new TextDecoder('utf-8',{fatal:false}).decode(u)}}
+async function readTextFile(file){const errs=[];try{const b=await readBufferFile(file);const t=decodePointBytes(b);if(t.trim())return t;errs.push('raw-byte decode returned an empty file')}catch(e){errs.push(e.message||String(e))}try{if(file.text){const t=await file.text();if(String(t).trim())return String(t);errs.push('file.text() returned an empty file')}}catch(e){errs.push(e.message||String(e))}throw new Error(errs.filter(Boolean).join(' | ')||'Browser could not read this point file.')}
+async function readBufferFile(file){let firstErr='';try{if(file.arrayBuffer)return await file.arrayBuffer()}catch(e){firstErr=e.message||String(e)}return await new Promise((resolve,reject)=>{try{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=()=>reject(new Error((r.error&&r.error.message)||firstErr||'Browser could not read this binary file.'));r.readAsArrayBuffer(file)}catch(e){reject(e)}})}
+
+
+function longitudeInside(lon,w,e,buffer){
+  const ww=w-buffer,ee=e+buffer;
+  if(ww<=ee)return lon>=ww&&lon<=ee;
+  return lon>=ww||lon<=ee;
+}
+function withinZoneBounds(latDeg,lonDeg,bounds,bufferDeg=0.35){
+  if(!bounds||bounds.length!==4)return true;
+  const [w,s,e,n]=bounds;
+  return latDeg>=s-bufferDeg&&latDeg<=n+bufferDeg&&longitudeInside(lonDeg,w,e,bufferDeg);
+}
+function invertInputPoint(pt,swap=false){
+  const u=hu();
+  const xm=(swap?pt.n:pt.e)*u,ym=(swap?pt.e:pt.n)*u;
+  try{
+    const ll=inverseProjection(xm,ym);
+    const lat=ll.lat*RAD,lon=ll.lon*RAD;
+    return {ok:Number.isFinite(lat)&&Number.isFinite(lon),lat,lon};
+  }catch(e){return {ok:false,lat:NaN,lon:NaN}}
+}
+function coordinateMagnitudeQa(){
+  if(!points.length)return {ok:false};
+  const u=hu(),sample=points.slice(0,Math.min(points.length,250));
+  let tiny=0,huge=0,nonfinite=0;
+  for(const p of sample){
+    const n=p.n*u,e=p.e*u;
+    if(!Number.isFinite(n)||!Number.isFinite(e)){nonfinite++;continue}
+    if(Math.abs(n)<100&&Math.abs(e)<100)tiny++;
+    if(Math.abs(n)>5e7||Math.abs(e)>5e7)huge++;
+  }
+  return {ok:nonfinite===0&&huge===0,tiny,huge,nonfinite,count:sample.length};
+}
+function runZoneQa(){
+  if(!points.length){
+    setStatus('zoneQaStatus','Geographic zone QA will run after GRID points are loaded.','');
+    return {ok:false};
+  }
+  const pz=preset(),sample=points.slice(0,Math.min(points.length,250));
+  let good=0,swappedGood=0;
+  for(const p of sample){
+    const normal=invertInputPoint(p,false),swapped=invertInputPoint(p,true);
+    if(normal.ok&&withinZoneBounds(normal.lat,normal.lon,pz.bounds))good++;
+    if(swapped.ok&&withinZoneBounds(swapped.lat,swapped.lon,pz.bounds))swappedGood++;
+  }
+  const frac=good/sample.length,swapFrac=swappedGood/sample.length;
+  if(frac>=0.95){
+    setStatus('zoneQaStatus',`Zone QA passed: ${good}/${sample.length} sampled points invert inside ${pz.name}'s reasonable geographic extent.`,'ok');
+    return {ok:true,frac,swapFrac};
+  }
+  if(frac<0.25&&swapFrac>=0.80){
+    setStatus('zoneQaStatus',`LIKELY N/E SWAP: only ${good}/${sample.length} points fit ${pz.name}, but ${swappedGood}/${sample.length} fit when Northing and Easting are swapped.`,'bad');
+    return {ok:false,likelySwap:true,frac,swapFrac};
+  }
+  setStatus('zoneQaStatus',`WRONG ZONE / UNITS WARNING: only ${good}/${sample.length} sampled points fall inside ${pz.name}'s reasonable geographic extent. Verify state, zone, units, and coordinate type.`,'bad');
+  return {ok:false,frac,swapFrac};
+}
+function detectGroundSignature(text,fileName=''){
+  const s=(String(text||'')+'\n'+String(fileName||'')).toLowerCase();
+  return s.includes('grid_to_ground_output=ground') ||
+         s.includes('output coordinate type: ground / project') ||
+         s.includes('ground scale coordinate file') ||
+         /(^|[_\-\s])ground([_\-\s.]|$)/.test(s);
+}
+function runInputQa({rawText='',fileName=''}={}){
+  if(!points.length){
+    setStatus('inputQaStatus','Input QA will run when a GRID file is loaded.','');
+    return;
+  }
+  if(detectGroundSignature(rawText,fileName)){
+    $('confirmGrid').checked=false;
+    $('confirmGrid').disabled=true;
+    setStatus('inputQaStatus','DOUBLE-CONVERSION BLOCK: this file appears to contain previously exported GROUND / PROJECT coordinates. It cannot be confirmed as GRID until a different source file is loaded.','bad');
+    syncGridConfirmation();
+    return;
+  }
+  $('confirmGrid').disabled=false;
+  const mag=coordinateMagnitudeQa(),zone=runZoneQa();
+  if(!mag.ok){
+    setStatus('inputQaStatus','Coordinate magnitude QA failed. Values are non-finite or far outside a reasonable State Plane range. Check units and columns.','bad');
+  }else if(zone.likelySwap){
+    setStatus('inputQaStatus','Input QA found a likely Northing/Easting swap. Correct the file/order before calculating.','bad');
+  }else if(!zone.ok){
+    setStatus('inputQaStatus','Input QA failed the selected-zone check. Verify State Plane zone, horizontal units, and that these are GRID coordinates.','bad');
+  }else if(mag.tiny===mag.count){
+    setStatus('inputQaStatus','Coordinates are unusually small for State Plane values and may be local coordinates. Verify before confirming GRID input.','warn');
+  }else{
+    setStatus('inputQaStatus','Input QA passed: coordinate magnitude and geographic location are consistent with the selected State Plane zone.','ok');
+  }
+}
+function validateManualCsf(show=true){
+  if(typeof outputIsLdp==='function'&&outputIsLdp())return {ok:true};
+  if($('factorMode').value!=='manual'){
+    if(show)setStatus('factorQaStatus','Computed Average Combined Factor mode selected.','ok');
+    return {ok:true};
+  }
+  const v=Number($('csf').value);
+  if(!Number.isFinite(v)){
+    if(show)setStatus('factorQaStatus','Enter a numeric manual combined factor.','bad');
+    return {ok:false};
+  }
+  if(v<=0.95||v>=1.05){
+    if(show)setStatus('factorQaStatus',`Manual CSF ${v} is outside the allowed QA range: 0.95 < CSF < 1.05.`,'bad');
+    return {ok:false};
+  }
+  if(v<0.98||v>1.02){
+    if(show)setStatus('factorQaStatus',`Manual CSF ${v} is unusual. It is allowed, but verify the value carefully.`,'warn');
+    return {ok:true,warn:true};
+  }
+  if(show)setStatus('factorQaStatus',`Manual CSF ${v} is within the accepted QA range.`,'ok');
+  return {ok:true};
+}
+function updateOriginQa(){
+  if(typeof outputIsLdp==='function'&&outputIsLdp()){setStatus('originQaStatus','LDP output uses projection parameters rather than a ground scaling origin.','ok');return}
+  if($('originMode').value==='centroid'){
+    setStatus('originQaStatus','PROJECT CENTROID WARNING: the origin depends on the loaded point set. Separate Phase A / Phase B runs can create different ground coordinates. For repeatable multi-phase work, use the same fixed Manual Origin or State Plane Origin.','warn');
+  }else if($('originMode').value==='manual'){
+    setStatus('originQaStatus','Manual Origin is fixed and repeatable when the same N/E values are reused.','ok');
+  }else{
+    setStatus('originQaStatus','State Plane Origin is fixed and repeatable across separate point files.','ok');
+  }
+}
+function geoidCoverageQa(){
+  if($('heightMode').value!=='geoid')return {ok:true};
+  if(!points.length)return {ok:false,reason:'No GRID points are loaded.'};
+  if(!geoidGrids.length)return {ok:false,reason:'No GEOID grid is loaded.'};
+  const misses=[],sample=points.slice(0,Math.min(points.length,500));
+  for(const p of sample){
+    const ll=invertInputPoint(p,false);
+    if(!ll.ok){misses.push(p.p);continue}
+    const g=geoidGrids.find(x=>containsGrid(x,ll.lat,ll.lon));
+    if(!g)misses.push(p.p);
+  }
+  if(misses.length){
+    return {ok:false,reason:`GEOID coverage does not match the project area. ${misses.length}/${sample.length} sampled points are outside the loaded GEOID grid. Example: ${misses.slice(0,8).join(', ')}${misses.length>8?'…':''}`};
+  }
+  return {ok:true};
+}
+function updateGeoidCoverageStatus(){
+  if($('heightMode').value!=='geoid'){
+    setStatus('geoidCoverageStatus','GEOID project-coverage check is not required for this vertical mode.','');
+    return;
+  }
+  if(!points.length||!geoidGrids.length){
+    setStatus('geoidCoverageStatus','Load GRID points and a GEOID model to run the project coverage pre-check.','warn');
+    return;
+  }
+  const q=geoidCoverageQa();
+  setStatus('geoidCoverageStatus',q.ok?'GEOID coverage pre-check passed for the sampled project points.':q.reason,q.ok?'ok':'bad');
+}
+
+function syncGridConfirmation(){
+  const ready=points.length>0&&$('confirmGrid').checked;
+  $('calc').disabled=!ready;
+  if(points.length&&!$('confirmGrid').checked){
+    setStatus('calcStatus','GRID coordinates loaded. Confirm the GRID input checkbox before calculating.','warn');
+  }else if(!points.length){
+    setStatus('calcStatus','Load GRID coordinates and confirm the input type before calculating.','');
+  }else if(!results.length){
+    setStatus('calcStatus','GRID input confirmed. Ready to calculate ground coordinates.','ok');
+  }
+}
+function resetGridConfirmation(){
+  $('confirmGrid').checked=false;
+  results=[];
+  lastSummary=null;
+  ['csv','txt','finalControl','coord4csv','coord4pdf','report'].forEach(id=>$(id).disabled=true);
+  $('summary').classList.add('hidden');
+  syncGridConfirmation();
+}
+
+async function loadPointFile(file){if(!file)return;pointFileName=file.name||'points';resetGridConfirmation();setStatus('pointStatus','Reading coordinate file '+pointFileName+'…','warn');try{const text=await readTextFile(file),parsed=parsePointText(text);points=parsed.pts;if(!points.length)throw new Error('No valid P,N,E,Z rows found. Verify the input order and that the file is plain text.');setStatus('pointStatus',`${points.length} coordinate rows loaded from ${pointFileName}.${parsed.bad.length?`\nSkipped ${parsed.bad.length} unrecognized row(s): ${parsed.bad.slice(0,10).join(', ')}${parsed.bad.length>10?'…':''}`:''}`,'ok');updateOrigin();runInputQa({rawText:text,fileName:pointFileName});updateGeoidCoverageStatus();syncGridConfirmation()}catch(e){points=[];syncGridConfirmation();setStatus('pointStatus','Unable to load GRID points: '+e.message+'\nFile: '+pointFileName+' • Size: '+(file.size??'unknown')+' bytes','bad')}}
+function plausibleHeader(d,le,len){try{const south=d.getFloat64(0,le),west=d.getFloat64(8,le),dlat=d.getFloat64(16,le),dlon=d.getFloat64(24,le),nlat=d.getInt32(32,le),nlon=d.getInt32(36,le),kind=d.getInt32(40,le),expected=44+nlat*nlon*4;const ok=Number.isFinite(south)&&south>=-90&&south<=90&&Number.isFinite(west)&&west>=-360&&west<=360&&dlat>0&&dlat<=5&&dlon>0&&dlon<=5&&nlat>=2&&nlat<200000&&nlon>=2&&nlon<200000&&expected===len;return ok?{south,west,dlat,dlon,nlat,nlon,kind,le,expected}:null}catch{return null}}
+function parseGeoidGrid(name,buf){if(!(buf instanceof ArrayBuffer)||buf.byteLength<52)throw new Error(name+': file is too small to be an NGS geoid binary grid.');const d=new DataView(buf),h=plausibleHeader(d,true,buf.byteLength)||plausibleHeader(d,false,buf.byteLength);if(!h)throw new Error(name+': unsupported geoid binary header or unexpected file size. Expected an NGS 44-byte-header .bin grid.');return {name,buf,...h,north:h.south+h.dlat*(h.nlat-1),east:h.west+h.dlon*(h.nlon-1)}}
+function normLon(lon){return ((lon%360)+360)%360}
+function signedLon(lon){return ((lon+180)%360+360)%360-180}
+function gridLon(g,lon){return (g.west>=0||g.east>180)?normLon(lon):signedLon(lon)}
+function containsGrid(g,lat,lon){const L=gridLon(g,lon);return lat>=g.south-1e-12&&lat<=g.north+1e-12&&L>=g.west-1e-12&&L<=g.east+1e-12}
+function geoidAt(g,lat,lon){const L=gridLon(g,lon),row=(lat-g.south)/g.dlat,col=(L-g.west)/g.dlon,i=Math.min(Math.max(Math.floor(row),0),g.nlat-2),j=Math.min(Math.max(Math.floor(col),0),g.nlon-2),fy=row-i,fx=col-j,d=new DataView(g.buf),val=(r,c)=>d.getFloat32(44+(r*g.nlon+c)*4,g.le),q00=val(i,j),q10=val(i,j+1),q01=val(i+1,j),q11=val(i+1,j+1);if(![q00,q10,q01,q11].every(v=>Number.isFinite(v)&&Math.abs(v)<1000))throw new Error('Invalid geoid data cell in '+g.name);return (q00*(1-fx)+q10*fx)*(1-fy)+(q01*(1-fx)+q11*fx)*fy}
+function geoidSolve(lat,lon){const g=geoidGrids.find(x=>containsGrid(x,lat,lon));if(!g)throw new Error(`No loaded GEOID18 tile covers latitude ${lat.toFixed(6)}, longitude ${lon.toFixed(6)}.`);return {N:geoidAt(g,lat,lon),file:g.name}}
+async function loadGeoids(files){if(!files||!files.length)return;setStatus('geoidStatus','Reading geoid grid(s)…','warn');const loaded=[],errors=[];for(const f of files){try{const b=await readBufferFile(f),g=parseGeoidGrid(f.name,b);loaded.push(g)}catch(e){errors.push(e.message)}}if(loaded.length){for(const g of loaded){geoidGrids=geoidGrids.filter(x=>x.name!==g.name);geoidGrids.push(g)}const lines=loaded.map(g=>`${g.name}: ${g.south.toFixed(4)}°–${g.north.toFixed(4)}°, ${g.west.toFixed(4)}°–${g.east.toFixed(4)}° (${g.nlat}×${g.nlon})`);setStatus('geoidStatus',`${loaded.length} geoid grid(s) loaded.\n${lines.join('\n')}${errors.length?'\n\nNot loaded:\n'+errors.join('\n'):''}`,'ok');updateGeoidCoverageStatus()}else setStatus('geoidStatus','Unable to load geoid model: '+errors.join(' | '),'bad')}
+function selectedOrigin(){const p=preset(),mode=$('originMode').value;if(mode==='stateplane')return {n:p.FN/hu(),e:p.FE/hu(),label:'State Plane Origin'};if(mode==='centroid')return points.length?{n:mean(points.map(x=>x.n)),e:mean(points.map(x=>x.e)),label:'Project Centroid'}:{n:NaN,e:NaN,label:'Project Centroid'};return {n:Number($('originN').value),e:Number($('originE').value),label:'Manual Origin'}}
+function updateOrigin(){const o=selectedOrigin();if(Number.isFinite(o.n)&&Number.isFinite(o.e))setStatus('originStatus',`Origin: ${o.label} — N ${o.n.toFixed(4)} / E ${o.e.toFixed(4)}`,'ok');else setStatus('originStatus',`Origin: ${o.label} — ${$('originMode').value==='centroid'?'load points to calculate':'enter valid N/E coordinates'}`)}
+function updateProjection(){
+  const p=preset();if(!p)return;
+  const d=datumInfo();
+  try{applyEllipsoid()}catch(e){setStatus('datumWarning',e.message,'bad');return}
+  const epsgText=$('datum').value===p.datumKey?`EPSG:${p.epsg}`:'EPSG varies by datum realization / custom use';
+  const method=p.type==='TM'?'Transverse Mercator':p.type==='LCC'?'Lambert Conformal Conic 2SP':'Hotine Oblique Mercator';
+  setStatus('projStatus',`${d.name} • ${ellipsoidName()} • ${p.name} • ${epsgText} • ${method}`,'ok');
+
+  let warn='';
+  if($('datum').value.startsWith('NAD83_')&&$('ellipsoid').value!=='GRS80'){
+    warn='NAD83 realizations are defined on GRS 1980. The selected ellipsoid is non-standard for NAD83.';
+  }else if($('datum').value==='WGS84'&&$('ellipsoid').value!=='WGS84'){
+    warn='WGS 84 normally uses the WGS 84 ellipsoid.';
+  }else if($('datum').value!==p.datumKey){
+    warn=`The official EPSG definition for this zone uses ${p.datumKey==='NAD83_PA11'?'NAD83(PA11)':'NAD83(2011)'}. No datum transformation is performed; input coordinates must already belong to the datum you selected.`;
+  }
+  if($('heightMode').value==='geoid'&&$('datum').value!=='NAD83_2011'){
+    warn+=(warn?' ':'')+'Verify that the loaded geoid model is compatible with the selected horizontal datum and project area.';
+  }
+  setStatus('datumWarning',warn,warn?'warn':'');
+  updateOrigin();
+}
+function datumChanged(){
+  const d=datumInfo();
+  if(d.ellipsoid)$('ellipsoid').value=d.ellipsoid;
+  $('customEllipsoid').classList.toggle('hidden',$('ellipsoid').value!=='CUSTOM');
+  updateProjection();
+}
+function ellipsoidChanged(){
+  $('customEllipsoid').classList.toggle('hidden',$('ellipsoid').value!=='CUSTOM');
+  updateProjection();
+}
+function syncUi(){const hm=$('heightMode').value;$('geoidWrap').classList.toggle('hidden',hm!=='geoid');$('constantWrap').classList.toggle('hidden',hm!=='constant');$('manualOrigin').classList.toggle('hidden',$('originMode').value!=='manual');$('manualFactor').classList.toggle('hidden',$('factorMode').value!=='manual');$('customEllipsoid').classList.toggle('hidden',$('ellipsoid').value!=='CUSTOM');updateProjection();updateOrigin()}
+
+function outputIsLdp(){return $('outputMode').value==='ldp'}
+function forwardBy(p,lat,lon){
+  if(p.type==='TM')return tmForward(lat,lon,p);
+  if(p.type==='LCC')return lccForward(lat,lon,p);
+  return homForward(lat,lon,p);
+}
+function gridScaleBy(p,lat,lon){
+  const r=radii(lat),d=10,p0=forwardBy(p,lat,lon),pn=forwardBy(p,lat+d/r.M,lon),pe=forwardBy(p,lat,lon+d/(r.N*Math.max(Math.cos(lat),1e-12)));
+  return (Math.hypot(pn.x-p0.x,pn.y-p0.y)/d+Math.hypot(pe.x-p0.x,pe.y-p0.y)/d)/2;
+}
+function ldpDefinition(){
+  const type=$('ldpProjection').value,name=$('ldpName').value.trim()||'Project LDP';
+  const lat0=Number($('ldpLat0').value),lon0=Number($('ldpLon0').value);
+  if(!Number.isFinite(lat0)||lat0<=-90||lat0>=90)throw new Error('LDP latitude of origin must be between -90° and +90°.');
+  if(!Number.isFinite(lon0)||lon0<-180||lon0>180)throw new Error('LDP central meridian must be between -180° and +180°.');
+  if(type==='TM'){
+    const k0=Number($('ldpK0').value),FE=Number($('ldpFE').value),FN=Number($('ldpFN').value);
+    if(!Number.isFinite(k0)||k0<=0.95||k0>=1.05)throw new Error('LDP k₀ must satisfy 0.95 < k₀ < 1.05.');
+    if(!Number.isFinite(FE)||!Number.isFinite(FN))throw new Error('LDP false easting/northing must be numeric.');
+    return {name,type:'TM',lat0,lon0,k0,FE,FN,isLdp:true};
+  }
+  const lat1=Number($('ldpLat1').value),lat2=Number($('ldpLat2').value),FE=Number($('ldpFELcc').value),FN=Number($('ldpFNLcc').value);
+  if(![lat1,lat2,FE,FN].every(Number.isFinite))throw new Error('Complete all LDP Lambert parameters.');
+  if(lat1<=-90||lat1>=90||lat2<=-90||lat2>=90||Math.abs(lat1-lat2)<1e-10)throw new Error('LDP standard parallels must be valid and different.');
+  return {name,type:'LCC',lat0,lon0,lat1,lat2,FE,FN,isLdp:true};
+}
+function updateOutputModeUi(){
+  const ldp=outputIsLdp();
+  $('groundOutputWrap').classList.toggle('hidden',ldp);
+  $('ldpOutputWrap').classList.toggle('hidden',!ldp);
+  $('originStatus').classList.toggle('hidden',ldp);
+  $('originQaStatus').classList.toggle('hidden',ldp);
+  $('factorQaStatus').classList.toggle('hidden',ldp);
+  $('calc').textContent=ldp?'Calculate LDP Coordinates':'Calculate Ground Coordinates';
+  $('csv').textContent=ldp?'Export LDP CSV':'Export Ground CSV';
+  $('txt').textContent=ldp?'Export LDP PNEZD TXT':'Export Ground PNEZD TXT';
+  $('outNHeader').textContent=ldp?'LDP N':'Ground N';
+  $('outEHeader').textContent=ldp?'LDP E':'Ground E';
+  $('invOutputDistLabel').textContent=ldp?'LDP Grid Distance':'Ground Distance';
+  $('invDiffLabel').textContent=ldp?'LDP − Source Grid':'Ground − Grid';
+  $('invOutputAzLabel').textContent=ldp?'LDP Azimuth':'Ground Azimuth';
+  $('invOutputDELabel').textContent=ldp?'LDP ΔN / ΔE':'Ground ΔN / ΔE';
+  updateOriginQa();
+}
+function updateLdpProjectionUi(){
+  const tm=$('ldpProjection').value==='TM';
+  $('ldpTmWrap').classList.toggle('hidden',!tm);
+  $('ldpLccWrap').classList.toggle('hidden',tm);
+}
+function prepareSourceCalc(){
+  applyEllipsoid();
+  if(!points.length)throw new Error('Load State Plane GRID coordinates first.');
+  if(!$('confirmGrid').checked)throw new Error('Confirm that the loaded Northing/Easting values are GRID coordinates before calculating.');
+  const zoneQa=runZoneQa();
+  if(!zoneQa.ok)throw new Error(zoneQa.likelySwap?'Possible Northing/Easting swap or wrong State Plane zone. Correct the input first.':'Coordinates do not fit the selected State Plane zone.');
+  const geoidQa=geoidCoverageQa();
+  if(!geoidQa.ok)throw new Error(geoidQa.reason);
+  const hm=$('heightMode').value;
+  if(hm==='geoid'&&!geoidGrids.length)throw new Error('Load at least one GEOID18 binary tile first.');
+  if(hm==='constant'&&!Number.isFinite(Number($('constantN').value)))throw new Error('Enter a valid constant geoid separation N.');
+  const hfac=hu(),vfac=vu();
+  return points.map(pt=>{
+    const ll=inverseProjection(pt.e*hfac,pt.n*hfac);
+    if(!Number.isFinite(ll.lat)||!Number.isFinite(ll.lon)||Math.abs(ll.lat)>Math.PI/2+.01)throw new Error('Projection inversion failed near point '+pt.p+'. Check State Plane zone and units.');
+    const lat=ll.lat*RAD,lon=ll.lon*RAD,k=gridScale(ll.lat,ll.lon);
+    let Ngeo=null,geoidFile='',hM;
+    if(hm==='ellipsoid')hM=pt.z*vfac;
+    else if(hm==='constant'){Ngeo=Number($('constantN').value)*vfac;hM=pt.z*vfac+Ngeo}
+    else{const gg=geoidSolve(lat,lon);Ngeo=gg.N;geoidFile=gg.file;hM=pt.z*vfac+Ngeo}
+    const rr=radii(ll.lat),ef=rr.Rg/(rr.Rg+hM),csf=k*ef;
+    return {...pt,lat,lon,latRad:ll.lat,lonRad:ll.lon,k,ef,csf,Ngeo,geoidFile,hM};
+  });
+}
+function designLdpFromProject(){
+  try{
+    const calc=prepareSourceCalc();
+    const lat0=mean(calc.map(p=>p.latRad)),lon0=mean(calc.map(p=>p.lonRad));
+    const FE=Number($('ldpFE').value),FN=Number($('ldpFN').value);
+    const base={name:'Draft LDP',type:'TM',lat0:lat0*RAD,lon0:lon0*RAD,k0:1,FE:Number.isFinite(FE)?FE:500000,FN:Number.isFinite(FN)?FN:100000,isLdp:true};
+    const baseCF=calc.map(p=>gridScaleBy(base,p.latRad,p.lonRad)*p.ef),k0=1/mean(baseCF);
+    if(k0<=0.95||k0>=1.05)throw new Error('Computed LDP k₀ is outside the allowed design range. Check elevations, units, datum, and source zone.');
+    $('ldpProjection').value='TM';
+    $('ldpLat0').value=(lat0*RAD).toFixed(8);
+    $('ldpLon0').value=(lon0*RAD).toFixed(8);
+    $('ldpK0').value=k0.toFixed(9);
+    $('ldpName').value=($('projectNumber').value.trim()?$('projectNumber').value.trim()+' LDP':'Project LDP');
+    updateLdpProjectionUi();
+    const def=ldpDefinition(),cf=calc.map(p=>gridScaleBy(def,p.latRad,p.lonRad)*p.ef),ppm=cf.map(v=>(v-1)*1e6);
+    setStatus('ldpStatus',`Draft TM LDP designed. Center: ${(lat0*RAD).toFixed(6)}°, ${(lon0*RAD).toFixed(6)}° • k₀=${k0.toFixed(9)} • LDP CF ${min(cf).toFixed(9)} to ${max(cf).toFixed(9)} • distortion ${min(ppm).toFixed(1)} to ${max(ppm).toFixed(1)} ppm. Review before adoption.`,'warn');
+  }catch(e){setStatus('ldpStatus',e.message,'bad')}
+}
+function outputTypeLabel(){return outputIsLdp()?'LDP GRID':'GROUND / PROJECT'}
+function outputCoordName(){return outputIsLdp()?($('ldpName').value.trim()||'Project LDP'):'Ground / Modified'}
+
+
+const PROJECT_SETTING_IDS=[
+  'pointOrder','hUnits','vUnits','state','preset','datum','ellipsoid','customA','customInvF',
+  'heightMode','constantN','originMode','factorMode','originN','originE','csf',
+  'groundOriginN','groundOriginE','rotation','outputMode','ldpName','ldpProjection',
+  'ldpLat0','ldpLon0','ldpK0','ldpFE','ldpFN','ldpLat1','ldpLat2','ldpFELcc','ldpFNLcc',
+  'projectNumber','reportDate','creatorName','roundTripTol'
+];
+function getSettingValue(id){
+  const el=$(id);if(!el)return null;
+  if(el.type==='checkbox')return !!el.checked;
+  return el.value;
+}
+function setSettingValue(id,value){
+  const el=$(id);if(!el||value===undefined||value===null)return;
+  if(el.type==='checkbox')el.checked=!!value;else el.value=String(value);
+}
+function projectPayload(){
+  const settings={};PROJECT_SETTING_IDS.forEach(id=>{const el=$(id);if(el)settings[id]=getSettingValue(id)});
+  return {
+    app:'Grid to Ground',version:'3.5',build:'GTG-2026-0920-PUBLIC-3.6',
+    copyright:'Copyright © 2026 Juan Pichardo, PLS. All Rights Reserved.',
+    savedAt:new Date().toISOString(),inputCoordinateType:'STATE PLANE GRID',
+    pointFileName,points:points.map(p=>({p:p.p,n:p.n,e:p.e,z:p.z,desc:p.desc})),
+    settings,requiredGeoidFiles:geoidGrids.map(g=>g.name)
+  };
+}
+function saveProjectJson(){
+  try{
+    const payload=projectPayload(),name=(($('projectNumber').value||'PROJECT').trim().replace(/[^a-z0-9_-]+/gi,'_')||'PROJECT');
+    download(`${name}_GRID_TO_GROUND_PROJECT.json`,JSON.stringify(payload,null,2),'application/json');
+    setStatus('projectFileStatus',`Project JSON saved with ${points.length} GRID point(s).`,'ok');
+  }catch(e){setStatus('projectFileStatus','Unable to save project: '+e.message,'bad')}
+}
+async function loadProjectJsonFile(file){
+  if(!file){setStatus('projectFileStatus','Choose a project JSON file first.','bad');return}
+  try{
+    const text=await readTextFile(file),data=JSON.parse(text);
+    if(data.app!=='Grid to Ground')throw new Error('This JSON is not a Grid to Ground project file.');
+    if(data.inputCoordinateType&&data.inputCoordinateType!=='STATE PLANE GRID')throw new Error('Project file does not identify its source coordinates as State Plane GRID.');
+    const settings=data.settings||{};
+    if(settings.state){$('state').value=settings.state;populateZones(false)}
+    if(settings.preset)setSettingValue('preset',settings.preset);
+    if(settings.datum)setSettingValue('datum',settings.datum);
+    if(settings.ellipsoid)setSettingValue('ellipsoid',settings.ellipsoid);
+    PROJECT_SETTING_IDS.forEach(id=>{
+      if(['state','preset','datum','ellipsoid'].includes(id))return;
+      if(Object.prototype.hasOwnProperty.call(settings,id))setSettingValue(id,settings[id]);
+    });
+    if(settings.datum)datumChanged();else updateProjection();
+    if(settings.ellipsoid){$('ellipsoid').value=settings.ellipsoid;ellipsoidChanged()}
+    points=Array.isArray(data.points)?data.points.map(p=>({p:String(p.p),n:Number(p.n),e:Number(p.e),z:Number(p.z),desc:String(p.desc||'')})).filter(p=>p.p&&[p.n,p.e,p.z].every(Number.isFinite)):[];
+    pointFileName=data.pointFileName||file.name;
+    results=[];lastSummary=null;
+    resetGridConfirmation();
+    syncUi();updateLdpProjectionUi();updateOutputModeUi();updateOrigin();updateOriginQa();validateManualCsf();
+    if(points.length){
+      setStatus('pointStatus',`${points.length} GRID points restored from project JSON. Re-confirm GRID input before calculation.`,'ok');
+      runInputQa({fileName:pointFileName});updateGeoidCoverageStatus();
+    }else setStatus('pointStatus','Project settings loaded; no point coordinates were stored.','warn');
+    const needed=Array.isArray(data.requiredGeoidFiles)?data.requiredGeoidFiles:[];
+    const loadedNames=new Set(geoidGrids.map(g=>g.name));
+    const missing=needed.filter(n=>!loadedNames.has(n));
+    setStatus('projectFileStatus',`Project loaded: ${data.version||'unknown version'} • ${points.length} point(s).${missing.length?' GEOID file(s) still needed: '+missing.join(', '):''}`,missing.length?'warn':'ok');
+  }catch(e){setStatus('projectFileStatus','Unable to load project JSON: '+e.message,'bad')}
+}
+function inverseBy(p,x,y){
+  if(p.type==='TM')return tmInverse(x,y,p);
+  if(p.type==='LCC')return lccInverse(x,y,p);
+  return homInverse(x,y,p);
+}
+function sourceDistortionPpm(p){return (p.csf-1)*1e6}
+function renderDistortionAnalysis(){
+  if(!results.length)return;
+  const ldp=outputIsLdp(),sourcePpm=results.map(sourceDistortionPpm),ldpPpm=ldp?results.map(p=>p.ldpPpm):[];
+  $('dSourceAvg').textContent=`${mean(sourcePpm).toFixed(1)} ppm`;
+  $('dSourceMax').textContent=`${max(sourcePpm.map(Math.abs)).toFixed(1)} ppm`;
+  document.querySelectorAll('.ldpDistOnly').forEach(x=>x.classList.toggle('hidden',!ldp));
+  document.querySelectorAll('.ldpDistCol').forEach(x=>x.classList.toggle('hidden',!ldp));
+  if(ldp){$('dLdpAvg').textContent=`${mean(ldpPpm).toFixed(1)} ppm`;$('dLdpMax').textContent=`${max(ldpPpm.map(Math.abs)).toFixed(1)} ppm`}
+  $('distortionBody').innerHTML=results.map(p=>`<tr><td>${esc(p.p)}</td><td>${p.csf.toFixed(12)}</td><td>${sourceDistortionPpm(p).toFixed(1)}</td><td class="ldpDistCol ${ldp?'':'hidden'}">${ldp?p.ldpCsf.toFixed(12):''}</td><td class="ldpDistCol ${ldp?'':'hidden'}">${ldp?p.ldpPpm.toFixed(1):''}</td><td>${p.ef.toFixed(12)}</td></tr>`).join('');
+  const all=sourcePpm.concat(ldpPpm),absMax=Math.max(10,max(all.map(Math.abs))),W=900,H=280,L=58,R=18,T=18,B=40,plotW=W-L-R,plotH=H-T-B;
+  const y=v=>T+plotH/2-(v/absMax)*(plotH/2-10),x=i=>L+(results.length===1?plotW/2:i*plotW/(results.length-1));
+  const gridVals=[-absMax,-absMax/2,0,absMax/2,absMax];
+  let svg=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Distortion in parts per million by point">`;
+  gridVals.forEach(v=>{const yy=y(v);svg+=`<line class="${Math.abs(v)<1e-9?'zero':'gridline'}" x1="${L}" y1="${yy}" x2="${W-R}" y2="${yy}"/><text x="${L-7}" y="${yy+4}" text-anchor="end">${v.toFixed(0)}</text>`});
+  svg+=`<line class="axis" x1="${L}" y1="${T}" x2="${L}" y2="${H-B}"/><text x="${L}" y="${H-10}">Point sequence</text><text x="14" y="${T+10}">ppm</text>`;
+  const path=vals=>vals.map((v,i)=>`${i?'L':'M'} ${x(i).toFixed(1)} ${y(v).toFixed(1)}`).join(' ');
+  svg+=`<path class="sourceLine" d="${path(sourcePpm)}"/>`;
+  sourcePpm.forEach((v,i)=>svg+=`<circle class="sourceDot" cx="${x(i)}" cy="${y(v)}" r="3"><title>${esc(results[i].p)} source ${v.toFixed(1)} ppm</title></circle>`);
+  if(ldp){svg+=`<path class="ldpLine" d="${path(ldpPpm)}"/>`;ldpPpm.forEach((v,i)=>svg+=`<circle class="ldpDot" cx="${x(i)}" cy="${y(v)}" r="3"><title>${esc(results[i].p)} LDP ${v.toFixed(1)} ppm</title></circle>`)}
+  svg+=`<text x="${W-230}" y="${T+10}">Source State Plane</text>`+(ldp?`<text x="${W-115}" y="${T+10}">LDP</text>`:'')+`</svg>`;
+  $('distortionChart').innerHTML=svg;
+}
+function computeRoundTripQa(renderUi=true){
+  if(!results.length)throw new Error('Calculate coordinates first.');
+  const tol=Number($('roundTripTol').value);
+  if(!Number.isFinite(tol)||tol<0)throw new Error('Round-trip tolerance must be zero or greater.');
+  const hfac=hu(),rows=[];
+  const sourceP=preset();
+  for(const p of results){
+    const srcBack=forwardProjection(p.latRad,p.lonRad),srcN=srcBack.y/hfac,srcE=srcBack.x/hfac;
+    const srcDn=srcN-p.n,srcDe=srcE-p.e,srcHz=Math.hypot(srcDn,srcDe);
+    let fullN,fullE;
+    if(outputIsLdp()){
+      const d=ldpDefinition(),ll=inverseBy(d,p.groundE*hfac,p.groundN*hfac),xy=forwardProjection(ll.lat,ll.lon);
+      fullN=xy.y/hfac;fullE=xy.x/hfac;
+    }else{
+      const s=lastSummary,th=s.rotation*DEG,c=Math.cos(th),ss=Math.sin(th),rn=p.groundN-s.gon,re=p.groundE-s.goe;
+      const dn=rn*c+re*ss,de=-rn*ss+re*c;
+      fullN=s.origin.n+dn*s.projectCsf;fullE=s.origin.e+de*s.projectCsf;
+    }
+    const fullDn=fullN-p.n,fullDe=fullE-p.e,fullHz=Math.hypot(fullDn,fullDe);
+    rows.push({p:p.p,srcDn,srcDe,srcHz,fullDn,fullDe,fullHz,pass:fullHz<=tol});
+  }
+  const sourceMax=max(rows.map(r=>r.srcHz)),fullMax=max(rows.map(r=>r.fullHz)),rms=Math.sqrt(mean(rows.map(r=>r.fullHz*r.fullHz)));
+  const worst=rows.reduce((a,b)=>b.fullHz>a.fullHz?b:a,rows[0]);
+  const qa={tol,rows,sourceMax,fullMax,rms,worst,pass:fullMax<=tol};
+  if(renderUi){
+    const u=horizUnitLabel();
+    $('rtSourceMax').textContent=`${sourceMax.toFixed(6)} ${u}`;$('rtFullMax').textContent=`${fullMax.toFixed(6)} ${u}`;$('rtRms').textContent=`${rms.toFixed(6)} ${u}`;$('rtWorst').textContent=`${worst.p} (${worst.fullHz.toFixed(6)} ${u})`;
+    $('roundTripBody').innerHTML=rows.map(r=>`<tr><td>${esc(r.p)}</td><td>${signed(r.srcDn,6)}</td><td>${signed(r.srcDe,6)}</td><td>${r.srcHz.toFixed(6)}</td><td>${signed(r.fullDn,6)}</td><td>${signed(r.fullDe,6)}</td><td>${r.fullHz.toFixed(6)}</td><td>${r.pass?'PASS':'FAIL'}</td></tr>`).join('');
+    setStatus('roundTripStatus',qa.pass?`PASS — maximum full-workflow round-trip residual ${fullMax.toFixed(6)} ${u} is within ${tol.toFixed(6)} ${u}.`:`FAIL — maximum full-workflow round-trip residual ${fullMax.toFixed(6)} ${u} exceeds ${tol.toFixed(6)} ${u}.`,qa.pass?'ok':'bad');
+  }
+  return qa;
+}
+
+function calculate(){try{
+  const calc=prepareSourceCalc(),hfac=hu();
+  if(outputIsLdp()){
+    const ldp=ldpDefinition();
+    results=calc.map(pt=>{
+      const xy=forwardBy(ldp,pt.latRad,pt.lonRad),ldpK=gridScaleBy(ldp,pt.latRad,pt.lonRad),ldpCsf=ldpK*pt.ef;
+      return {...pt,groundN:xy.y/hfac,groundE:xy.x/hfac,ldpK,ldpCsf,ldpPpm:(ldpCsf-1)*1e6};
+    });
+    const cf=results.map(p=>p.ldpCsf),ppm=results.map(p=>p.ldpPpm);
+    const shiftN=results.map(x=>x.groundN-x.n),shiftE=results.map(x=>x.groundE-x.e),avgShiftN=mean(shiftN),avgShiftE=mean(shiftE),netShift=Math.hypot(avgShiftN,avgShiftE);
+    lastSummary={outputMode:'ldp',ldp,projectCsf:mean(cf),sourceAvgCsf:mean(calc.map(x=>x.csf)),minCsf:min(cf),maxCsf:max(cf),avgCsf:mean(cf),avgLdpPpm:mean(ppm),maxAbsLdpPpm:max(ppm.map(Math.abs)),avgShiftN,avgShiftE,netShift,avgPointShift:mean(results.map((x,i)=>Math.hypot(shiftN[i],shiftE[i]))),maxPointShift:max(results.map((x,i)=>Math.hypot(shiftN[i],shiftE[i]))),shiftAz:netShift>1e-10?azimuthDeg(avgShiftN,avgShiftE):null,origin:{label:'LDP projection definition',n:0,e:0},gon:0,goe:0,rotation:0};
+    render();
+    setStatus('calcStatus',`Calculated ${results.length} LDP points. Average LDP combined factor: ${lastSummary.projectCsf.toFixed(12)} • max |distortion| ${lastSummary.maxAbsLdpPpm.toFixed(1)} ppm.`,'ok');
+  }else{
+    const csfQa=validateManualCsf();if(!csfQa.ok)throw new Error('Manual combined factor failed QA. Use 0.95 < CSF < 1.05.');
+    const o=selectedOrigin();if(!Number.isFinite(o.n)||!Number.isFinite(o.e))throw new Error('Point of origin is invalid.');
+    let projectCsf=$('factorMode').value==='average'?mean(calc.map(x=>x.csf)):Number($('csf').value);if(!Number.isFinite(projectCsf)||projectCsf<=0)throw new Error('Combined scale factor must be positive.');
+    const gon=$('groundOriginN').value.trim()===''?o.n:Number($('groundOriginN').value),goe=$('groundOriginE').value.trim()===''?o.e:Number($('groundOriginE').value);if(!Number.isFinite(gon)||!Number.isFinite(goe))throw new Error('Ground origin coordinates are invalid.');
+    const th=Number($('rotation').value||0)*DEG,c=Math.cos(th),s=Math.sin(th);
+    results=calc.map(pt=>{const dn=(pt.n-o.n)/projectCsf,de=(pt.e-o.e)/projectCsf,rn=dn*c-de*s,re=dn*s+de*c;return {...pt,groundN:gon+rn,groundE:goe+re}});
+    const shiftN=results.map(x=>x.groundN-x.n),shiftE=results.map(x=>x.groundE-x.e),shiftMag=results.map((x,i)=>Math.hypot(shiftN[i],shiftE[i])),avgShiftN=mean(shiftN),avgShiftE=mean(shiftE),netShift=Math.hypot(avgShiftN,avgShiftE),avgPointShift=mean(shiftMag);
+    lastSummary={outputMode:'ground',projectCsf,sourceAvgCsf:mean(calc.map(x=>x.csf)),origin:o,gon,goe,rotation:Number($('rotation').value||0),minCsf:min(calc.map(x=>x.csf)),maxCsf:max(calc.map(x=>x.csf)),avgCsf:mean(calc.map(x=>x.csf)),avgShiftN,avgShiftE,netShift,avgPointShift,maxPointShift:max(shiftMag),shiftAz:netShift>1e-10?azimuthDeg(avgShiftN,avgShiftE):null};
+    render();
+    setStatus('calcStatus',`Calculated ${results.length} points. Project combined factor (grid/ground): ${projectCsf.toFixed(12)}.`,'ok');
+  }
+}catch(e){results=[];setStatus('calcStatus',e.message,'bad')}}
+function esc(s){return String(s??'').replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]))}
+function azimuthDeg(dn,de){let a=Math.atan2(de,dn)*RAD;return (a+360)%360}
+function bearingText(az){if(!Number.isFinite(az))return 'Balanced / no net direction';const a=((az%360)+360)%360;let q,ang;if(a<=90){q=['N','E'];ang=a}else if(a<=180){q=['S','E'];ang=180-a}else if(a<=270){q=['S','W'];ang=a-180}else{q=['N','W'];ang=360-a}return `${a.toFixed(4)}° (${q[0]} ${ang.toFixed(4)}° ${q[1]})`}
+function horizUnitLabel(){return $('hUnits').value==='m'?'m':$('hUnits').value==='ft'?'ft':'US-ft'}
+function signed(v,d=4){return `${v>=0?'+':''}${v.toFixed(d)}`}
+function populateInverseSelectors(){const a=$('inverseA'),b=$('inverseB'),oldA=a.value,oldB=b.value,opts=results.map((p,i)=>`<option value="${i}">${esc(p.p)}${p.desc?' — '+esc(p.desc):''}</option>`).join('');a.innerHTML=opts;b.innerHTML=opts;if(results.length){a.value=oldA&&Number(oldA)<results.length?oldA:'0';b.value=oldB&&Number(oldB)<results.length?oldB:String(Math.min(1,results.length-1))}updateInverse()}
+function updateInverse(){
+  if(!results.length)return;
+  const ia=Number($('inverseA').value),ib=Number($('inverseB').value);if(!Number.isInteger(ia)||!Number.isInteger(ib)||!results[ia]||!results[ib])return;
+  const A0=results[ia],B0=results[ib],gdn=B0.n-A0.n,gde=B0.e-A0.e,odn=B0.groundN-A0.groundN,ode=B0.groundE-A0.groundE,gd=Math.hypot(gdn,gde),od=Math.hypot(odn,ode),u=horizUnitLabel(),diff=od-gd,ratio=gd>0?od/gd:NaN;
+  $('invGridDist').textContent=`${gd.toFixed(4)} ${u}`;$('invGroundDist').textContent=`${od.toFixed(4)} ${u}`;$('invDistDiff').textContent=`${signed(diff,4)} ${u}`;$('invRatio').textContent=Number.isFinite(ratio)?ratio.toFixed(10):'—';$('invGridAz').textContent=gd>0?bearingText(azimuthDeg(gdn,gde)):'—';$('invGroundAz').textContent=od>0?bearingText(azimuthDeg(odn,ode)):'—';$('invGridDE').textContent=`${signed(gdn,4)} / ${signed(gde,4)} ${u}`;$('invGroundDE').textContent=`${signed(odn,4)} / ${signed(ode,4)} ${u}`;
+  if(ia===ib){setStatus('inverseStatus','Choose two different points.','warn');return}
+  if(outputIsLdp()){
+    const pairCsf=(A0.csf+B0.csf)/2,estGround=pairCsf>0?gd/pairCsf:NaN,ldpGroundDiff=od-estGround;
+    setStatus('inverseStatus',`${A0.p} → ${B0.p} • Source grid ${gd.toFixed(4)} ${u} • LDP grid ${od.toFixed(4)} ${u} • estimated ground ${estGround.toFixed(4)} ${u} • LDP − estimated ground ${signed(ldpGroundDiff,4)} ${u}.`,'ok');
+  }else setStatus('inverseStatus',`${A0.p} → ${B0.p} • ground distance is ${Math.abs(diff).toFixed(4)} ${u} ${diff>=0?'longer':'shorter'} than grid.`,'ok');
+}
+function render(){
+  if(!results.length)return;
+  const ldp=outputIsLdp();
+  $('summary').classList.remove('hidden');$('analysisCard').classList.remove('hidden');$('mPts').textContent=results.length;
+  $('mCsfLabel').textContent=ldp?'Average LDP Combined Factor':'Project CACF';$('mMinLabel').textContent=ldp?'Min LDP CF':'Min CSF';$('mMaxLabel').textContent=ldp?'Max LDP CF':'Max CSF';
+  $('mCsf').textContent=lastSummary.projectCsf.toFixed(12);$('mMin').textContent=lastSummary.minCsf.toFixed(12);$('mMax').textContent=lastSummary.maxCsf.toFixed(12);
+  const ns=results.map(x=>x.Ngeo).filter(Number.isFinite),u=horizUnitLabel();$('mGeoid').textContent=ns.length?`${min(ns).toFixed(3)} to ${max(ns).toFixed(3)} m`:'N/A';
+  document.querySelectorAll('.groundSummaryOnly').forEach(x=>x.classList.toggle('hidden',ldp));document.querySelectorAll('.ldpSummaryOnly').forEach(x=>x.classList.toggle('hidden',!ldp));
+  if(ldp){$('mLdpAvgPpm').textContent=`${lastSummary.avgLdpPpm.toFixed(1)} ppm`;$('mLdpMaxPpm').textContent=`${lastSummary.maxAbsLdpPpm.toFixed(1)} ppm`;$('shiftNote').textContent='LDP coordinates are GRID coordinates on the custom projection. Distortion = (LDP combined factor − 1) × 1,000,000 ppm.'}
+  else{$('mShiftN').textContent=`${signed(lastSummary.avgShiftN,4)} ${u}`;$('mShiftE').textContent=`${signed(lastSummary.avgShiftE,4)} ${u}`;$('mShiftMag').textContent=`${lastSummary.netShift.toFixed(4)} ${u}`;$('mShiftDir').textContent=lastSummary.shiftAz===null?'Balanced / no net direction':bearingText(lastSummary.shiftAz);$('mAvgPointShift').textContent=`${lastSummary.avgPointShift.toFixed(4)} ${u}`;$('shiftNote').textContent='ΔN and ΔE are Ground − Grid. “Net Average Shift” is the vector average. With Project Centroid as the origin it can be near zero by design; “Average Point Shift” shows the average amount each coordinate moved.'}
+  $('tbody').innerHTML=results.map(p=>`<tr><td>${esc(p.p)}</td><td>${p.n.toFixed(4)}</td><td>${p.e.toFixed(4)}</td><td>${p.groundN.toFixed(4)}</td><td>${p.groundE.toFixed(4)}</td><td>${p.z.toFixed(4)}</td><td>${Number.isFinite(p.Ngeo)?p.Ngeo.toFixed(4):'—'}</td><td>${p.lat.toFixed(9)}</td><td>${p.lon.toFixed(9)}</td><td>${(ldp?p.ldpK:p.k).toFixed(12)}</td><td>${p.ef.toFixed(12)}</td><td>${(ldp?p.ldpCsf:p.csf).toFixed(12)}</td><td>${esc(p.desc)}</td></tr>`).join('');
+  populateInverseSelectors();renderDistortionAnalysis();$('roundTripStatus').textContent='Calculation complete. Run Round-Trip QA.';['csv','txt','finalControl','coord4csv','coord4pdf','report'].forEach(id=>$(id).disabled=false);
+}
+function dms(v,lat){const hemi=lat?(v<0?'S':'N'):(v<0?'W':'E'),a=Math.abs(v),d=Math.floor(a),m0=(a-d)*60,m=Math.floor(m0),sec=(m0-m)*60;return `${d}°${String(m).padStart(2,'0')}'${sec.toFixed(5).padStart(8,'0')}\"${hemi}`}
+function csvEsc(v){const s=String(v??'');return /[",\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s}
+function download(name,text,type='text/plain'){const b=new Blob([text],{type:type+';charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
+function baseName(){return (pointFileName||'grid_to_ground').replace(/\.[^.]+$/,'').replace(/[^a-z0-9_-]+/gi,'_')}
+function exportCsv(){
+  const ldp=outputIsLdp(),outName=ldp?'LDP':'Ground';
+  const h=['Point','Source Grid Northing','Source Grid Easting',`${outName} Northing`,`${outName} Easting`,'Orthometric Elevation','Latitude Decimal','Longitude Decimal','Geoid N (m)','Source Grid Scale','Elevation Factor','Source Combined Factor',...(ldp?['LDP Grid Scale','LDP Combined Factor','LDP Distortion ppm']:[]),'Description'];
+  const rows=[['GRID_TO_GROUND_OUTPUT',ldp?'LDP':'GROUND'],['Copyright','Copyright © 2026 Juan Pichardo, PLS. All Rights Reserved.'],['Build ID','GTG-2026-0920-PUBLIC-3.6'],['Output Coordinate Type',outputTypeLabel()],h,...results.map(p=>[p.p,p.n.toFixed(4),p.e.toFixed(4),p.groundN.toFixed(4),p.groundE.toFixed(4),p.z.toFixed(4),p.lat.toFixed(9),p.lon.toFixed(9),Number.isFinite(p.Ngeo)?p.Ngeo.toFixed(4):'',p.k.toFixed(12),p.ef.toFixed(12),p.csf.toFixed(12),...(ldp?[p.ldpK.toFixed(12),p.ldpCsf.toFixed(12),p.ldpPpm.toFixed(2)]:[]),p.desc])];
+  download(baseName()+(ldp?'_LDP.csv':'_GROUND.csv'),rows.map(r=>r.map(csvEsc).join(',')).join('\n'),'text/csv');
+}
+function exportTxt(){
+  const ldp=outputIsLdp(),tag=ldp?'LDP':'GROUND';
+  const lines=[`# GRID_TO_GROUND_OUTPUT=${tag}`,'# Copyright © 2026 Juan Pichardo, PLS. All Rights Reserved.','# Build: GTG-2026-0920-PUBLIC-3.6',`# Output Coordinate Type: ${outputTypeLabel()}`,'# Do not re-import output coordinates as State Plane GRID coordinates.',...results.map(p=>[p.p,p.groundN.toFixed(4),p.groundE.toFixed(4),p.z.toFixed(4),p.desc].join(','))];
+  download(baseName()+(ldp?'_LDP.txt':'_GROUND.txt'),lines.join('\n'));
+}
+function exportFinalControl(){
+  const ldp=outputIsLdp(),outLabel=ldp?'LDP':'Ground';
+  const rows=[['Point','Latitude DMS','Longitude DMS','Latitude Decimal','Longitude Decimal','Ellipsoid Height (m)','State Plane Northing (m)','State Plane Easting (m)','State Plane Northing (US-ft)','State Plane Easting (US-ft)',`${outLabel} Northing (US-ft)`,`${outLabel} Easting (US-ft)`,'Orthometric Height (input units)','Geoid N (m)','Geoid File',...(ldp?['LDP Combined Factor','LDP Distortion ppm']:[]),'Description']];
+  results.forEach(p=>rows.push([p.p,dms(p.lat,true),dms(p.lon,false),p.lat.toFixed(9),p.lon.toFixed(9),p.hM.toFixed(4),(p.n*hu()).toFixed(4),(p.e*hu()).toFixed(4),(p.n*hu()/USFT).toFixed(4),(p.e*hu()/USFT).toFixed(4),(p.groundN*hu()/USFT).toFixed(4),(p.groundE*hu()/USFT).toFixed(4),p.z.toFixed(4),Number.isFinite(p.Ngeo)?p.Ngeo.toFixed(4):'',p.geoidFile,...(ldp?[p.ldpCsf.toFixed(12),p.ldpPpm.toFixed(2)]:[]),p.desc]));
+  download(baseName()+(ldp?'_LDP_FINAL_CONTROL.csv':'_FINAL_CONTROL.csv'),rows.map(r=>r.map(csvEsc).join(',')).join('\n'),'text/csv');
+}
+
+function cleanFilePart(v){return String(v||'').trim().replace(/[^a-z0-9_-]+/gi,'_').replace(/^_+|_+$/g,'')||'PROJECT'}
+function coordMeta(){
+  if(!results.length)throw new Error('Calculate ground coordinates first.');
+
+  const project=$('projectNumber').value.trim(),date=$('reportDate').value;
+  if(!project)throw new Error('Enter the project number before exporting the coordinate tables.');
+  if(!date)throw new Error('Enter the report date before exporting the coordinate tables.');
+  return {project,date,creator:($('creatorName').value.trim()||'Juan Pichardo, PLS'),datum:datumName(),ellipsoid:ellipsoidName(),state:$('state').value,p:preset(),cacf:lastSummary.projectCsf,outputType:outputTypeLabel(),outputName:outputCoordName(),ldp:outputIsLdp()?ldpDefinition():null};
+}
+function coordTableData(){
+  const toM=v=>v*hu(),toUS=v=>v*hu()/USFT;
+  const hm=$('heightMode').value;
+  const orthM=p=>{
+    if(hm==='geoid'||hm==='constant')return p.z*vu();
+    if(Number.isFinite(p.Ngeo))return p.hM-p.Ngeo;
+    return null;
+  };
+  const orthUS=p=>{const h=orthM(p);return Number.isFinite(h)?h/USFT:null};
+  const f4=v=>Number.isFinite(v)?v.toFixed(4):'N/A';
+  return [
+    {
+      title:'TABLE 1 - GEOGRAPHIC POSITIONS',
+      subtitle:'Latitude, Longitude, Ellipsoidal Heights and Orthometric Elevations - Meters',
+      csvHeaders:['Point','Latitude (Decimal Degrees)','Longitude (Decimal Degrees)','Ellipsoidal Height h (m)','Orthometric Elevation H (m)','Description'],
+      pdfHeaders:['POINT','LATITUDE','LONGITUDE','ELLIP h (m)','ORTHO H (m)','DESCRIPTION'],
+      widths:[48,124,124,88,92,244],
+      rows:results.map(p=>[
+        p.p,p.lat.toFixed(9),p.lon.toFixed(9),p.hM.toFixed(4),f4(orthM(p)),p.desc
+      ])
+    },
+    {
+      title:'TABLE 2 - STATE PLANE METRIC',
+      subtitle:'State Plane Coordinates and Orthometric Elevations - Meters',
+      csvHeaders:['Point','Northing (m)','Easting (m)','Orthometric Elevation H (m)','Description'],
+      pdfHeaders:['POINT','NORTHING (m)','EASTING (m)','ORTHO H (m)','DESCRIPTION'],
+      widths:[60,145,145,120,250],
+      rows:results.map(p=>[
+        p.p,toM(p.n).toFixed(4),toM(p.e).toFixed(4),f4(orthM(p)),p.desc
+      ])
+    },
+    {
+      title:'TABLE 3 - STATE PLANE U.S. SURVEY FEET',
+      subtitle:'State Plane Coordinates and Orthometric Elevations - U.S. Survey Feet',
+      csvHeaders:['Point','Northing (US-ft)','Easting (US-ft)','Orthometric Elevation H (US-ft)','Description'],
+      pdfHeaders:['POINT','NORTHING (US-ft)','EASTING (US-ft)','ORTHO H (US-ft)','DESCRIPTION'],
+      widths:[60,145,145,120,250],
+      rows:results.map(p=>[
+        p.p,toUS(p.n).toFixed(4),toUS(p.e).toFixed(4),f4(orthUS(p)),p.desc
+      ])
+    },
+    {
+      title:outputIsLdp()?'TABLE 4 - LOW DISTORTION PROJECTION (LDP)':'TABLE 4 - LOCAL (PROJECT/GROUND/MODIFIED)',
+      subtitle:outputIsLdp()?'LDP Grid Coordinates and Orthometric Elevations - U.S. Survey Feet':'Ground Coordinates and Orthometric Elevations - U.S. Survey Feet',
+      csvHeaders:['Point',outputIsLdp()?'LDP Northing (US-ft)':'Northing (US-ft)',outputIsLdp()?'LDP Easting (US-ft)':'Easting (US-ft)','Orthometric Elevation H (US-ft)','Description'],
+      pdfHeaders:['POINT',outputIsLdp()?'LDP NORTHING':'NORTHING (US-ft)',outputIsLdp()?'LDP EASTING':'EASTING (US-ft)','ORTHO H (US-ft)','DESCRIPTION'],
+      widths:[60,145,145,120,250],
+      rows:results.map(p=>[
+        p.p,toUS(p.groundN).toFixed(4),toUS(p.groundE).toFixed(4),f4(orthUS(p)),p.desc
+      ])
+    }
+  ];
+}
+function exportCoord4Csv(){
+  try{
+    const m=coordMeta(),tables=coordTableData(),rows=[];
+    rows.push(['FINAL COORDINATE VALUES']);
+    rows.push(['Project Number',m.project]);
+    rows.push(['Date',m.date]);
+    rows.push(['Created By',m.creator]);
+    rows.push(['Copyright','Copyright © 2026 Juan Pichardo, PLS. All Rights Reserved.']);
+    rows.push(['Build ID','GTG-2026-0920-PUBLIC-3.6']);
+    rows.push(['Datum',m.datum]);
+    rows.push(['Ellipsoid',m.ellipsoid]);
+    rows.push(['Input Coordinate Type','GRID']);
+    rows.push(['Output Coordinate Type',m.outputType]);
+    rows.push(['State',m.state]);
+    rows.push(['State Plane Zone',m.p.name]);
+    rows.push(['Coordinate System',`${m.p.name} State Plane`]);
+    rows.push(['EPSG',m.p.epsg]);
+    rows.push([outputIsLdp()?'Average LDP Combined Factor':'Project Computed Average Combined Factor (CACF)',m.cacf.toFixed(12)]);if(outputIsLdp()){rows.push(['LDP Name',m.outputName]);rows.push(['LDP Projection',m.ldp.type==='TM'?'Transverse Mercator':'Lambert Conformal Conic 2SP']);rows.push(['Max Absolute LDP Distortion (ppm)',lastSummary.maxAbsLdpPpm.toFixed(2)]);}
+    rows.push(['Orthometric Elevation H', $('heightMode').value==='ellipsoid' ? 'N/A - input Z is ellipsoidal height and no orthometric height was supplied' : 'Derived from input Z in selected vertical units']);
+    rows.push([]);
+    tables.forEach((t,idx)=>{
+      rows.push([t.title]);
+      rows.push([t.subtitle]);
+      rows.push(t.csvHeaders);
+      t.rows.forEach(r=>rows.push(r));
+      if(idx<tables.length-1)rows.push([]);
+    });
+    const text='\ufeff'+rows.map(r=>r.map(csvEsc).join(',')).join('\r\n');
+    download(`${cleanFilePart(m.project)}_4_COORDINATE_TABLES_${m.date}.csv`,text,'text/csv');
+    setStatus('coordExportStatus','Four-table CSV exported.','ok');
+  }catch(e){setStatus('coordExportStatus',e.message,'bad')}
+}
+function pdfAscii(v){
+  return String(v??'').normalize('NFKD').replace(/[^\x20-\x7E]/g,'?').replace(/\\/g,'\\\\').replace(/\(/g,'\\(').replace(/\)/g,'\\)');
+}
+function pdfFit(v,width,fontSize=8){
+  const raw=String(v??'').normalize('NFKD').replace(/[^\x20-\x7E]/g,'?');
+  const max=Math.max(1,Math.floor(width/(fontSize*0.55)));
+  return raw.length<=max?raw:(max<=3?raw.slice(0,max):raw.slice(0,max-3)+'...');
+}
+function pdfText(x,y,text,size=8,bold=false){
+  return `BT /${bold?'F2':'F1'} ${size} Tf ${x.toFixed(2)} ${y.toFixed(2)} Td (${pdfAscii(text)}) Tj ET\n`;
+}
+
+function pdfCellGrid(xs,widths,topY,bottomY){
+  let s=`0.45 w ${xs[0].toFixed(2)} ${topY.toFixed(2)} m ${(xs[0]+widths.reduce((a,b)=>a+b,0)).toFixed(2)} ${topY.toFixed(2)} l S\n`;
+  s+=`${xs[0].toFixed(2)} ${bottomY.toFixed(2)} m ${(xs[0]+widths.reduce((a,b)=>a+b,0)).toFixed(2)} ${bottomY.toFixed(2)} l S\n`;
+  for(let c=0;c<xs.length;c++)s+=`${xs[c].toFixed(2)} ${bottomY.toFixed(2)} m ${xs[c].toFixed(2)} ${topY.toFixed(2)} l S\n`;
+  const rightX=xs[0]+widths.reduce((a,b)=>a+b,0);
+  s+=`${rightX.toFixed(2)} ${bottomY.toFixed(2)} m ${rightX.toFixed(2)} ${topY.toFixed(2)} l S\n`;
+  return s;
+}
+
+function buildCoordPdf(m,tables){
+  const pageW=792,pageH=612,left=36,right=756,top=574,rowH=15;
+  const pages=[];
+  const headerBase=()=>{
+    let s='';
+    s+=pdfText(left,top,'FINAL COORDINATE VALUES',14,true);
+    s+=pdfText(left,top-18,`Project Number: ${m.project}    Date: ${m.date}    Created by: ${m.creator}`,9,true);
+    s+=pdfText(left,top-32,`Datum: ${m.datum} / ${m.ellipsoid}    Coordinate System: ${m.p.name} State Plane    EPSG:${m.p.epsg}`,8,false);
+    s+=pdfText(left,top-45,`${outputIsLdp()?'Average LDP Combined Factor':'Project Computed Average Combined Factor (CACF)'}: ${m.cacf.toFixed(12)}`,8,false);
+    s+=pdfText(left,top-57,`Input Coordinate Type: STATE PLANE GRID    Output Coordinate Type: ${m.outputType}`,8,true);
+    s+=pdfText(left,top-69,$('heightMode').value==='ellipsoid'?'Orthometric Elevation H: N/A - input Z is ellipsoidal height':'Orthometric Elevation H: from input survey elevation',7,false);
+    return s;
+  };
+  tables.forEach(table=>{
+    let i=0,pageNo=1;
+    while(i<table.rows.length || (table.rows.length===0 && pageNo===1)){
+      let s=headerBase();
+      let y=top-94;
+      s+=pdfText(left,y,table.title,11,true); y-=14;
+      s+=pdfText(left,y,table.subtitle,8,false); y-=18;
+      const xs=[left];
+      for(let c=0;c<table.widths.length-1;c++) xs.push(xs[c]+table.widths[c]);
+      const headerTop=y+10,headerBottom=y-5;
+      s+=pdfCellGrid(xs,table.widths,headerTop,headerBottom);
+      for(let c=0;c<table.pdfHeaders.length;c++) s+=pdfText(xs[c]+3,y,pdfFit(table.pdfHeaders[c],table.widths[c]-7,7),7,true);
+      y-=rowH;
+      let added=0;
+      while(i<table.rows.length && y>50){
+        const r=table.rows[i],rowTop=y+10,rowBottom=y-5;
+        s+=pdfCellGrid(xs,table.widths,rowTop,rowBottom);
+        for(let c=0;c<r.length;c++) s+=pdfText(xs[c]+3,y,pdfFit(r[c],table.widths[c]-7,8),8,false);
+        y-=rowH;i++;added++;
+      }
+      s+=pdfText(left,28,`${table.title}    Page ${pageNo}    Created by: ${m.creator}`,7,false);
+      s+=pdfText(left,17,'Copyright © 2026 Juan Pichardo, PLS. All Rights Reserved.    Build: GTG-2026-0920-PUBLIC-3.6',6,false);
+      pages.push(s);
+      pageNo++;
+      if(table.rows.length===0)break;
+    }
+  });
+
+  const objects=[];
+  objects[1]='<< /Type /Catalog /Pages 2 0 R >>';
+  const kids=[];
+  for(let i=0;i<pages.length;i++) kids.push(`${5+i*2} 0 R`);
+  objects[2]=`<< /Type /Pages /Count ${pages.length} /Kids [${kids.join(' ')}] >>`;
+  objects[3]='<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>';
+  objects[4]='<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>';
+  for(let i=0;i<pages.length;i++){
+    const pageId=5+i*2,contentId=6+i*2,stream=pages[i];
+    objects[pageId]=`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageW} ${pageH}] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents ${contentId} 0 R >>`;
+    objects[contentId]=`<< /Length ${stream.length} >>\nstream\n${stream}endstream`;
+  }
+  let pdf='%PDF-1.4\n%1234\n',offsets=[0];
+  for(let i=1;i<objects.length;i++){
+    offsets[i]=pdf.length;
+    pdf+=`${i} 0 obj\n${objects[i]}\nendobj\n`;
+  }
+  const xref=pdf.length;
+  pdf+=`xref\n0 ${objects.length}\n0000000000 65535 f \n`;
+  for(let i=1;i<objects.length;i++) pdf+=String(offsets[i]).padStart(10,'0')+' 00000 n \n';
+  pdf+=`trailer\n<< /Size ${objects.length} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`;
+  const bytes=new Uint8Array(pdf.length);
+  for(let i=0;i<pdf.length;i++)bytes[i]=pdf.charCodeAt(i)&255;
+  return bytes;
+}
+function exportCoord4Pdf(){
+  try{
+    const m=coordMeta(),tables=coordTableData(),bytes=buildCoordPdf(m,tables);
+    const blob=new Blob([bytes],{type:'application/pdf'}),a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download=`${cleanFilePart(m.project)}_4_COORDINATE_TABLES_${m.date}.pdf`;
+    document.body.appendChild(a);a.click();
+    setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},700);
+    setStatus('coordExportStatus','Four-table PDF exported.','ok');
+  }catch(e){setStatus('coordExportStatus',e.message,'bad')}
+}
+
+function makeReport(){
+  const p=preset(),s=lastSummary,hm=$('heightMode').value,ldp=outputIsLdp();
+  let t='Copyright © 2026 Juan Pichardo, PLS. All Rights Reserved.\nBuild: GTG-2026-0920-PUBLIC-3.6\n\nGRID TO GROUND / LDP COORDINATE REPORT\n'+'='.repeat(56)+'\n\n';
+  t+=`Input file: ${pointFileName||'pasted coordinates'}\nPoint count: ${results.length}\nInput Coordinate Type: STATE PLANE GRID\nOutput Coordinate Type: ${outputTypeLabel()}\nDatum: ${datumName()}\nEllipsoid: ${ellipsoidName()}\nSource coordinate system: ${p.name} State Plane, ${$('datum').value===p.datumKey?'EPSG:'+p.epsg:'SPCS83 geometry / EPSG varies by realization'}\nHorizontal units: ${$('hUnits').selectedOptions[0].text}\n\n`;
+  t+=`Vertical interpretation: ${hm==='geoid'?'Orthometric H + loaded geoid N = ellipsoid h':hm==='constant'?'Orthometric H + constant geoid N = ellipsoid h':'Input Z treated as ellipsoid height'}\nVertical units: ${$('vUnits').selectedOptions[0].text}\nLoaded geoid files: ${geoidGrids.length?geoidGrids.map(g=>g.name).join(', '):'None'}\n\n`;
+  if(ldp){
+    const d=ldpDefinition();
+    t+=`OUTPUT LDP\nLDP name: ${d.name}\nProjection: ${d.type==='TM'?'Transverse Mercator':'Lambert Conformal Conic 2SP'}\nLatitude of origin: ${d.lat0.toFixed(10)} deg\nCentral meridian: ${d.lon0.toFixed(10)} deg\n`;
+    if(d.type==='TM')t+=`Scale factor k0: ${d.k0.toFixed(12)}\nFalse Easting / Northing: ${d.FE.toFixed(4)} / ${d.FN.toFixed(4)} m\n`;
+    else t+=`Standard parallels: ${d.lat1.toFixed(10)} / ${d.lat2.toFixed(10)} deg\nFalse Easting / Northing: ${d.FE.toFixed(4)} / ${d.FN.toFixed(4)} m\n`;
+    t+=`Average LDP Combined Factor: ${s.projectCsf.toFixed(12)}\nLDP CF min/max: ${s.minCsf.toFixed(12)} / ${s.maxCsf.toFixed(12)}\nAverage LDP distortion: ${s.avgLdpPpm.toFixed(2)} ppm\nMaximum absolute LDP distortion: ${s.maxAbsLdpPpm.toFixed(2)} ppm\n\n`;
+  }else{
+    t+=`Origin method: ${s.origin.label}\nOrigin grid N/E: ${s.origin.n.toFixed(4)}, ${s.origin.e.toFixed(4)}\nOrigin ground N/E: ${s.gon.toFixed(4)}, ${s.goe.toFixed(4)}\nRotation clockwise: ${s.rotation.toFixed(8)} deg\nProject CACF (grid/ground): ${s.projectCsf.toFixed(12)}\nLocal CSF min/max/avg: ${s.minCsf.toFixed(12)} / ${s.maxCsf.toFixed(12)} / ${s.avgCsf.toFixed(12)}\nAverage shift ΔN/ΔE (Ground - Grid): ${s.avgShiftN.toFixed(4)} / ${s.avgShiftE.toFixed(4)} ${horizUnitLabel()}\nNet average shift: ${s.netShift.toFixed(4)} ${horizUnitLabel()} at ${s.shiftAz===null?'balanced / no net direction':bearingText(s.shiftAz)}\nAverage point shift magnitude: ${s.avgPointShift.toFixed(4)} ${horizUnitLabel()}\nMaximum point shift magnitude: ${s.maxPointShift.toFixed(4)} ${horizUnitLabel()}\n\n`;
+    if($('originMode').value==='centroid')t+='WARNING: Project Centroid origin depends on the loaded point set. Different point sets can generate different ground coordinates.\n\n';
+  }
+  t+='Method: Source State Plane GRID coordinates were inverted to geodetic latitude/longitude on the selected ellipsoid. '+(ldp?'Geodetic positions were then projected into the custom LDP; no ground-coordinate scaling was applied.':'A project grid/ground factor, selected origin, and optional rotation were applied to create Ground / Project coordinates.')+'\n';
+  
+  const srcPpm=results.map(p=>(p.csf-1)*1e6);
+  t+=`\nDISTORTION ANALYSIS\nSource State Plane average distortion: ${mean(srcPpm).toFixed(2)} ppm\nSource State Plane max |distortion|: ${max(srcPpm.map(Math.abs)).toFixed(2)} ppm\n`;
+  if(ldp)t+=`LDP average distortion: ${s.avgLdpPpm.toFixed(2)} ppm\nLDP max |distortion|: ${s.maxAbsLdpPpm.toFixed(2)} ppm\n`;
+  try{const rt=computeRoundTripQa(false);t+=`\nROUND-TRIP QA\nTolerance: ${rt.tol.toFixed(6)} ${horizUnitLabel()}\nSource projection max residual: ${rt.sourceMax.toFixed(6)} ${horizUnitLabel()}\nFull workflow max residual: ${rt.fullMax.toFixed(6)} ${horizUnitLabel()}\nFull workflow RMS: ${rt.rms.toFixed(6)} ${horizUnitLabel()}\nWorst point: ${rt.worst.p}\nStatus: ${rt.pass?'PASS':'FAIL'}\n`;}catch(e){t+=`\nROUND-TRIP QA\nNot available: ${e.message}\n`;}
+
+  download(baseName()+(ldp?'_LDP_REPORT.txt':'_CONVERSION_REPORT.txt'),t);
+}
+$('saveProjectJson').addEventListener('click',saveProjectJson);
+$('loadProjectJson').addEventListener('click',()=>loadProjectJsonFile($('projectJsonFile').files&&$('projectJsonFile').files[0]));
+$('projectJsonFile').addEventListener('change',e=>{if(e.target.files&&e.target.files[0])setStatus('projectFileStatus',`Selected ${e.target.files[0].name}. Click Load Project JSON.`,'warn')});
+$('runRoundTrip').addEventListener('click',()=>{try{computeRoundTripQa(true)}catch(e){setStatus('roundTripStatus',e.message,'bad')}});
+$('showLicense').addEventListener('click',()=>{$('licensePanel').classList.remove('hidden');$('licensePanel').scrollIntoView({behavior:'smooth',block:'start'})});
+$('closeLicense').addEventListener('click',()=>$('licensePanel').classList.add('hidden'));
+$('confirmGrid').addEventListener('change',syncGridConfirmation);$('pointFile').addEventListener('change',e=>loadPointFile(e.target.files[0]));$('loadSelectedPoint').addEventListener('click',()=>{const f=$('pointFile').files&&$('pointFile').files[0];if(!f){setStatus('pointStatus','Choose a GRID coordinate file first.','bad');return}loadPointFile(f)});$('loadPaste').addEventListener('click',()=>{const t=$('pointPaste').value;if(!t.trim()){setStatus('pointStatus','Paste GRID coordinate rows first.','bad');return}resetGridConfirmation();const p=parsePointText(t);points=p.pts;pointFileName='pasted_grid_coordinates.txt';if(points.length){setStatus('pointStatus',`${points.length} pasted coordinate rows loaded.`,'ok');updateOrigin();runInputQa({rawText:t,fileName:pointFileName});updateGeoidCoverageStatus();syncGridConfirmation()}else{points=[];syncGridConfirmation();setStatus('pointStatus','Unable to load GRID points: no valid coordinate rows found.','bad')}});$('geoidFiles').addEventListener('change',e=>loadGeoids([...e.target.files]));$('chooseRememberGeoid').addEventListener('click',chooseAndRememberGeoid);$('loadRememberedGeoid').addEventListener('click',loadRememberedGeoid);$('forgetRememberedGeoid').addEventListener('click',forgetRememberedGeoid);$('outputMode').addEventListener('change',()=>{results=[];lastSummary=null;['csv','txt','finalControl','coord4csv','coord4pdf','report'].forEach(id=>$(id).disabled=true);$('summary').classList.add('hidden');$('analysisCard').classList.add('hidden');$('distortionChart').innerHTML='';$('roundTripBody').innerHTML='';setStatus('roundTripStatus','Calculate coordinates, then run the round-trip test.','');updateOutputModeUi()});
+$('ldpProjection').addEventListener('change',updateLdpProjectionUi);
+['ldpName','ldpLat0','ldpLon0','ldpK0','ldpFE','ldpFN','ldpLat1','ldpLat2','ldpFELcc','ldpFNLcc'].forEach(id=>$(id).addEventListener('input',()=>{if(outputIsLdp())setStatus('ldpStatus','LDP parameters changed. Recalculate to update distortion QA.','warn')}));
+$('designLdp').addEventListener('click',designLdpFromProject);
+$('state').addEventListener('change',()=>{populateZones(true);runInputQa({fileName:pointFileName});updateGeoidCoverageStatus()});$('preset').addEventListener('change',()=>{updateProjection();runInputQa({fileName:pointFileName});updateGeoidCoverageStatus()});$('datum').addEventListener('change',datumChanged);$('ellipsoid').addEventListener('change',ellipsoidChanged);$('customA').addEventListener('input',updateProjection);$('customInvF').addEventListener('input',updateProjection);$('csf').addEventListener('input',()=>validateManualCsf());['hUnits','originMode','factorMode','heightMode'].forEach(id=>$(id).addEventListener('change',()=>{syncUi();runInputQa({fileName:pointFileName});updateOriginQa();validateManualCsf();updateGeoidCoverageStatus()}));['originN','originE'].forEach(id=>$(id).addEventListener('input',updateOrigin));$('calc').addEventListener('click',calculate);$('csv').addEventListener('click',exportCsv);$('txt').addEventListener('click',exportTxt);$('finalControl').addEventListener('click',exportFinalControl);$('coord4csv').addEventListener('click',exportCoord4Csv);$('coord4pdf').addEventListener('click',exportCoord4Pdf);$('report').addEventListener('click',makeReport);
+$('inverseA').addEventListener('change',updateInverse);$('inverseB').addEventListener('change',updateInverse);$('swapInverse').addEventListener('click',()=>{const a=$('inverseA'),b=$('inverseB'),v=a.value;a.value=b.value;b.value=v;updateInverse()});document.querySelectorAll('.tabBtn').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.tabBtn').forEach(x=>x.classList.toggle('active',x===btn));document.querySelectorAll('.tabPane').forEach(p=>p.classList.toggle('hidden',p.id!==btn.dataset.tab));if(btn.dataset.tab==='inverseTab')updateInverse()}));
+(()=>{const d=new Date(),pad=n=>String(n).padStart(2,'0');$('reportDate').value=`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`})();
+populateStates();syncUi();updateLdpProjectionUi();updateOutputModeUi();syncGridConfirmation();updateOriginQa();validateManualCsf();updateGeoidCoverageStatus();initRememberedGeoid();
+</script>
+</body></html>
